@@ -101,7 +101,7 @@ in {
     package = mkOption {
       type = types.package;
       default = pkgs.nushell;
-      defaultText = literalExample "pkgs.nushell-unstable";
+      defaultText = literalExpression "pkgs.nushell-unstable";
       description = "The package to use for nushell.";
     };
 
@@ -132,7 +132,7 @@ in {
     extraConfig = mkOption {
       type = types.str;
       default = "";
-      defaultText = literalExample ''
+      defaultText = literalExpression ''
         $env.CUSTOM_ENV = AVALUE
       '';
       description = "Extra code to add to config.nu";
@@ -169,7 +169,7 @@ in {
           };
         };
       default = {};
-      example = literalExample ''
+      example = literalExpression ''
         {
           edit_mode = "vi";
           startup = [ "alias la [] { ls -a }" "alias e [msg] { echo $msg }" ];

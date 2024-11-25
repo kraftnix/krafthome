@@ -10,7 +10,7 @@
     foldl'
     hasAttr
     listToAttrs
-    literalExample
+    literalExpression
     mapAttrs'
     mapAttrsToList
     mkOption
@@ -128,7 +128,7 @@ in {
     sourceDir = mkOption {
       description = "Directory (in source code) containing what will be `.config/nvim/` contents.";
       type = path;
-      example = literalExample "./neovim";
+      example = literalExpression "./neovim";
     };
     targetDir = mkOption {
       description = "Directory that neovim lua files and plugins are linked to.";

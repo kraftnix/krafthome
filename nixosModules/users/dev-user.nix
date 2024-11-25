@@ -59,7 +59,7 @@ in {
 
   config = mkIf cfg.enable {
     home-manager.users.${cfg.name} = {pkgs, ...}: {
-      imports = [../../../home/profiles/themes/tokyo-night];
+      imports = [../../home/profiles/themes/tokyo-night];
       khome.roles.basic.enable = true;
       khome.roles.dev.enable = true;
       provision.scripts.enable = true;

@@ -1,19 +1,13 @@
 {
-  config,
   lib,
   ...
 }: let
-  cfg = config.khome.browsers.firefox.proxies;
   inherit
     (lib)
     mkEnableOption
-    filterAttrs
-    hasPrefix
-    mkIf
     mkOption
     types
     ;
-  mkEnableTrueOption = opt: mkEnableOption opt // {default = true;};
   ts = with types; [bool raw str int (listOf str)];
 in {
   options.khome.browsers.firefox.proxies = mkOption {

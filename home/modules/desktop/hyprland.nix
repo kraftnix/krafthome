@@ -130,7 +130,7 @@ in {
     package = mkOption {
       type = package;
       default = pkgs.hyprland;
-      defaultText = literalExample "pkgs.hyprland";
+      defaultText = literalExpression "pkgs.hyprland";
       description = "The package to use for the hyprland binary.";
     };
     plugins = mkOption {
@@ -143,7 +143,7 @@ in {
         then p
         else "${p}/lib/lib${n}.so");
       # "plugin = ${cfg.extraPackages.hy3}/lib/libhy3.so"
-      defaultText = literalExample "{ hy3 = pkgs.hy3-master; }";
+      defaultText = literalExpression "{ hy3 = pkgs.hy3-master; }";
       description = ''
         Extra packages / plugins used by this module. type handling:
           - package: tries to inher location of `.so` file of plugin, may fail.

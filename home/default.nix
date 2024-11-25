@@ -10,8 +10,8 @@ args @ {
     addTo.modules = true;
     flakeArgs = args;
     dir = ./modules;
-    modules.firejail = ../nixos/modules/security/firejail/home.nix;
-    modules.security = ../nixos/modules/security/home.nix;
+    modules.firejail = ../nixosModules/security/firejail/home.nix;
+    modules.security = ../nixosModules/security/home.nix;
   };
 
   flake.externalHomeModules = [

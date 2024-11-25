@@ -8,9 +8,6 @@ args: {
     (lib)
     mkEnableOption
     mkIf
-    mkMerge
-    mkOption
-    types
     ;
   cfg = config.khome.shell.nix-index;
 in {

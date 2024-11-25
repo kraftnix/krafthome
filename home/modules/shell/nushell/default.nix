@@ -13,7 +13,7 @@ args: {
     flatten
     getExe
     hasSuffix
-    literalExample
+    literalExpression
     mapAttrs
     mapAttrsToList
     mkEnableOption
@@ -123,7 +123,7 @@ in {
     package = mkOption {
       type = types.package;
       default = pkgs.nushell;
-      defaultText = literalExample "pkgs.nushell-unstable";
+      defaultText = literalExpression "pkgs.nushell-unstable";
       description = "The package to use for nushell.";
     };
 

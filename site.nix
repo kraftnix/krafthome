@@ -1,18 +1,7 @@
 localFlake: let
   lib = localFlake.lib;
-  krafthome-docs-local = {
+  krafthome-local = {
     mdbook.src = ./.;
-    defaults = {
-      nuschtos.baseHref = "/search/";
-      nuschtos.title = "Kraftnix Options Search";
-      nuschtos.customTheme = ./docs/theme/css/nuschtos.css;
-      hostOptions = localFlake.self.nixosConfigurations.dev-laptop.options;
-      substitution.outPath = localFlake.self.outPath;
-      # substitution.gitRepoFilePath = "https://github.com/kraftnix/krafthome";
-      substitution.gitRepoUrl = "https://gitea.home.lan/kraftnix/krafthome";
-      # substitution.gitRepoFilePath = "https://github.com/kraftnix/krafthome/tree/master/";
-      substitution.gitRepoFilePath = "https://gitea.home.lan/kraftnix/krafthome/src/branch/master/";
-    };
     homepage = {
       url = "http://localhost:8937";
       body = "Homepage";
@@ -24,7 +13,7 @@ localFlake: let
           {
             imports = [
               # localFlake.self.auto-import.flake.modules.vim-plugins
-              ./nix/flakeModules/vim-plugins.nix
+              ./flakeModules/vim-plugins.nix
             ];
             systems = [(throw "The `systems` option value is not available when generating documentation. This is generally caused by a missing `defaultText` on one or more options in the trace. Please run this evaluation with `--show-trace`, look for `while evaluating the default value of option` and add a `defaultText` to the one or more of the options involved.")];
           })
@@ -90,25 +79,30 @@ localFlake: let
 in {
   flake.docs = {
     enable = true;
+    defaults = {
+      nuschtos.baseHref = "/search/";
+      nuschtos.title = "Kraftnix Options Search";
+      nuschtos.customTheme = ./docs/theme/css/nuschtos.css;
+      hostOptions = localFlake.self.nixosConfigurations.dev-laptop.options;
+      substitution.outPath = localFlake.self.outPath;
+      # substitution.gitRepoFilePath = "https://github.com/kraftnix/krafthome";
+      substitution.gitRepoUrl = "https://gitea.home.lan/kraftnix/krafthome";
+      # substitution.gitRepoFilePath = "https://github.com/kraftnix/krafthome/tree/master/";
+      substitution.gitRepoFilePath = "https://gitea.home.lan/kraftnix/krafthome/src/branch/master/";
+    };
     sites = {
-      inherit krafthome-docs-local;
-      krafthome-docs =
-        krafthome-docs-local
-        // {
-          homepage = {
+      inherit krafthome-local;
+      krafthome = lib.mkMerge [
+        krafthome-local
+        {
+          homepage = lib.mkForce {
             url = "https://kraftnix.dev";
             body = "Homepage";
             siteBase = "/projects/krafthome/";
           };
-          defaults =
-            krafthome-docs-local.defaults
-            // {
-              substitution = {
-                outPath = localFlake.self.outPath;
-                gitRepoUrl = "https://github.com/kraftnix/krafthome";
-              };
-            };
-        };
+          defaults.substitution.gitRepoUrl = lib.mkForce "https://github.com/kraftnix/krafthome";
+        }
+      ];
     };
   };
 }

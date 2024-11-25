@@ -64,11 +64,9 @@
   outputs = inputs @ {flake-parts, ...}:
     flake-parts.lib.mkFlake {inherit inputs;} {
       imports = [
-        ./nixos
         ./home
         ./tests
-        ./nix
-        ./site.nix
+        ./toplevel.nix
       ];
       systems = ["x86_64-linux" "aarch64-linux"];
     };

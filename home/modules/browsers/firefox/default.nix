@@ -16,17 +16,6 @@ args: {
     unique
     types
     ;
-  inherit
-    (types)
-    attrsOf
-    int
-    listOf
-    nullOr
-    package
-    str
-    submodule
-    raw
-    ;
 in {
   imports = [
     ./extensions.nix
@@ -61,42 +50,42 @@ in {
           ++ (map (profile: cfg.presets.settings.${profile}) config.presets.settings));
         options = {
           id = mkOption {
-            type = int;
+            type = types.int;
             default = 0;
             description = "numbered id of profile (required + must be unique)";
           };
           theme = mkOption {
-            type = nullOr str;
+            type = with types; nullOr str;
             description = "theme to set, default: none";
             default = null;
           };
           settings = mkOption {
-            type = raw;
+            type = types.raw;
             description = "settings for firefox profile (combined with `profile.settings`)";
             default = {};
           };
           finalSettings = mkOption {
-            type = types.attrsOf raw;
+            type = types.attrsOf types.raw;
             description = "final settings for firefox profile";
             default = {};
           };
           proxyServer = mkOption {
             default = null;
-            type = nullOr str;
+            type = with types; nullOr str;
             description = "which proxy server to use for profile, must refere to a proxy server defined in `khome.browsers.firefox.proxies`, default: null / none";
           };
           proxyExceptions = mkOption {
             default = [];
-            type = listOf str;
+            type = with types; listOf str;
             description = "list of exceptions for defined proxy server";
           };
           extensions = mkOption {
-            type = listOf package;
+            type = with types; listOf package;
             description = "final extensions for firefox profile";
             default = [];
           };
           finalExtensions = mkOption {
-            type = listOf package;
+            type = with types; listOf package;
             readOnly = true;
             description = "final settings for firefox profile";
             default = unique (flatten ([
@@ -106,12 +95,12 @@ in {
           };
           presets = {
             settings = mkOption {
-              type = listOf str;
+              type = with types; listOf str;
               description = "settings profiles to enable for profile";
               default = [];
             };
             extensions = mkOption {
-              type = listOf str;
+              type = with types; listOf str;
               description = "settings profiles to enable for profile";
               default = [];
             };

@@ -10,7 +10,7 @@
     mkForce
     mkIf
     mkOption
-    literalExample
+    literalExpression
     types
     ;
   cfg = config.khome.programs.wezterm;
@@ -30,7 +30,7 @@ in {
     package = mkOption {
       type = types.package;
       default = pkgs.wezterm;
-      defaultText = literalExample "pkgs.wezterm";
+      defaultText = literalExpression "pkgs.wezterm";
       description = "The package to use for the wezterm binary.";
     };
     defaultPre = mkOption {
@@ -69,7 +69,7 @@ in {
           options = {};
         };
       default = {};
-      example = literalExample ''
+      example = literalExpression ''
         {
           edit_mode = "vi";
           startup = [ "alias la [] { ls -a }" "alias e [msg] { echo $msg }" ];
