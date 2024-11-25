@@ -1,0 +1,20 @@
+args:
+{
+  imports = [
+    ./aliases.nix
+    ./core.nix
+    ./fish
+    ./fzf.nix
+    ./git.nix
+    ./gpg.nix
+    ./nix-index.nix
+    ./nushell
+    ./nushell-unstable
+    ./ssh-rebind.nix
+    ./starship.nix
+    ./tmux
+    ./xdg.nix
+    ./yazi
+    ./zsh
+  ];
+}

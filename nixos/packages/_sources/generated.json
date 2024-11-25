@@ -1,0 +1,128 @@
+{
+    "tree-sitter-bash": {
+        "cargoLocks": null,
+        "date": "2024-11-11",
+        "extract": null,
+        "name": "tree-sitter-bash",
+        "passthru": null,
+        "pinned": false,
+        "src": {
+            "deepClone": false,
+            "fetchSubmodules": false,
+            "leaveDotGit": false,
+            "name": null,
+            "owner": "tree-sitter",
+            "repo": "tree-sitter-bash",
+            "rev": "49c31006d8307dcb12bc5770f35b6d5b9e2be68e",
+            "sha256": "sha256-JW+30zIyq8Xc7NG9V+YoFqC+57BjZXIbAvWPD2lqvIE=",
+            "sparseCheckout": [],
+            "type": "github"
+        },
+        "version": "49c31006d8307dcb12bc5770f35b6d5b9e2be68e"
+    },
+    "tree-sitter-markdown": {
+        "cargoLocks": null,
+        "date": "2024-10-21",
+        "extract": null,
+        "name": "tree-sitter-markdown",
+        "passthru": null,
+        "pinned": false,
+        "src": {
+            "deepClone": false,
+            "fetchSubmodules": false,
+            "leaveDotGit": false,
+            "name": null,
+            "owner": "tree-sitter-grammars",
+            "repo": "tree-sitter-markdown",
+            "rev": "5cdc549ab8f461aff876c5be9741027189299cec",
+            "sha256": "sha256-dLj233xHPCJbawUVqkxxhHXbu/CrJIHcCyLXTgsWMFo=",
+            "sparseCheckout": [],
+            "type": "github"
+        },
+        "version": "5cdc549ab8f461aff876c5be9741027189299cec"
+    },
+    "tree-sitter-nu": {
+        "cargoLocks": null,
+        "date": "2023-09-30",
+        "extract": null,
+        "name": "tree-sitter-nu",
+        "passthru": null,
+        "pinned": false,
+        "src": {
+            "deepClone": false,
+            "fetchSubmodules": false,
+            "leaveDotGit": false,
+            "name": null,
+            "owner": "LhKipp",
+            "repo": "tree-sitter-nu",
+            "rev": "ef943c6f2f7bfa061aad7db7bcaca63a002f354c",
+            "sha256": "sha256-U7IHAXo3yQgbLv7pC1/dOa/cXte+ToMc8QsDEiCMSRg=",
+            "sparseCheckout": [],
+            "type": "github"
+        },
+        "version": "ef943c6f2f7bfa061aad7db7bcaca63a002f354c"
+    },
+    "tree-sitter-nu-new": {
+        "cargoLocks": null,
+        "date": "2024-11-22",
+        "extract": null,
+        "name": "tree-sitter-nu-new",
+        "passthru": null,
+        "pinned": false,
+        "src": {
+            "deepClone": false,
+            "fetchSubmodules": false,
+            "leaveDotGit": false,
+            "name": null,
+            "owner": "nushell",
+            "repo": "tree-sitter-nu",
+            "rev": "9eedcb303de0b4e046477161fb3d2932a0146d2a",
+            "sha256": "sha256-5Dxx+0LE34OgWWX/bEDpIH5/AZCqTVUnVTvSTX+jSy0=",
+            "sparseCheckout": [],
+            "type": "github"
+        },
+        "version": "9eedcb303de0b4e046477161fb3d2932a0146d2a"
+    },
+    "tree-sitter-python": {
+        "cargoLocks": null,
+        "date": "2024-11-11",
+        "extract": null,
+        "name": "tree-sitter-python",
+        "passthru": null,
+        "pinned": false,
+        "src": {
+            "deepClone": false,
+            "fetchSubmodules": false,
+            "leaveDotGit": false,
+            "name": null,
+            "owner": "tree-sitter",
+            "repo": "tree-sitter-python",
+            "rev": "6d14e44ea217bc5bb1c1804180e9818d7d1b8d91",
+            "sha256": "sha256-/jYGi2yksifMGPitlS8oM/g3YrR7RJ57imBhEyow/jc=",
+            "sparseCheckout": [],
+            "type": "github"
+        },
+        "version": "6d14e44ea217bc5bb1c1804180e9818d7d1b8d91"
+    },
+    "tree-sitter-yuck": {
+        "cargoLocks": null,
+        "date": "2024-05-05",
+        "extract": null,
+        "name": "tree-sitter-yuck",
+        "passthru": null,
+        "pinned": false,
+        "src": {
+            "deepClone": false,
+            "fetchSubmodules": false,
+            "leaveDotGit": false,
+            "name": null,
+            "owner": "philipp-m",
+            "repo": "tree-sitter-yuck",
+            "rev": "e877f6ade4b77d5ef8787075141053631ba12318",
+            "sha256": "sha256-l8c1/7q8S78jGyl+VAVVgs8wq58PrrjycyJfWXsCgAI=",
+            "sparseCheckout": [],
+            "type": "github"
+        },
+        "version": "e877f6ade4b77d5ef8787075141053631ba12318"
+    }
+}

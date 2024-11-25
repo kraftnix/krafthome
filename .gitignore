@@ -1,0 +1,16 @@
+result
+.direnv
+docs/book
+docs/options
+docs/intro.md
+.*.sw*
+logs/
+.pre-commit-config.yaml
+
+# Result of flk commands
+vm
+iso
+doi
+
+pkgs/_sources/.shake*
+.std/

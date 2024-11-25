@@ -1,0 +1,28 @@
+let mapleader = "\<Space>"
+syntax on
+set nu
+set nowrap
+
+set clipboard=unnamed
+nnoremap H :tabprevious<cr>
+nnoremap L :tabnext<cr>
+set title titlestring=
+let g:autoswap_detect_tmux = 1
+
+" Remappings
+" generic
+cmap w!! w !sudo tee > /dev/null %
+" copy to end of line
+map Y y$
+
+" r -> run
+nnoremap <leader>rr :r!
+nnoremap <leader>rR :!
+
+
+" vim-go
+let g:go_fmt_command = "goimports"
+
+" GitGutter
+let g:gitgutter_override_sign_column_highlight = 1
+let g:gitgutter_map_keys = 0

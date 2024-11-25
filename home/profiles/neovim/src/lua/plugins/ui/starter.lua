@@ -1,0 +1,35 @@
+local h = require 'utils.helper'
+return h.mapNixPlugin {
+  -- -- startpage
+  -- { 'echasnovski/mini.starter',
+  --   nix_name = "mini.nvim",
+  --   config = function ()
+  --     local starter = require "mini.starter"
+  --     starter.setup({
+  --       evaluate_single = true,
+  --       items = {
+  --         starter.sections.builtin_actions(),
+  --         { name = 'w: Open `flake.nix`', action = [[:e flake.nix]], section = 'Introspection' },
+  --         { name = 'm: (Neovim) Messages', action = [[:messages]], section = 'Introspection' },
+  --         { name = 'f: Files', action = [[:Telescope find_files]], section = 'Introspection' },
+  --         { name = 'b: File Browser', action = [[:Telescope file_browser]], section = 'Introspection' },
+  --         { name = 'l: Fuzzy Search (live_grep)', action = [[:Telescope live_grep]], section = 'Introspection' },
+  --         { name = 'g: Open Neogit', action = [[:Neogit]], section = 'Introspection' },
+  --         { name = 'p: Open Lazy', action = [[:Lazy]], section = 'Introspection' },
+  --         { name = 'c: Command History', action = [[:Telescope command_history]], section = 'Introspection' },
+  --         { name = 'o: File Browser', action = [[:Oil]], section = 'Introspection' },
+  --         { name = 'h: Help Tags (Neovim docs)', action = [[:Telescope help_tags]], section = 'Introspection' },
+  --         starter.sections.recent_files(10, true),
+  --         starter.sections.recent_files(5, false),
+  --         -- Use this if you set up 'mini.sessions'
+  --         starter.sections.sessions(5, true)
+  --       },
+  --       content_hooks = {
+  --         starter.gen_hook.adding_bullet(),
+  --         starter.gen_hook.indexing('all', { 'Builtin actions', 'Introspection' }),
+  --         starter.gen_hook.padding(3, 2),
+  --       },
+  --     })
+  --   end
+  -- },
+}

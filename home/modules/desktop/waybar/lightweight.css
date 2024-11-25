@@ -1,0 +1,138 @@
+* {
+    border: none;
+    border-radius: 0;
+    font-weight: bold;
+    font-family: Roboto, Helvetica, Arial, sans-serif;
+    font-size: 14px;
+    min-height: 0;
+}
+
+window#waybar {
+    background-color: @background;
+    opacity: 0.8;
+    color: @foreground;
+    border-bottom: 3px solid rgba(169, 172, 214, 0.7);
+    transition-property: background-color;
+    transition-duration: .5s;
+}
+
+#window {
+    font-weight: bold;
+    color: @foreground;
+}
+
+#workspaces button {
+    padding: 0 5px;
+    background: transparent;
+    color: @foreground;
+    border-top: 2px solid transparent;
+    font-weight: bold;
+}
+
+#workspaces button.focused {
+    color: @workspace;
+    border-top: 2px solid @workspaceBorder;
+    font-weight: bold;
+    border-bottom: 3px solid @workspaceBorder;
+}
+/* #workspaces button.current_output { */
+/*     color: @workspace; */
+/*     border-top: 2px solid @workspaceBorder; */
+/*     font-weight: bold; */
+/*     border-bottom: 3px solid @workspaceBorder; */
+/* } */
+#workspaces button.active {
+    color: @workspace;
+    border-top: 2px solid @workspaceBorder;
+    font-weight: bold;
+    border-bottom: 3px solid @workspaceBorder;
+}
+
+#mode {
+    color: @mode;
+    border-bottom: 3px solid @primary;
+}
+
+#battery {
+    padding: 0 10px 10px 10px;
+    margin: 0 7px 10px 7px;
+}
+
+#workspace
+#idle_inhibitor,
+#memory,
+#network,
+#pulseaudio,
+#tray,
+#battery,
+#mode {
+    padding: 0 3px 5px;
+    margin: 0 3px;
+}
+
+#disk,
+#temperature,
+#cpu {
+    font-weight: bold;
+    padding: 0 1px 5px;
+    margin: 0 1px;
+}
+
+#clock {
+    color: @clock;
+    font-weight: bold;
+}
+
+#battery,
+#battery icon {
+    color: @battery;
+    font-weight: bold;
+}
+#battery.charging {
+    color: @foreground;
+    background-color: @green;
+}
+@keyframes blink {
+    to {
+        background-color: @white;
+        color: @black;
+    }
+}
+
+#battery.critical:not(.charging) {
+    background-color: @red;
+    color: @foreground;
+    animation-name: blink;
+    animation-duration: 0.5s;
+    animation-timing-function: linear;
+    animation-iteration-count: infinite;
+    animation-direction: alternate;
+}
+
+#cpu {
+    color: @cpu;
+}
+
+#disk {
+    /* light blue */
+    color: @disk;
+}
+
+#memory {
+    color: @memory;
+}
+
+#network {
+    color: @network;
+}
+#network.disconnected {
+    color: @red;
+}
+#temperature {
+    color: @temperature;
+}
+
+#pulseaudio,
+#pulseaudio.muted {
+    color: @audio;
+}

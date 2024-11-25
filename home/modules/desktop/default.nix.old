@@ -1,0 +1,16 @@
+args@{ inputs, ... }:
+{ config, ... }:
+{
+  imports = [
+    ./hyprland.nix
+    ./mako.nix
+    ./misc.nix
+    ./rofi.nix
+    ./swayidle.nix
+    ./swww
+    ./waybar
+    # (import ./wayfire.nix args)
+    # (import ./wezterm.nix args)
+    # (import ./eww args)
+  ];
+}

@@ -1,0 +1,9 @@
+{
+    "workspace.library": [
+        "/nix/store/x55yfs57l7bm6ms0584lhwiz7h1zxr7n-neovim-unwrapped-0.9.0/share/nvim/runtime",
+        "/nix/store/kn619azxpgjghn9nsnvp45j39ci8q0qz-vimplugin-neodev.nvim-2023-04-05/types/stable",
+        "${3rd}/busted/library",
+        "${3rd}/luassert/library",
+        "${3rd}/luv/library"
+    ]
+}
