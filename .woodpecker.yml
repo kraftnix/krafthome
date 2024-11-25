@@ -1,0 +1,27 @@
+steps:
+  - name: fast-build devshells
+    image: bash
+    commands:
+      - set -e
+      - nix-fast-build -f .#devShells --no-nom
+
+  - name: fast-build packages
+    image: bash
+    commands:
+      - set -e
+      - nix-fast-build -f .#packages --no-nom
+
+  - name: fast-build all hosts
+    image: bash
+    commands:
+      - set -e
+      - nix-fast-build -f .#hosts.toplevels --no-nom
+
+  - name: nix flake check
+    image: bash
+    commands:
+      - nix flake check --show-trace
+    when:
+      - event: pull_request
+      - event: push
+        branch: master
