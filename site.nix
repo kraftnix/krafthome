@@ -80,9 +80,9 @@ in {
   flake.docs = {
     enable = true;
     defaults = {
-      nuschtos.baseHref = "/search/";
-      nuschtos.title = "Kraftnix Options Search";
-      nuschtos.customTheme = ./docs/theme/css/nuschtos.css;
+      nuscht-search.baseHref = "/search/";
+      nuscht-search.title = "Kraftnix Options Search";
+      nuscht-search.customTheme = ./docs/theme/css/nuscht-search.css;
       hostOptions = localFlake.self.nixosConfigurations.dev-laptop.options;
       substitution.outPath = localFlake.self.outPath;
       # substitution.gitRepoFilePath = "https://github.com/kraftnix/krafthome";
