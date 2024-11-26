@@ -49,7 +49,7 @@ in {
         time = {
           disabled = false;
           format = "$date [ $time ]($style)";
-          time_format = "🗓️ {%D} 🕙 [%T]";
+          time_format = "📅 {%D} ⏱  [%T]";
         };
         cmd_duration = {
           min_time = 500;
@@ -71,7 +71,7 @@ in {
           impure_msg = "[impure](bold red)";
           pure_msg = "[pure](bold green)";
           unknown_msg = "[unknown](bold yellow)";
-          format = "▶ [|](bold blue)❄️ [$state( \($name\))](bold blue)[|](bold blue) ";
+          format = "▶ [|](bold blue)❄ [$state( \($name\))](bold blue)[|](bold blue) ";
           # impure_msg = "[impure shell](bold red)";
           # pure_msg = "[pure shell](bold green)";
           # unknown_msg = "[unknown shell](bold yellow)";
@@ -80,7 +80,7 @@ in {
 
         # Testing
         status = {
-          symbol = "🎇{($status)}@";
+          symbol = "🎆{($status)}@";
           # success_symbol = "✔️ ";
           format = "[➜](bold) [$symbol$common_meaning$signal_name$maybe_int]($style) ";
           map_symbol = true;

@@ -37,7 +37,6 @@ args @ {
         // {
           nvim-spectre = self.channels.${final.system}.stable.pkgs.vimPlugins.nvim-spectre;
         };
-      tmux = inputs.provision.packages.${final.system}.tmux_3_3a;
       # jellyfin-mpv-shim fixes: https://github.com/NixOS/nixpkgs/pull/353833
       inherit (final.channels.stable.pkgs) jellyfin-mpv-shim;
     };
