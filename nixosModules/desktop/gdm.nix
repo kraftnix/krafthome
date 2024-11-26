@@ -3,16 +3,17 @@
   lib,
   pkgs,
   ...
-}: let
+}:
+let
   cfg = config.khome.desktop.gdm;
-  inherit
-    (lib)
+  inherit (lib)
     mkEnableOption
     mkIf
     mkOption
     types
     ;
-in {
+in
+{
   options.khome.desktop.gdm = {
     enable = mkEnableOption "enable GDM as display manager";
     defaultSession = mkOption {
@@ -35,7 +36,7 @@ in {
         enable = true;
         wayland = true;
         # sessionPackages = [ config.programs.sway.package ];
-        settings = {};
+        settings = { };
       };
     };
   };

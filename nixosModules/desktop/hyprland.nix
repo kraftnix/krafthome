@@ -3,17 +3,18 @@
   lib,
   pkgs,
   ...
-}: let
+}:
+let
   cfg = config.khome.desktop.hyprland;
   hcfg = config.programs.hyprland;
-  inherit
-    (lib)
+  inherit (lib)
     mkEnableOption
     mkIf
     mkOption
     types
     ;
-in {
+in
+{
   options.khome.desktop.hyprland = {
     enable = mkEnableOption "enable basic hyprland system-level setup";
   };
@@ -39,12 +40,12 @@ in {
       xwayland.enable = hcfg.xwayland.enable;
     };
     security.polkit.enable = true;
-    services.displayManager.sessionPackages = [hcfg.package];
+    services.displayManager.sessionPackages = [ hcfg.package ];
 
     xdg.portal = {
       enable = true;
       xdgOpenUsePortal = true;
-      extraPortals = [pkgs.xdg-desktop-portal-hyprland];
+      extraPortals = [ pkgs.xdg-desktop-portal-hyprland ];
       wlr.enable = true;
       wlr.settings.screencast = {
         # output_name = "HDMI-A-1";

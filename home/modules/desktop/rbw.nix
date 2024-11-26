@@ -1,11 +1,12 @@
-{self, ...}: {
+{ self, ... }:
+{
   config,
   lib,
   pkgs,
   ...
-}: let
-  inherit
-    (lib)
+}:
+let
+  inherit (lib)
     mkDefault
     mkIf
     mkMerge
@@ -13,7 +14,8 @@
     ;
   opts = self.inputs.extra-lib.lib.options;
   cfg = config.khome.desktop.rbw;
-in {
+in
+{
   options.khome.desktop.rbw = {
     enable = opts.enable "enable rbw integration";
     enableHyprlandKeybind = opts.enableTrue "enable hyprland keybinding";
@@ -23,7 +25,7 @@ in {
     hyprlandKey = opts.string "P" "hyprland mod key (with $mod + shift)";
     swayKey = opts.string "$mod+Shift+p" "sway mod key (with $mod + shift)";
     settings = mkOption {
-      type = (pkgs.formats.json {}).type;
+      type = (pkgs.formats.json { }).type;
       default = {
         # base_url = "https://bitwarden.home.internal";
         # email = "myuser@email.com";
@@ -33,7 +35,7 @@ in {
   };
 
   config = mkIf cfg.enable {
-    home.packages = [cfg.rofiPackage];
+    home.packages = [ cfg.rofiPackage ];
 
     programs.rbw = {
       enable = true;

@@ -1,15 +1,17 @@
-zargs @ {
+zargs@{
   inputs,
   self,
   ...
-}: args @ {
+}:
+args@{
   lib,
   config,
   pkgs,
   ...
 }:
 with builtins;
-with pkgs.lib; let
+with pkgs.lib;
+let
   inherit (config.lib) base16;
   colorName = "base16-${base16.theme.scheme-slug}";
   vimColors = base16.programs.vim;
@@ -21,7 +23,8 @@ with pkgs.lib; let
   #     #vimPlugins = inputs.nixpkgs.vimPlugins // cell.vimPlugins;
   #   });
   extendedPkgs = pkgs;
-in {
+in
+{
   home.file = mkMerge [
     # (mkIf config.khome.themes.enable {
     {
@@ -30,7 +33,7 @@ in {
       ".config/nvim/parser/nu.so".source = "${extendedPkgs.tree-sitter-full.builtGrammars.tree-sitter-nu}/parser";
     }
   ];
-  home.packages = [pkgs.neovim-remote];
+  home.packages = [ pkgs.neovim-remote ];
   programs.neovim.enable = true;
   # alias nvimb for an always working version
   home.sessionVariables.EDITOR = lib.mkOverride 500 "nvim";

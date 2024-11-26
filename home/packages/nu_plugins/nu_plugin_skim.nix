@@ -1,4 +1,5 @@
-source: cargoHash: {
+source: cargoHash:
+{
   stdenv,
   lib,
   rustPlatform,
@@ -16,7 +17,7 @@ rustPlatform.buildRustPackage rec {
     mainProgram = "nu_plugin_skim";
     homepage = "https://github.com/idanarye/nu_plugin_skim";
     license = licenses.mit;
-    maintainers = with maintainers; [];
+    maintainers = with maintainers; [ ];
     platforms = with platforms; all;
   };
 }

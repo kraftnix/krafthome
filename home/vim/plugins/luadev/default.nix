@@ -1,8 +1,13 @@
 # Fancy vim menus for ':', ':', '/', '?'
 # allows fuzzy searching terms better
-{pkgs, ...}: let
-  cmd = command: desc: ["<cmd>${command}<cr>" desc];
-in {
+{ pkgs, ... }:
+let
+  cmd = command: desc: [
+    "<cmd>${command}<cr>"
+    desc
+  ];
+in
+{
   plugins = [
     pkgs.vimPlugins.nvim-luadev # repl / output of lua
     pkgs.vimPlugins.codi-vim # general repl for python / lua + more

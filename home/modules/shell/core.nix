@@ -1,18 +1,20 @@
-args: {
+args:
+{
   config,
   lib,
   pkgs,
   ...
-}: let
-  inherit
-    (lib)
+}:
+let
+  inherit (lib)
     mkEnableOption
     mkOption
     optionals
     types
     ;
   cfg = config.khome.shell;
-in {
+in
+{
   options.khome.shell = {
     keyboardLayout = mkOption {
       type = types.str;
@@ -74,10 +76,11 @@ in {
   config = {
     home.sessionVariables.EDITOR = cfg.editor;
     home.keyboard.layout = cfg.keyboardLayout;
-    home.packages = with pkgs;
-      []
-      ++ (optionals cfg.xplr.enable [xplr])
-      ++ (optionals cfg.proxychains.enable [proxychains])
+    home.packages =
+      with pkgs;
+      [ ]
+      ++ (optionals cfg.xplr.enable [ xplr ])
+      ++ (optionals cfg.proxychains.enable [ proxychains ])
       ++ (optionals cfg.misc.enable [
         rustscan # rust-based fast nmap alternative
         tea # cli gitea

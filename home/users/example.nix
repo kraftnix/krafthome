@@ -1,4 +1,5 @@
-{pkgs, ...}: {
+{ pkgs, ... }:
+{
   khome.shell = {
     direnv.enable = true;
     core-tools.enable = true;
@@ -44,7 +45,7 @@
       # pkgs.nushellPlugins.dialog
       pkgs.nushellPlugins.skim
     ];
-    shellAliases = {};
+    shellAliases = { };
     extraConfig = ''
       def ssh-fpscan [] {
         ssh-keyscan localhost | ssh-keygen -lf -

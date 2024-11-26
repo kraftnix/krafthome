@@ -1,11 +1,12 @@
-args: {
+args:
+{
   config,
   lib,
   pkgs,
   ...
-}: let
-  inherit
-    (lib)
+}:
+let
+  inherit (lib)
     mkEnableOption
     mkIf
     ;
@@ -13,7 +14,8 @@ args: {
   homeDir = "/home/${config.home.username}";
   xdgBase = "${homeDir}/xdg";
   sv = config.home.sessionVariables;
-in {
+in
+{
   options.khome.shell.xdg = {
     enable = mkEnableOption "enable xdg-ninja style remapping";
   };

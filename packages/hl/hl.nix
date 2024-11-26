@@ -33,7 +33,7 @@ rustPlatform.buildRustPackage rec {
     description = "A fast and powerful log viewer and processor that translates JSON or logfmt logs into a pretty human-readable format";
     homepage = "https://github.com/pamburus/hl";
     license = lib.licenses.mit;
-    maintainers = with lib.maintainers; [];
+    maintainers = with lib.maintainers; [ ];
     mainProgram = "hl";
   };
 }

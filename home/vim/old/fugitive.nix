@@ -1,4 +1,5 @@
-{pkgs, ...}: {
+{ pkgs, ... }:
+{
   plugin = pkgs.vimPlugins.vim-fugitive;
   config = ''
     " g -> git (fugitive)

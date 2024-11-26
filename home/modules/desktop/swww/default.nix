@@ -1,11 +1,12 @@
-args: {
+args:
+{
   config,
   pkgs,
   lib,
   ...
-}: let
-  inherit
-    (lib)
+}:
+let
+  inherit (lib)
     concatStringsSep
     mkAfter
     mkEnableOption
@@ -20,9 +21,12 @@ args: {
   singleRandom = "swww-randomise -i 0 ${wallpaperDirs}";
   startAndRandom = "swww-daemon init && swww-randomise -i 0 ${wallpaperDirs}";
   # startAndRandom = "systemctl --user start && swww-randomise -i 0 ${wallpaperDirs}";
-  randomiseCommand = "swww-randomise -i ${toString cfg.interval} -f ${toString cfg.fps} ${optionalString (cfg.transitionType != null) cfg.transitionType} -s ${toString cfg.step} ${wallpaperDirs}";
+  randomiseCommand = "swww-randomise -i ${toString cfg.interval} -f ${toString cfg.fps} ${
+    optionalString (cfg.transitionType != null) cfg.transitionType
+  } -s ${toString cfg.step} ${wallpaperDirs}";
   randomisePackage = config.provision.scripts.scripts.swww-randomise.package;
-in {
+in
+{
   options.khome.desktop.swww = {
     enable = mkEnableOption "enable swww wallpapers";
     systemdIntegration = mkEnableOption "enable systemd user service";
@@ -80,20 +84,20 @@ in {
     wayland.windowManager.sway.config = {
       keybindings."${cfg.swayKey}" = lib.mkOverride 250 "exec ${singleRandom}";
       startup = mkIf (!cfg.systemdIntegration) (mkAfter [
-        {command = startAndRandom;}
-        {command = randomiseCommand;}
+        { command = startAndRandom; }
+        { command = randomiseCommand; }
       ]);
     };
 
     provision.scripts.scripts.swww-randomise.file = ./swww-randomise.nu;
 
-    home.packages = [pkgs.swww];
+    home.packages = [ pkgs.swww ];
 
     systemd.user.services.swww = mkIf cfg.systemdIntegration {
       Unit = {
         Description = "SWWW Wallpaper Daemon";
-        After = ["graphical-session-pre.target"];
-        PartOf = ["graphical-session.target"];
+        After = [ "graphical-session-pre.target" ];
+        PartOf = [ "graphical-session.target" ];
       };
 
       Service = {
@@ -102,25 +106,28 @@ in {
         ExecStart = "${pkgs.swww}/bin/swww-daemon";
       };
 
-      Install.WantedBy = ["graphical-session.target"];
+      Install.WantedBy = [ "graphical-session.target" ];
     };
 
     systemd.user.services.swww-rotate = mkIf cfg.systemdIntegration {
       Unit = {
         Description = "SWWW Wallpaper Rotate Service";
-        After = ["swww.service"];
-        PartOf = ["graphical-session.target"];
+        After = [ "swww.service" ];
+        PartOf = [ "graphical-session.target" ];
       };
       Service = {
-        Environment =
-          [
-            "PATH=${lib.makeBinPath [pkgs.fd pkgs.swww]}"
-          ]
-          ++ (optional (cfg.transitionType != null) "SWWW_TRANSITION_TYPE=${cfg.transitionType}");
+        Environment = [
+          "PATH=${
+            lib.makeBinPath [
+              pkgs.fd
+              pkgs.swww
+            ]
+          }"
+        ] ++ (optional (cfg.transitionType != null) "SWWW_TRANSITION_TYPE=${cfg.transitionType}");
         Restart = "on-failure";
         ExecStart = "${randomisePackage}/bin/${randomiseCommand}";
       };
-      Install.WantedBy = ["graphical-session.target"];
+      Install.WantedBy = [ "graphical-session.target" ];
     };
   };
 }

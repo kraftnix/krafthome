@@ -1,9 +1,10 @@
-args @ {
+args@{
   self,
   inputs,
   ...
-}: {
-  imports = [./packages];
+}:
+{
+  imports = [ ./packages ];
   debug = true;
 
   flake.auto-import.homeManager = {
@@ -19,12 +20,10 @@ args @ {
     inputs.anyrun.homeManagerModules.default
   ];
 
-  flake.hmProfiles =
-    inputs.provision.lib.nix.rakeLeaves ./profiles
-    // {
-      vim = import ./vim args;
-      nushell = import ./nushell args;
-    };
+  flake.hmProfiles = inputs.provision.lib.nix.rakeLeaves ./profiles // {
+    vim = import ./vim args;
+    nushell = import ./nushell args;
+  };
 
   flake.overlays = {
     # anyrun = inputs.anyrun.overlays.default;
@@ -32,11 +31,9 @@ args @ {
       inherit (inputs.anyrun.packages.${final.system}) anyrun anyrun-with-all-plugins;
     };
     misc-fixes = final: prev: {
-      vimPlugins =
-        prev.vimPlugins
-        // {
-          nvim-spectre = self.channels.${final.system}.stable.pkgs.vimPlugins.nvim-spectre;
-        };
+      vimPlugins = prev.vimPlugins // {
+        nvim-spectre = self.channels.${final.system}.stable.pkgs.vimPlugins.nvim-spectre;
+      };
       # jellyfin-mpv-shim fixes: https://github.com/NixOS/nixpkgs/pull/353833
       inherit (final.channels.stable.pkgs) jellyfin-mpv-shim;
     };
@@ -59,7 +56,9 @@ args @ {
     ];
   };
 
-  perSystem = sargs @ {self', ...}: {
-    vimPlugins = self'.packagesGroups.vimPlugins;
-  };
+  perSystem =
+    sargs@{ self', ... }:
+    {
+      vimPlugins = self'.packagesGroups.vimPlugins;
+    };
 }

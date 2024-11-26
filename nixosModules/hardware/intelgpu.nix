@@ -3,23 +3,24 @@
   lib,
   pkgs,
   ...
-}: let
+}:
+let
   cfg = config.khome.hardware.intelgpu;
-  inherit
-    (lib)
+  inherit (lib)
     mkEnableOption
     mkIf
     mkOption
     types
     ;
-in {
+in
+{
   options.khome.hardware.intelgpu = {
     enable = mkEnableOption "enable intelgpu integrations";
   };
 
   config = mkIf cfg.enable {
-    boot.initrd.kernelModules = ["i915"];
-    services.xserver.videoDrivers = ["intel"];
+    boot.initrd.kernelModules = [ "i915" ];
+    services.xserver.videoDrivers = [ "intel" ];
     environment.systemPackages = with pkgs; [
       libva-utils
       nvtopPackages.intel
@@ -41,7 +42,7 @@ in {
           libvdpau-va-gl
         ];
         enable32Bit = true;
-        extraPackages32 = with pkgs.pkgsi686Linux; [vaapiIntel];
+        extraPackages32 = with pkgs.pkgsi686Linux; [ vaapiIntel ];
       };
     };
   };

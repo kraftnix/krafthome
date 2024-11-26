@@ -1,13 +1,21 @@
-{self, ...}: {
+{ self, ... }:
+{
   config,
   lib,
   pkgs,
   ...
-}: let
-  inherit (lib) mkIf mkMerge optional optionals;
+}:
+let
+  inherit (lib)
+    mkIf
+    mkMerge
+    optional
+    optionals
+    ;
   opts = self.inputs.extra-lib.lib.options;
   cfg = config.khome.desktop.terminals.alacritty;
-in {
+in
+{
   options.khome.desktop.terminals.alacritty = {
     enable = opts.enable "enable alacritty";
   };

@@ -1,16 +1,18 @@
-args: {
+args:
+{
   config,
   lib,
   pkgs,
   ...
-}: let
-  inherit
-    (lib)
+}:
+let
+  inherit (lib)
     mkEnableOption
     mkIf
     ;
   cfg = config.khome.shell.nix-index;
-in {
+in
+{
   options.khome.shell.nix-index = {
     enable = mkEnableOption "enable nix-index";
     enableComma = mkEnableOption "use comma instead of nix-index";

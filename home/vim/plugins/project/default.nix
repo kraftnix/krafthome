@@ -2,7 +2,8 @@
 # - auto searchs in homedir for git repos
 # - move between projects (change working dir)
 # - search inside projects
-{pkgs, ...}: {
+{ pkgs, ... }:
+{
   programs.neovim.plugins = with pkgs.vimPlugins; [
     {
       plugin = project-nvim;

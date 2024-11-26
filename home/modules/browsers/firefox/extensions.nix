@@ -3,22 +3,25 @@
   pkgs,
   lib,
   ...
-}: let
+}:
+let
   cfg = config.khome.browsers.firefox;
-  inherit
-    (lib)
+  inherit (lib)
     attrValues
     mkEnableOption
     mkIf
     mkOption
     types
     ;
-in {
+in
+{
   options.khome.browsers.firefox.presets = {
-    enableDefaultExtensions = mkEnableOption "enable default extension preset groups" // {default = true;};
+    enableDefaultExtensions = mkEnableOption "enable default extension preset groups" // {
+      default = true;
+    };
     extensions = mkOption {
       type = with types; attrsOf (listOf package);
-      default = {};
+      default = { };
       description = "extension groups / profiles for enablement in firefox profiles.";
     };
   };
@@ -37,16 +40,14 @@ in {
         darkreader # dark mode every page
       ];
       basic = core-privacy ++ core-other;
-      main-browser =
-        basic
-        ++ [
-          tridactyl # vim in browser (advanced)
-          multi-account-containers # firefox containers
-          foxyproxy-standard # proxying (socks/http etc.)
-          floccus # bookmarks via webdav/nextcloud
-        ];
-      media = basic ++ [torrent-control];
-      home = media ++ [bitwarden];
+      main-browser = basic ++ [
+        tridactyl # vim in browser (advanced)
+        multi-account-containers # firefox containers
+        foxyproxy-standard # proxying (socks/http etc.)
+        floccus # bookmarks via webdav/nextcloud
+      ];
+      media = basic ++ [ torrent-control ];
+      home = media ++ [ bitwarden ];
       rycee-addons = pkgs.nur.repos.rycee.firefox-addons;
       all-rycee-addons = attrValues pkgs.nur.repos.rycee.firefox-addons;
     };

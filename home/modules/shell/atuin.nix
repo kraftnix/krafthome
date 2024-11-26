@@ -1,13 +1,21 @@
-{self, ...}: {
+{ self, ... }:
+{
   config,
   lib,
   pkgs,
   ...
-}: let
-  inherit (lib) mkIf mkMerge optional optionals;
+}:
+let
+  inherit (lib)
+    mkIf
+    mkMerge
+    optional
+    optionals
+    ;
   opts = self.inputs.extra-lib.lib.options;
   cfg = config.khome.shell.atuin;
-in {
+in
+{
   options.khome.shell.atuin = {
     enable = opts.enable "enable atuin";
     address = opts.stringNull "if set, set as sync_address";

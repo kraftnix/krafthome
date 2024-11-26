@@ -6,9 +6,14 @@
   dsl,
   ...
 }:
-with dsl; let
-  cmd = command: desc: ["<cmd>${command}<cr>" desc];
-in {
+with dsl;
+let
+  cmd = command: desc: [
+    "<cmd>${command}<cr>"
+    desc
+  ];
+in
+{
   plugins = with pkgs.vimPlugins; [
     # command discover
     which-key-nvim
@@ -33,9 +38,9 @@ in {
     nvim-autopairs
   ];
 
-  setup.surround = {};
-  use.nvim-autopairs.setup = callWith {};
-  use.sessions.setup = callWith {};
+  setup.surround = { };
+  use.nvim-autopairs.setup = callWith { };
+  use.sessions.setup = callWith { };
 
   set = {
     autoread = true;
@@ -134,12 +139,18 @@ in {
     "<Leader>yy" = "V:OSCYankVisual<CR>";
   };
 
-  use.which-key.register = dsl.callWith (lib.foldl' lib.recursiveUpdate
-    {
+  use.which-key.register = dsl.callWith (
+    lib.foldl' lib.recursiveUpdate {
       L = rawLua ''{ "<cmd>tabn<cr>", "Go to next tab", noremap = true }'';
       H = rawLua ''{ "<cmd>tabp<cr>", "Go to prev tab", noremap = true }'';
-      j = ["gj" "Wrapped down"];
-      k = ["gk" "Wrapped up"];
+      j = [
+        "gj"
+        "Wrapped down"
+      ];
+      k = [
+        "gk"
+        "Wrapped up"
+      ];
       "[']']" = {
         name = "+Jump next";
         d = cmd "lua vim.diagnostic.goto_next()" "next diag";
@@ -199,20 +210,38 @@ in {
         #"hs" = [ "<cmd>Gitsigns preview_hunk<CR>" "preview hunk" ];
         #"hn" = [ "<cmd>Gitsigns next_hunk<CR>" "next hunk" ];
         #"hp" = [ "<cmd>Gitsigns prev_hunk<CR>" "prev hunk" ];
-        "gi" = ["<cmd>GuessIndent<CR>" "guess indent again"];
+        "gi" = [
+          "<cmd>GuessIndent<CR>"
+          "guess indent again"
+        ];
 
         # CD
-        "cg" = ["<cmd>Gcd<CR>" "change directory to parent .git dir"];
-        "cl" = ["<cmd>lcd %:h<CR>" "change directory to current file dir"];
-        "ch" = ["<cmd>cd \~<CR>" "change directory to home dir"];
-        "['c.']" = ["<cmd>Cd .<CR>" "change directory to current dir"];
-        "['c<space>']" = [":Cd" "something"];
+        "cg" = [
+          "<cmd>Gcd<CR>"
+          "change directory to parent .git dir"
+        ];
+        "cl" = [
+          "<cmd>lcd %:h<CR>"
+          "change directory to current file dir"
+        ];
+        "ch" = [
+          "<cmd>cd \~<CR>"
+          "change directory to home dir"
+        ];
+        "['c.']" = [
+          "<cmd>Cd .<CR>"
+          "change directory to current dir"
+        ];
+        "['c<space>']" = [
+          ":Cd"
+          "something"
+        ];
       };
-    }
-    (lib.attrValues config._internal.which-key));
-  use.which-key.setup = callWith {};
+    } (lib.attrValues config._internal.which-key)
+  );
+  use.which-key.setup = callWith { };
 
-  use.guess-indent.setup = callWith {};
+  use.guess-indent.setup = callWith { };
 
   # yoinked from gytis
   vimscript = ''

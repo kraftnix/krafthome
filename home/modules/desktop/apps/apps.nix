@@ -1,13 +1,21 @@
-{self, ...} @ args: {
+{ self, ... }@args:
+{
   config,
   lib,
   pkgs,
   ...
-}: let
-  inherit (lib) mkIf mkMerge optional optionals;
+}:
+let
+  inherit (lib)
+    mkIf
+    mkMerge
+    optional
+    optionals
+    ;
   opts = self.inputs.extra-lib.lib.options;
   cfg = config.khome.desktop.apps;
-in {
+in
+{
   options.khome.desktop.apps = {
     dev.vscode = opts.enable "add vscode package";
 
@@ -54,7 +62,7 @@ in {
     ## Creativity
     (mkIf cfg.creativity.enable {
       home.packages =
-        []
+        [ ]
         ++ (optional cfg.creativity.darktable pkgs.darktable)
         ++ (optional cfg.creativity.ansel pkgs.ansel)
         ++ (optional cfg.creativity.rnote pkgs.rnote);
@@ -63,15 +71,13 @@ in {
     ## Media
     (mkIf cfg.media.enable {
       home.packages =
-        []
-        ++ (optional cfg.media.calibre pkgs.calibre)
-        ++ (optional cfg.media.freetube pkgs.freetube);
+        [ ] ++ (optional cfg.media.calibre pkgs.calibre) ++ (optional cfg.media.freetube pkgs.freetube);
     })
 
     ## Messengers
     {
       home.packages =
-        []
+        [ ]
         ++ (optional cfg.messengers.element pkgs.element-desktop)
         ++ (optional cfg.messengers.mirage pkgs.mirage-im)
         ++ (optional cfg.messengers.nheko pkgs.nheko)
@@ -82,7 +88,7 @@ in {
     ## Productivity
     {
       home.packages =
-        []
+        [ ]
         ++ (optional cfg.productivity.electron-mail pkgs.electron-mail)
         ++ (optional cfg.productivity.kalendar pkgs.kalendar)
         ++ (optionals cfg.productivity.evolution [

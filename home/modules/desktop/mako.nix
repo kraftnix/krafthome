@@ -1,11 +1,12 @@
-args: {
+args:
+{
   config,
   lib,
   pkgs,
   ...
-}: let
-  inherit
-    (lib)
+}:
+let
+  inherit (lib)
     mkEnableOption
     mkIf
     mkMerge
@@ -13,17 +14,20 @@ args: {
     types
     ;
   cfg = config.khome.desktop.mako;
-  mkIntOption = default: description:
+  mkIntOption =
+    default: description:
     mkOption {
       inherit description default;
       type = types.int;
     };
-  mkStrOption = default: description:
+  mkStrOption =
+    default: description:
     mkOption {
       inherit description default;
       type = types.str;
     };
-in {
+in
+{
   options.khome.desktop.mako = {
     enable = mkEnableOption "enable mako integration";
     backgroundColor = mkStrOption "#1a1b26" "background colour";
@@ -35,7 +39,7 @@ in {
     width = mkIntOption 600 "notification window width";
     defaultTimeout = mkIntOption 500 "time until screen lock (seconds), default 5mins";
     extraConfig = mkOption {
-      default = {};
+      default = { };
       type = types.raw;
       description = "extra configuration to add to `services.mako`";
     };
@@ -44,7 +48,15 @@ in {
   config = mkIf cfg.enable {
     services.mako = mkMerge [
       {
-        inherit (cfg) height width defaultTimeout backgroundColor borderColor progressColor textColor;
+        inherit (cfg)
+          height
+          width
+          defaultTimeout
+          backgroundColor
+          borderColor
+          progressColor
+          textColor
+          ;
         enable = true;
         anchor = "top-center";
         sort = "-time";

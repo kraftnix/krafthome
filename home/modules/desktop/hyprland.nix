@@ -1,12 +1,13 @@
-args: {
+args:
+{
   config,
   lib,
   pkgs,
   ...
 }:
-with lib; let
-  inherit
-    (lib.types)
+with lib;
+let
+  inherit (lib.types)
     attrsOf
     enum
     oneOf
@@ -15,18 +16,18 @@ with lib; let
     ;
   cfg = config.programs.hyprland;
   # Pretty print
-  hyprlandFomatted = str:
+  hyprlandFomatted =
+    str:
     pkgs.stdenv.mkDerivation {
       name = "hyprland.lua";
       preformatted = pkgs.writeText "pre-formatted-hyprland.lua" str;
-      phases = ["buildPhase"];
+      phases = [ "buildPhase" ];
       buildPhase = "${pkgs.luaformatter}/bin/lua-format $preformatted > $out";
       allowSubstitutes = false; # will never be in cache
     };
-  variablesStr = concatStringsSep "\n" (mapAttrsToList (
-      var: value: "\$${var} = ${value}"
-    )
-    cfg.variables);
+  variablesStr = concatStringsSep "\n" (
+    mapAttrsToList (var: value: "\$${var} = ${value}") cfg.variables
+  );
   mapVal = concatStringsSep ", ";
 
   # bindsStr = concatStringsSep "\n" (mapAttrsToList (desc: maps: ''
@@ -34,83 +35,106 @@ with lib; let
   #   bind = ${mapVal maps}
   # '') cfg.binds);
   bindsStr = concatStringsSep "\n" (
-    flatten (mapAttrsToList (baseBind: maps: ''
+    flatten (
+      mapAttrsToList (baseBind: maps: ''
         # ## Bindings for `${baseBind}`
-        ${concatStringsSep "\n" (mapAttrsToList (
-            key: cmd: "bind = ${baseBind}, ${key}, ${cmd}"
-          )
-          maps)}
-      '')
-      cfg.binds)
+        ${concatStringsSep "\n" (mapAttrsToList (key: cmd: "bind = ${baseBind}, ${key}, ${cmd}") maps)}
+      '') cfg.binds
+    )
   );
 
-  execOnceStr = concatStringsSep "\n" (mapAttrsToList (desc: cmd: ''
+  execOnceStr = concatStringsSep "\n" (
+    mapAttrsToList (desc: cmd: ''
       # ${desc}
       exec-once = ${cmd}
-    '')
-    cfg.execOnce);
+    '') cfg.execOnce
+  );
 
-  execStr = concatStringsSep "\n" (mapAttrsToList (desc: cmd: ''
+  execStr = concatStringsSep "\n" (
+    mapAttrsToList (desc: cmd: ''
       # ${desc}
       exec = ${cmd}
-    '')
-    cfg.exec);
+    '') cfg.exec
+  );
 
-  mapWindowRules = name: rules:
-    concatStringsSep "\n" (mapAttrsToList (match: actions: ''
+  mapWindowRules =
+    name: rules:
+    concatStringsSep "\n" (
+      mapAttrsToList (match: actions: ''
         # `${match}` ${name}'s
-        ${concatStringsSep "\n" (map (
-            action: "${name} = ${action}, ${match}"
-          )
-          actions)}
-      '')
-      rules);
+        ${concatStringsSep "\n" (map (action: "${name} = ${action}, ${match}") actions)}
+      '') rules
+    );
   windowRulesStr = mapWindowRules "windowrule" cfg.windowRules;
   windowRulesV2Str = mapWindowRules "windowrulev2" cfg.windowRulesV2;
 
   mapGroup = group: groupCfg: ''
     ${group} {
-      ${concatStringsSep "\n" (mapAttrsToList (
-        field: vals:
-          if builtins.typeOf vals == "set"
-          then ''            ${field} {
-                      ${concatStringsSep "\n" (mapAttrsToList (
-                n: c:
-                  if builtins.typeOf c == "set"
-                  then mapGroup n c
-                  else "${n} = ${toString c}"
-              )
-              vals)}
-                    }''
-          else "${field} = ${mapVal vals}"
-      )
-      groupCfg)}
+      ${
+        concatStringsSep "\n" (
+          mapAttrsToList (
+            field: vals:
+            if builtins.typeOf vals == "set" then
+              ''
+                ${field} {
+                          ${
+                            concatStringsSep "\n" (
+                              mapAttrsToList (
+                                n: c: if builtins.typeOf c == "set" then mapGroup n c else "${n} = ${toString c}"
+                              ) vals
+                            )
+                          }
+                        }''
+            else
+              "${field} = ${mapVal vals}"
+          ) groupCfg
+        )
+      }
     }
   '';
 
-  groupType = with types; attrsOf (nullOr (oneOf [str (listOf str) int float attrs bool]));
-  groupApply = vals:
+  groupType =
+    with types;
+    attrsOf (
+      nullOr (oneOf [
+        str
+        (listOf str)
+        int
+        float
+        attrs
+        bool
+      ])
+    );
+  groupApply =
+    vals:
     mapAttrs (
       _: c:
-        if builtins.typeOf c == "list"
-        then c
-        else if builtins.typeOf c == "set"
-        then groupApply c
-        else [(toString c)]
+      if builtins.typeOf c == "list" then
+        c
+      else if builtins.typeOf c == "set" then
+        groupApply c
+      else
+        [ (toString c) ]
     ) (filterAttrs (_: c: c != null) vals);
-  groupOption = name:
+  groupOption =
+    name:
     mkOption {
       type = groupType;
       apply = groupApply;
-      default = {};
+      default = { };
       description = "${name} Group Option";
     };
-in {
+in
+{
   options.programs.hyprland = {
     enable = mkEnableOption "hyprland";
     # Is this needed?
     layout = mkOption {
-      type = types.enum ["dwindle" "master" "hy3"];
+      type = types.enum [
+        "dwindle"
+        "master"
+        "hy3"
+      ];
       default = "hy3";
       description = ''
         Layout mode, auto-installs hy3 if wanted.
@@ -134,14 +158,14 @@ in {
       description = "The package to use for the hyprland binary.";
     };
     plugins = mkOption {
-      type = attrsOf (oneOf [package str]);
+      type = attrsOf (oneOf [
+        package
+        str
+      ]);
       default = {
         inherit (pkgs.hyprlandPlugins) hy3;
       };
-      apply = mapAttrs (n: p:
-        if (builtins.typeOf p) == "string"
-        then p
-        else "${p}/lib/lib${n}.so");
+      apply = mapAttrs (n: p: if (builtins.typeOf p) == "string" then p else "${p}/lib/lib${n}.so");
       # "plugin = ${cfg.extraPackages.hy3}/lib/libhy3.so"
       defaultText = literalExpression "{ hy3 = pkgs.hy3-master; }";
       description = ''
@@ -151,7 +175,13 @@ in {
       '';
     };
     variables = mkOption {
-      type = with types; attrsOf (oneOf [str int float]);
+      type =
+        with types;
+        attrsOf (oneOf [
+          str
+          int
+          float
+        ]);
       apply = mapAttrs (_: toString);
       default = {
         opacity = 0.97;
@@ -161,31 +191,31 @@ in {
 
     binds = mkOption {
       type = attrsOf (attrsOf str);
-      default = {};
+      default = { };
       description = "hyprland binds";
     };
     exec = mkOption {
       type = types.attrsOf types.str;
-      default = {};
+      default = { };
       apply = filterAttrs (_: s: s != "");
       description = "exec's";
     };
     execOnce = mkOption {
       type = types.attrsOf types.str;
-      default = {};
+      default = { };
       apply = filterAttrs (_: s: s != "");
       description = "execOnce's";
     };
     windowRules = mkOption {
       type = types.attrsOf (types.listOf types.str);
-      default = {};
-      apply = filterAttrs (_: s: s != []);
+      default = { };
+      apply = filterAttrs (_: s: s != [ ]);
       description = "`windowrule` list";
     };
     windowRulesV2 = mkOption {
       type = types.attrsOf (types.listOf types.str);
-      default = {};
-      apply = filterAttrs (_: s: s != []);
+      default = { };
+      apply = filterAttrs (_: s: s != [ ]);
       description = "`windowrulev2` list";
     };
 
@@ -265,7 +295,7 @@ in {
   };
 
   config = mkIf cfg.enable {
-    home.packages = [cfg.package];
+    home.packages = [ cfg.package ];
     xdg.configFile."hypr/hyprland.conf".source = cfg.config;
     programs.hyprland.general.layout = cfg.layout;
   };

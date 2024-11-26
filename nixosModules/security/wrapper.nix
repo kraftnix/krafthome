@@ -3,9 +3,9 @@
   pkgs,
   lib,
   ...
-}: let
-  inherit
-    (lib)
+}:
+let
+  inherit (lib)
     getBin
     mkDefault
     mkForce
@@ -13,9 +13,12 @@
     mkOption
     types
     ;
-in {
+in
+{
   options = {
-    enable = mkEnableOption "enable wrapper" // {default = true;};
+    enable = mkEnableOption "enable wrapper" // {
+      default = true;
+    };
     name = mkOption {
       default = config._module.args.name;
       description = "wrapper name";
@@ -42,7 +45,7 @@ in {
       type = types.str;
     };
     firejail = mkOption {
-      default = {};
+      default = { };
       description = "enable firejail integration";
       type = types.submoduleWith {
         modules = [
@@ -58,7 +61,7 @@ in {
       };
     };
     elewrap = mkOption {
-      default = {};
+      default = { };
       description = "elewrap wrapper script";
       type = types.submoduleWith {
         modules = [
@@ -67,19 +70,22 @@ in {
             config._module.args.name = mkForce config.name;
             options.enable = mkEnableOption "enable elewrap wrapper";
             options.extraCommandArgs = mkOption {
-              default = [];
+              default = [ ];
               type = with types; listOf str;
               description = "extra args to add to default command";
             };
             config.targetUser = mkDefault "root";
-            config.command = mkDefault ([
+            config.command = mkDefault (
+              [
                 (
-                  if config.firejail.enable
-                  then "${config.firejail.binary}/bin/${config.executable}"
-                  else config.executablePath
+                  if config.firejail.enable then
+                    "${config.firejail.binary}/bin/${config.executable}"
+                  else
+                    config.executablePath
                 )
               ]
-              ++ elewrap.config.extraCommandArgs);
+              ++ elewrap.config.extraCommandArgs
+            );
           })
         ];
       };

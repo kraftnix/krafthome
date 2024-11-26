@@ -3,17 +3,18 @@
   lib,
   pkgs,
   ...
-}: let
+}:
+let
   cfg = config.khome.desktop.plasma;
-  inherit
-    (lib)
+  inherit (lib)
     mkDefault
     mkEnableOption
     mkIf
     mkOption
     types
     ;
-in {
+in
+{
   options.khome.desktop.plasma = {
     enable = mkEnableOption "enable Plasma as default desktop environment";
     defaultSession = mkOption {

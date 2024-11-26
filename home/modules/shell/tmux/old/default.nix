@@ -4,7 +4,8 @@
   pkgs,
   ...
 }:
-with lib; let
+with lib;
+let
   tmuxConfig = builtins.readFile ./tmux.conf;
   colors = with config.lib.base16.getColorsH "tmux"; {
     fg = foreground;
@@ -12,7 +13,8 @@ with lib; let
     alt = secondary;
     highlight = primary;
   };
-in {
+in
+{
   programs.tmux = {
     enable = true;
     keyMode = "vi";
@@ -27,10 +29,10 @@ in {
     newSession = true;
     secureSocket = true;
     plugins = with pkgs; [
-      {plugin = tmuxPlugins.yank;}
-      {plugin = tmuxPlugins.resurrect;}
-      {plugin = tmuxPlugins.open;}
-      {plugin = tmuxPlugins.continuum;}
+      { plugin = tmuxPlugins.yank; }
+      { plugin = tmuxPlugins.resurrect; }
+      { plugin = tmuxPlugins.open; }
+      { plugin = tmuxPlugins.continuum; }
     ];
     terminal = "xterm-256color";
     #shell = "${pkgs.zsh}/bin/zsh";
@@ -59,7 +61,8 @@ in {
         set -g status-right-length 140
 
       ''
-      + (with colors;
+      + (
+        with colors;
         optionalString config.themes.enable ''
           # message style
           set-option -g message-style bg="${highlight}",fg="${bg}"
@@ -94,6 +97,7 @@ in {
           set-option -g status-left "#[fg=${bg} bg=${alt}]#{?client_prefix,#[bg=${highlight}] #{session_name} #[bg=${alt}], #{session_name} }"
           #set-option -g status-right "#[fg=${fg}, bg=${bg}] %H:%M %d-%m-%Y #[fg=${bg}, bg=${alt}]#{?client_prefix,#[bg=${highlight}] #{host_short} #[bg=${alt}], #{host_short} }"
           set-option -g status-right "Continuum: #{continuum_restore} #[fg=${fg}, bg=${bg}] %H:%M %d-%m-%Y #[fg=${bg}, bg=${alt}]#{?client_prefix,#[bg=${highlight}] #{host_short} #[bg=${alt}], #{host_short} }"
-        '');
+        ''
+      );
   };
 }

@@ -3,9 +3,9 @@
   config,
   pkgs,
   ...
-}: let
-  inherit
-    (lib)
+}:
+let
+  inherit (lib)
     concatStringsSep
     mkAfter
     mkDefault
@@ -16,7 +16,8 @@
   #hyperlink_rules = attrValues (import ./hyperlink-rules.nix);
   kcfg = config.khome.desktop.terminals.wezterm;
   cfg = config.khome.programs.wezterm;
-in {
+in
+{
   # imports = [
   #   ./style.nix
   #   ./copy-mode.nix
@@ -48,7 +49,10 @@ in {
       # Graphics
       status_update_interval = 60000; # update status bar every second
       animation_fps = 120;
-      default_gui_startup_args = ["connect" "unix"];
+      default_gui_startup_args = [
+        "connect"
+        "unix"
+      ];
       hyperlink_rules = {
         _code = true;
         str = builtins.readFile ./hyperlink-rules.lua;
@@ -57,12 +61,16 @@ in {
       # Multiplexing Domains
       unix_domains = mkMerge [
         (mkOrder 20 [
-          {name = "unix";}
+          { name = "unix"; }
         ])
         (mkAfter [
           {
             name = "unix-proxy";
-            proxy_command = ["wezterm" "cli" "proxy"];
+            proxy_command = [
+              "wezterm"
+              "cli"
+              "proxy"
+            ];
           }
           {
             name = "newtest";
@@ -70,11 +78,11 @@ in {
           }
         ])
         /*
-        # correct way to ssh forward https://github.com/wez/wezterm/issues/1647
-        {
-        name = "<hostname>";
-        proxy_command = [ "ssh" "-T" "-A" "<hostname>" "wezterm" "cli" "proxy" ];
-        }
+          # correct way to ssh forward https://github.com/wez/wezterm/issues/1647
+          {
+          name = "<hostname>";
+          proxy_command = [ "ssh" "-T" "-A" "<hostname>" "wezterm" "cli" "proxy" ];
+          }
         */
       ];
 
@@ -82,7 +90,7 @@ in {
       launch_menu = [
         {
           label = "Open notes in Neovim";
-          args = ["nvim"];
+          args = [ "nvim" ];
           cwd = "notes";
           domain = "CurrentPaneDomain";
         }
@@ -93,12 +101,12 @@ in {
         }
         {
           label = "BTOP";
-          args = ["btop"];
+          args = [ "btop" ];
           domain = "CurrentPaneDomain";
         }
         {
           label = "BTM";
-          args = ["btm"];
+          args = [ "btm" ];
           domain = "CurrentPaneDomain";
         }
       ];

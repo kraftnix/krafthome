@@ -3,18 +3,19 @@
   lib,
   withSystem,
   ...
-}: {
+}:
+{
   flake.lib = rec {
     provision = self.inputs.provision.lib;
     # NOTE(URGENT): THESE NEED BACKPORTING TO KRAFTHOME
     khome.toggleApp = cmd: "exec nu ${../../home/modules/desktop/wm/sway/sway-toggle-app.nu} ${cmd}";
     khome.wrapSwayrLog = cmd: "exec env RUST_BACKTRACE=1 swayr ${cmd} >> /tmp/swayr.log 2>&1";
 
-    kebabCaseToCamelCase =
-      builtins.replaceStrings (map (s: "-${s}") lib.lowerChars) lib.upperChars;
+    kebabCaseToCamelCase = builtins.replaceStrings (map (s: "-${s}") lib.lowerChars) lib.upperChars;
 
     # from https://sourcegraph.com/github.com/terlar/nix-config/-/blob/flake-parts/lib/default.nix
-    importDirToAttrsList = dir:
+    importDirToAttrsList =
+      dir:
       lib.pipe dir [
         lib.filesystem.listFilesRecursive
         (builtins.filter (lib.hasSuffix ".nix"))
@@ -25,14 +26,15 @@
             (lib.removeSuffix "/default.nix")
             (lib.removeSuffix ".nix")
             self.lib.kebabCaseToCamelCase
-            (builtins.replaceStrings ["/"] ["-"])
+            (builtins.replaceStrings [ "/" ] [ "-" ])
           ];
           value = import path;
         }))
         builtins.listToAttrs
       ];
 
-    filteredDirList = dir:
+    filteredDirList =
+      dir:
       lib.pipe dir [
         lib.filesystem.listFilesRecursive
         (builtins.filter (lib.hasSuffix ".nix"))
@@ -44,21 +46,23 @@
             (lib.removeSuffix "/default.nix")
             (lib.removeSuffix ".nix")
             self.lib.kebabCaseToCamelCase
-            (builtins.replaceStrings ["/"] ["-"])
+            (builtins.replaceStrings [ "/" ] [ "-" ])
           ];
         }))
       ];
 
-    nameToAttrs = {
-      name,
-      path,
-    }:
-      lib.setAttrByPath (lib.splitString ["-"] name) path;
+    nameToAttrs =
+      {
+        name,
+        path,
+      }:
+      lib.setAttrByPath (lib.splitString [ "-" ] name) path;
 
-    importDirToAttrs' = files:
+    importDirToAttrs' =
+      files:
       lib.pipe files [
         (map nameToAttrs)
-        (lib.foldAttrs (item: acc: lib.recursiveUpdate acc item) {})
+        (lib.foldAttrs (item: acc: lib.recursiveUpdate acc item) { })
       ];
 
     # returns an attrSet of all paths imported
@@ -66,14 +70,16 @@
     # Path -> { Path = import Path; }
     # e.g. importDirToAttrs ./lib
     #   ->  { network = { core = import ./lib/network/core.nix; }; basic = import ./lib/basic.nix; }
-    importDirToAttrs = dir:
+    importDirToAttrs =
+      dir:
       lib.pipe dir [
         filteredDirList
         importDirToAttrs'
       ];
 
     # create system with special imported args
-    kNixos = system: importedConfig:
+    kNixos =
+      system: importedConfig:
       withSystem system (
         {
           pkgs,
@@ -81,38 +87,60 @@
           inputs',
           ...
         }:
-          pkgs.nixos ({
+        pkgs.nixos (
+          {
             config,
             lib,
             packages,
             pkgs,
             ...
-          }: {
-            imports = [importedConfig];
+          }:
+          {
+            imports = [ importedConfig ];
             _module.args = {
-              inherit (self) nixosModules profiles hmProfiles homeModules;
+              inherit (self)
+                nixosModules
+                profiles
+                hmProfiles
+                homeModules
+                ;
             };
-          })
+          }
+        )
       );
 
     # WIP: attempt to pass in specialArgs in a wrapper
-    kNixos1 = system: importedConfig:
+    kNixos1 =
+      system: importedConfig:
       withSystem system (
         {
           pkgs,
           self',
           inputs',
           ...
-        }: let
-          specialArgs = {inherit (self) nixosModules profiles hmProfiles homeModules;};
+        }:
+        let
+          specialArgs = {
+            inherit (self)
+              nixosModules
+              profiles
+              hmProfiles
+              homeModules
+              ;
+          };
         in
-          lib.evalModules {
-            inherit specialArgs;
-            modules = [
-              importedConfig
-              ({config, ...}: {_module.args = specialArgs;})
-            ];
-          }
+        lib.evalModules {
+          inherit specialArgs;
+          modules = [
+            importedConfig
+            (
+              { config, ... }:
+              {
+                _module.args = specialArgs;
+              }
+            )
+          ];
+        }
       );
   };
 }

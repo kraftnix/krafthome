@@ -4,7 +4,8 @@
   dsl,
   ...
 }:
-with dsl; {
+with dsl;
+{
   plugins = with pkgs.vimPlugins; [
     nvim-lspconfig
     lsp_signature-nvim

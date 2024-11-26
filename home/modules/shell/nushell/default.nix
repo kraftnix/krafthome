@@ -1,11 +1,12 @@
-args: {
+args:
+{
   config,
   lib,
   pkgs,
   ...
-}: let
-  inherit
-    (lib)
+}:
+let
+  inherit (lib)
     any
     concatStringsSep
     elem
@@ -41,28 +42,17 @@ args: {
   # }
   configNuText = ''
     # load plugins
-    ${
-      concatStringsSep "\n" (map (plugin: ''
-          plugin add ${getExe plugin}
-          ${optionalString (elem plugin cfg.autoStartPlugins) "plugin use ${plugin}"}
-        '')
-        cfg.plugins)
-    }
+    ${concatStringsSep "\n" (
+      map (plugin: ''
+        plugin add ${getExe plugin}
+        ${optionalString (elem plugin cfg.autoStartPlugins) "plugin use ${plugin}"}
+      '') cfg.plugins
+    )}
 
     # source provided scripts
-    ${
-      concatStringsSep "\n" (map (
-          path: "source ${path}"
-        )
-        cfg.scripts)
-    }
+    ${concatStringsSep "\n" (map (path: "source ${path}") cfg.scripts)}
     # source provided scriptDirs
-    ${
-      concatStringsSep "\n" (map (
-          path: "source ${path}"
-        )
-        cfg.scriptDirs)
-    }
+    ${concatStringsSep "\n" (map (path: "source ${path}") cfg.scriptDirs)}
 
     ${builtins.readFile ./src/config.nu}
 
@@ -74,42 +64,33 @@ args: {
   '';
 
   # mainly to prevent clashes between non-nu aliases imported and nu functions
-  removeShellAliases = filterAttrs (name: _: ! (elem name cfg.removeShellAliases));
+  removeShellAliases = filterAttrs (name: _: !(elem name cfg.removeShellAliases));
 
   # import home shell aliases
-  otherShellAliases =
-    mapAttrs
-    (_: mkOverride 900)
-    (removeShellAliases config.home.shellAliases);
+  otherShellAliases = mapAttrs (_: mkOverride 900) (removeShellAliases config.home.shellAliases);
 
-  getScriptsFromDir = dir:
-    mapAttrsToList (
-      name: c: "${dir}/${name}"
-    ) (
-      filterAttrs
-      (name: _: hasSuffix ".nu" name)
-      (builtins.readDir "${dir}")
+  getScriptsFromDir =
+    dir:
+    mapAttrsToList (name: c: "${dir}/${name}") (
+      filterAttrs (name: _: hasSuffix ".nu" name) (builtins.readDir "${dir}")
     );
-  # scriptDir = builtins.readDir "${inputs.nu-scripts}";
-  # nuScripts = mapAttrsToList
-  #   (name: c:
-  #     "${inputs.nu-scripts}/${name}"
-  #   )
-  #   (filterAttrs (name: _: hasSuffix ".nu" name) scriptDir);
-in {
+in
+# scriptDir = builtins.readDir "${inputs.nu-scripts}";
+# nuScripts = mapAttrsToList
+#   (name: c:
+#     "${inputs.nu-scripts}/${name}"
+#   )
+#   (filterAttrs (name: _: hasSuffix ".nu" name) scriptDir);
+{
   options.khome.nushell = {
     enable = mkEnableOption "nushell-unstable (0.60+)";
 
-    enableStarship =
-      mkEnableOption "starship integration"
-      // {
-        default = config.programs.starship.enable;
-      };
-    enableAtuin =
-      mkEnableOption "atuin integration"
-      // {
-        default = config.programs.atuin.enable;
-      };
+    enableStarship = mkEnableOption "starship integration" // {
+      default = config.programs.starship.enable;
+    };
+    enableAtuin = mkEnableOption "atuin integration" // {
+      default = config.programs.atuin.enable;
+    };
 
     removeShellAliases = mkOption {
       default = [
@@ -130,24 +111,29 @@ in {
     scriptDirs = mkOption {
       type = types.listOf types.path;
       description = "path to a directory containing nu scripts to import all from";
-      default = [];
+      default = [ ];
       apply = dirs: flatten (map getScriptsFromDir dirs);
     };
 
     scripts = mkOption {
       type = types.listOf types.path;
-      default = [];
+      default = [ ];
       description = "List of scripts to source and link into ~/.config/nushell/scripts";
     };
 
     autoStartPlugins = mkOption {
-      default = ["explore"];
+      default = [ "explore" ];
       type = with types; listOf str;
       description = "plugins to `use` when nushell is started";
     };
 
     plugins = mkOption {
-      type = with types; listOf (oneOf [path package]);
+      type =
+        with types;
+        listOf (oneOf [
+          path
+          package
+        ]);
       default = with pkgs.nushellPlugins; [
         polars
         # net
@@ -171,7 +157,7 @@ in {
 
     shellAliases = mkOption {
       type = with types; attrsOf str;
-      default = {};
+      default = { };
       description = "Overrides for `home.shellAliases` + extra aliases";
     };
   };
@@ -201,13 +187,7 @@ in {
       # '';
       envFile.source = ./src/env.nu;
       environmentVariables = mkMerge [
-        (mapAttrs (
-            _: v:
-              if (typeOf v) == "int"
-              then toString v
-              else "${v}"
-          )
-          config.home.sessionVariables)
+        (mapAttrs (_: v: if (typeOf v) == "int" then toString v else "${v}") config.home.sessionVariables)
       ];
       shellAliases =
         otherShellAliases

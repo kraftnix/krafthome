@@ -1,11 +1,12 @@
-args: {
+args:
+{
   pkgs,
   config,
   lib,
   ...
-}: let
-  inherit
-    (lib)
+}:
+let
+  inherit (lib)
     mkEnableOption
     mkIf
     mkOption
@@ -13,7 +14,8 @@ args: {
     types
     ;
   cfg = config.khome.desktop.swaynotificationcenter;
-in {
+in
+{
   options.khome.desktop.swaynotificationcenter = {
     enable = mkEnableOption "anyrun khome swaynotificationcenter config";
     modKeybind = mkOption {
@@ -23,21 +25,21 @@ in {
     };
     modIncludeShift = mkEnableOption "add shift to generated keybind";
     extraConfig = mkOption {
-      default = {};
+      default = { };
       description = "extra config to add to `programs.anyrun.config`";
       type = types.raw;
     };
   };
 
   config = mkIf cfg.enable {
-    home.packages = with pkgs; [swaynotificationcenter];
+    home.packages = with pkgs; [ swaynotificationcenter ];
     xdg.configFile."swaync/config.json".text = builtins.toJSON {
       "$schema" = "${pkgs.swaynotificationcenter}/etc/xdg/swaync/configSchema.json";
       timeout-critical = 20;
       timeout = 10;
       timeout-low = 5;
       script-fail-notify = true;
-      widgets = ["mpris"];
+      widgets = [ "mpris" ];
       widget-config.mpris = {
         image-size = 64;
         image-radius = 20;
@@ -46,7 +48,8 @@ in {
 
     programs.hyprland.execOnce.swaync = "swaync";
     programs.hyprland.binds = mkIf (cfg.modKeybind != "") {
-      "$mainMod${optionalString cfg.modIncludeShift " SHIFT"}"."${cfg.modKeybind}" = "exec, swaync-client -t";
+      "$mainMod${optionalString cfg.modIncludeShift " SHIFT"}"."${cfg.modKeybind
+      }" = "exec, swaync-client -t";
     };
 
     wayland.windowManager.sway.config = {
@@ -57,7 +60,9 @@ in {
         }
       ];
       keybindings = mkIf (cfg.modKeybind != "") {
-        "$mod+${optionalString cfg.modIncludeShift "+"}${cfg.modKeybind}" = lib.mkOverride 250 "exec swaync-client -t";
+        "$mod+${optionalString cfg.modIncludeShift "+"}${cfg.modKeybind}" =
+          lib.mkOverride 250
+            "exec swaync-client -t";
       };
     };
   };

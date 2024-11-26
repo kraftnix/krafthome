@@ -1,18 +1,22 @@
 {
   name = "min";
 
-  machine = {
-    config,
-    pkgs,
-    ...
-  }: {
-    networking.domain = "testing";
-  };
+  machine =
+    {
+      config,
+      pkgs,
+      ...
+    }:
+    {
+      networking.domain = "testing";
+    };
 
-  testScript = let
-    hostname = "basic";
-  in ''
-    ${hostname}.wait_for_unit("default.target")
-    ${hostname}.shutdown()
-  '';
+  testScript =
+    let
+      hostname = "basic";
+    in
+    ''
+      ${hostname}.wait_for_unit("default.target")
+      ${hostname}.shutdown()
+    '';
 }

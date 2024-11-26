@@ -1,23 +1,25 @@
-args: {
+args:
+{
   config,
   lib,
   pkgs,
   ...
-}: let
+}:
+let
   cfg = config.khome.browsers.chromium;
-  inherit
-    (lib)
+  inherit (lib)
     mkEnableOption
     mkIf
     ;
-in {
+in
+{
   options.khome.browsers.chromium = {
     enable = mkEnableOption "enable ungoogled chromium browser";
     forceWayland = mkEnableOption "force wayland chromium flags";
   };
 
   config = mkIf cfg.enable {
-    home.packages = with pkgs; [ungoogled-chromium];
+    home.packages = with pkgs; [ ungoogled-chromium ];
     xdg.configFile = mkIf (cfg.forceWayland) {
       "chromium-flags.conf".text = ''
         --enable-features=UseOzonePlatform

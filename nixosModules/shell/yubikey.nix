@@ -3,10 +3,10 @@
   pkgs,
   lib,
   ...
-}: let
+}:
+let
   cfg = config.khome.shell.yubikey;
-  inherit
-    (lib)
+  inherit (lib)
     concatStringsSep
     map
     mapAttrs
@@ -20,9 +20,10 @@
     optionalAttrs
     types
     ;
-  hasAllowedReaders = cfg.polkit.allowedReaders != [];
+  hasAllowedReaders = cfg.polkit.allowedReaders != [ ];
   hasAllowedUser = cfg.polkit.allowedUser != null;
-in {
+in
+{
   options.khome.shell.yubikey = {
     enable = mkEnableOption "enable yubikey";
     debug = mkEnableOption "enable debug logging";
@@ -34,7 +35,7 @@ in {
       type = with types; nullOr str;
     };
     sshKeys = mkOption {
-      default = [];
+      default = [ ];
       description = "ssh keys to add to home-manager gpg-agent";
       type = with types; listOf str;
     };
@@ -47,7 +48,9 @@ in {
     };
     polkit = {
       enable = mkEnableOption "enable polkit restrictions on yubikey smartcard";
-      enableLogging = mkEnableOption "enable logging" // {default = cfg.debug;};
+      enableLogging = mkEnableOption "enable logging" // {
+        default = cfg.debug;
+      };
       allowedUser = mkOption {
         default = null;
         example = "myuser";
@@ -55,8 +58,8 @@ in {
         description = "allow user access to `org.debian.pcsc-lite.access_pcsc`";
       };
       allowedReaders = mkOption {
-        default = [];
-        example = ["Yubico YubiKey OTP+FIDO+CCID 00 00"];
+        default = [ ];
+        example = [ "Yubico YubiKey OTP+FIDO+CCID 00 00" ];
         type = with types; listOf str;
         description = "readers allowed to `org.debian.pcsc-lite.access_card`";
       };
@@ -90,9 +93,13 @@ in {
     };
     services = {
       pcscd.enable = true; # smart card agent
-      pcscd.extraArgs = mkIf cfg.debug ["--debug"];
+      pcscd.extraArgs = mkIf cfg.debug [ "--debug" ];
       # yubikey udev
-      udev.packages = with pkgs; [yubikey-personalization libu2f-host pam_u2f];
+      udev.packages = with pkgs; [
+        yubikey-personalization
+        libu2f-host
+        pam_u2f
+      ];
     };
 
     environment.systemPackages =
@@ -120,8 +127,8 @@ in {
         // allow user access to smartcard
         polkit.addRule(function(action, subject) {
           ${optionalString cfg.debug ''
-          polkit.log("Checking pcsc-lite.access_pcsc")
-        ''}
+            polkit.log("Checking pcsc-lite.access_pcsc")
+          ''}
           if (
             action.id == "org.debian.pcsc-lite.access_pcsc"
             &&
@@ -139,23 +146,16 @@ in {
           if (action.id == "org.debian.pcsc-lite.access_card") {
             reader = action.lookup("reader")
             ${optionalString cfg.debug ''
-          polkit.log("Checking pcsc-lite.access_card " + reader)
-        ''}
+              polkit.log("Checking pcsc-lite.access_card " + reader)
+            ''}
             if (${
-          if hasAllowedReaders
-          then
-            (concatStringsSep "||" (map (
-                reader: "reader == '${reader}'"
-              )
-              cfg.polkit.allowedReaders))
-          else "true"
-        }
+              if hasAllowedReaders then
+                (concatStringsSep "||" (map (reader: "reader == '${reader}'") cfg.polkit.allowedReaders))
+              else
+                "true"
+            }
                 &&
-                ${
-          if hasAllowedUser
-          then "subject.user == '${cfg.polkit.allowedUser}'"
-          else "true"
-        }
+                ${if hasAllowedUser then "subject.user == '${cfg.polkit.allowedUser}'" else "true"}
             ) {
               polkit.log("access card allowed");
               return polkit.Result.YES;

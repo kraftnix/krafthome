@@ -1,18 +1,31 @@
-{self, ...}: {
+{ self, ... }:
+{
   config,
   lib,
   pkgs,
   ...
-} @ args: let
-  inherit (lib) mkIf mkDefault mkMerge mkOption types;
+}@args:
+let
+  inherit (lib)
+    mkIf
+    mkDefault
+    mkMerge
+    mkOption
+    types
+    ;
   opts = self.inputs.extra-lib.lib.options;
   cfg = config.khome.desktop.terminals.wezterm;
-in {
+in
+{
   options.khome.desktop.terminals.wezterm = {
     # until this is resolved: https://github.com/wez/wezterm/issues/5990
     package = opts.package self.packages.${pkgs.system}.wezterm-upstream "wezterm package to use";
     front_end = mkOption {
-      type = types.enum ["OpenGL" "Software" "WebGpu"];
+      type = types.enum [
+        "OpenGL"
+        "Software"
+        "WebGpu"
+      ];
       default = "OpenGL";
       description = "frontend used for hardware acceleration";
     };

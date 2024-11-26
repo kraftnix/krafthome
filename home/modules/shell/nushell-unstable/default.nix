@@ -1,12 +1,14 @@
-args: {
+args:
+{
   config,
   lib,
   pkgs,
   ...
 }:
-with lib; let
+with lib;
+let
   cfg = config.programs.nushell-unstable;
-  format = pkgs.formats.json {};
+  format = pkgs.formats.json { };
   defaultEnv = {
     PROMPT_COMMAND = "{ create_left_prompt_original }";
     PROMPT_COMMAND_RIGHT = "{ create_right_prompt }";
@@ -24,17 +26,20 @@ with lib; let
     #     to_string: { |v| $v | str collect (char esep) }
     #   }
     # }'';
-    NU_LIB_DIRS = ''      [
+    NU_LIB_DIRS = ''
+      [
               ($nu.config-path | path dirname | path join 'scripts')
           ]'';
-    NU_PLUGIN_DIRS = ''      [
+    NU_PLUGIN_DIRS = ''
+      [
               ($nu.config-path | path dirname | path join 'plugins')
           ]'';
   };
   starshipEnv = {
     PROMPT_INDICATOR = ''""'';
     PROMPT_COMMAND = ''{ || starship prompt --cmd-duration $env.CMD_DURATION_MS $'--status=($env.LAST_EXIT_CODE)' }'';
-    PROMPT_COMMAND_RIGHT = ''      { ||
+    PROMPT_COMMAND_RIGHT = ''
+      { ||
             let time_segment = ([
                 (date now | date format '%m/%d/%Y %r')
             ] | str join)
@@ -42,10 +47,7 @@ with lib; let
           }'';
     STARSHIP_SHELL = ''"nu"'';
   };
-  env =
-    defaultEnv
-    // (optionalAttrs cfg.enableStarship starshipEnv)
-    // cfg.extraEnv;
+  env = defaultEnv // (optionalAttrs cfg.enableStarship starshipEnv) // cfg.extraEnv;
   defaultKeybindings = {
     completion_menu = {
       modifier = "none";
@@ -57,15 +59,21 @@ with lib; let
             send = "menu";
             name = "completion_menu";
           }
-          {send = "menunext";}
+          { send = "menunext"; }
         ];
       };
     };
     completion_previous = {
       modifier = "shift";
       keycode = "backtab";
-      mode = ["emacs" "vi_normal" "vi_insert"]; # Note: You can add the same keybinding to all modes by using a list";
-      event = {send = "menuprevious";};
+      mode = [
+        "emacs"
+        "vi_normal"
+        "vi_insert"
+      ]; # Note: You can add the same keybinding to all modes by using a list";
+      event = {
+        send = "menuprevious";
+      };
     };
     history_previous = {
       modifier = "control";
@@ -73,8 +81,8 @@ with lib; let
       mode = "emacs";
       event = {
         until = [
-          {send = "menupageprevious";}
-          {edit = "undo";}
+          { send = "menupageprevious"; }
+          { edit = "undo"; }
         ];
       };
     };
@@ -88,12 +96,13 @@ with lib; let
             send = "menu";
             name = "history_menu";
           }
-          {send = "menupagenext";}
+          { send = "menupagenext"; }
         ];
       };
     };
   };
-in {
+in
+{
   options.programs.nushell-unstable = {
     enable = mkEnableOption "nushell-unstable (0.60+)";
     enableStarship = mkEnableOption "starship integration";
@@ -107,19 +116,19 @@ in {
 
     scripts = mkOption {
       type = types.listOf types.path;
-      default = [];
+      default = [ ];
       description = "List of scripts to source and link into ~/.config/nushell/scripts";
     };
 
     plugins = mkOption {
       type = types.listOf types.path;
-      default = [];
+      default = [ ];
       description = "List of plugins to source and link into ~/.config/nushell/plugins";
     };
 
     extraEnv = mkOption {
       type = types.attrsOf types.str;
-      default = {};
+      default = { };
       example = literalExpression ''
         {
           TESTING_STRING = ''$"STRING_VALUE"''$;
@@ -139,36 +148,36 @@ in {
     };
 
     theme = mkOption {
-      type = with types;
+      type =
+        with types;
         submodule {
           freeformType = format.type;
-          options = {};
+          options = { };
         };
-      default = {};
+      default = { };
       description = "Theme options.";
     };
     settings = mkOption {
-      type = with types;
+      type =
+        with types;
         submodule {
           freeformType = format.type;
           options = {
             keybindings = mkOption {
               type = types.attrsOf attrs;
-              default = {};
-              apply = val:
-                mapAttrsToList
-                (
-                  name: cfg:
-                    cfg // {inherit name;}
-                )
-                (filterAttrs (_: v: v != {}) (recursiveUpdate defaultKeybindings val));
+              default = { };
+              apply =
+                val:
+                mapAttrsToList (name: cfg: cfg // { inherit name; }) (
+                  filterAttrs (_: v: v != { }) (recursiveUpdate defaultKeybindings val)
+                );
               description = ''
                 Keybindings for nushell, has overridable defaults, set to empty attrSet ({}) to remove keybinding completely.
               '';
             };
           };
         };
-      default = {};
+      default = { };
       example = literalExpression ''
         {
           edit_mode = "vi";
@@ -189,50 +198,46 @@ in {
   };
 
   config = mkIf cfg.enable {
-    home.packages = [cfg.package];
+    home.packages = [ cfg.package ];
     xdg.configFile = mkMerge [
       {
         "nushell/config.nu".text =
           builtins.readFile ./baseConfig.nu
           + ''
-            ${ # source provided scripts
-              concatStringsSep "\n" (map (
-                  path: "source ${path}"
-                )
-                cfg.scripts)
+            ${
+              # source provided scripts
+              concatStringsSep "\n" (map (path: "source ${path}") cfg.scripts)
             }
 
             $env.config = ${builtins.readFile (format.generate "config" cfg.settings)}
-            ${ # update theme if provided
-              optionalString (cfg.theme != {})
-              "let $config = ($config | upsert theme ${builtins.toJSON cfg.theme})"
+            ${
+              # update theme if provided
+              optionalString (
+                cfg.theme != { }
+              ) "let $config = ($config | upsert theme ${builtins.toJSON cfg.theme})"
             }
 
             ${cfg.extraConfig}
           '';
         "nushell/env.nu".text = ''
           ${builtins.readFile ./baseEnv.nu}
-          ${ # setup environment / env variables
-            concatStringsSep "\n" (mapAttrsToList (
-                env: val: "$env.${env} = ${val}"
-              )
-              env)
+          ${
+            # setup environment / env variables
+            concatStringsSep "\n" (mapAttrsToList (env: val: "$env.${env} = ${val}") env)
           }
         '';
       }
       # Symlink scripts + plugins into nushell default locations
-      (listToAttrs (map
-        (
-          path:
-            nameValuePair "nushell/scripts/${builtins.baseNameOf path}" {source = path;}
-        )
-        cfg.scripts))
-      (listToAttrs (map
-        (
-          path:
-            nameValuePair "nushell/plugins/${builtins.baseNameOf path}" {source = path;}
-        )
-        cfg.plugins))
+      (listToAttrs (
+        map (
+          path: nameValuePair "nushell/scripts/${builtins.baseNameOf path}" { source = path; }
+        ) cfg.scripts
+      ))
+      (listToAttrs (
+        map (
+          path: nameValuePair "nushell/plugins/${builtins.baseNameOf path}" { source = path; }
+        ) cfg.plugins
+      ))
     ];
   };
 }

@@ -2,25 +2,29 @@
   self,
   inputs,
   ...
-}: let
+}:
+let
   inherit (inputs.nixpkgs) lib;
-in {
-  createPipedDesktop = name: {
-    vmName,
-    sshOpts,
-    pkgs,
-    menuName ? "${vmName}: ${name}",
-    genericName ? name,
-    icon ? name,
-    categories ? [],
-    mimeType ? [],
-    instanceNumber ? 0,
-    executable ? name,
-    settings ? {},
-    script ? (
-      let
-        sockName = "${builtins.replaceStrings [">"] ["_"] name}${toString instanceNumber}";
-      in
+in
+{
+  createPipedDesktop =
+    name:
+    {
+      vmName,
+      sshOpts,
+      pkgs,
+      menuName ? "${vmName}: ${name}",
+      genericName ? name,
+      icon ? name,
+      categories ? [ ],
+      mimeType ? [ ],
+      instanceNumber ? 0,
+      executable ? name,
+      settings ? { },
+      script ? (
+        let
+          sockName = "${builtins.replaceStrings [ ">" ] [ "_" ] name}${toString instanceNumber}";
+        in
         pkgs.writeShellScript "waypipe-${vmName}-${name}${toString instanceNumber}" ''
           env
           BASEDIR=/tmp/waypipe-${vmName}
@@ -33,12 +37,19 @@ in {
             ${pkgs.openssh}/bin/ssh -R $GUESTSOCK:$HOSTSOCK ${sshOpts} \
               waypipe --socket $GUESTSOCK server -- ${executable} &> $BASEDIR/${sockName}-log.txt &
         ''
-    ),
-    ...
-  }: {
-    inherit icon genericName categories mimeType settings;
-    name = menuName;
-    exec = "${script}";
-    #terminal = true;
-  };
+      ),
+      ...
+    }:
+    {
+      inherit
+        icon
+        genericName
+        categories
+        mimeType
+        settings
+        ;
+      name = menuName;
+      exec = "${script}";
+      #terminal = true;
+    };
 }

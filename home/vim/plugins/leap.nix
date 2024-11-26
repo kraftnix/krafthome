@@ -3,9 +3,14 @@
   dsl,
   ...
 }:
-with dsl; let
-  cmd = command: desc: ["<cmd>${command}<cr>" desc];
-in {
+with dsl;
+let
+  cmd = command: desc: [
+    "<cmd>${command}<cr>"
+    desc
+  ];
+in
+{
   plugins = with pkgs.vimPlugins; [
     leap-nvim
   ];

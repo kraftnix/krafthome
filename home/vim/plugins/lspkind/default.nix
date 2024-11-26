@@ -1,5 +1,6 @@
 # Pretty Symbols for ASTs
-{pkgs, ...}: {
+{ pkgs, ... }:
+{
   plugins = with pkgs.vimPlugins; [
     lspkind-nvim # symbols for classes,funcs etc.
   ];

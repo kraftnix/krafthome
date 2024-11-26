@@ -3,15 +3,17 @@
   pkgs,
   lib,
   ...
-}: let
+}:
+let
   cfg = config.khome.hardware.android;
   inherit (lib) mkEnableOption mkIf;
-in {
+in
+{
   options.khome.hardware.android = {
     enable = mkEnableOption "enable adb + udev rules";
   };
   config = mkIf cfg.enable {
     programs.adb.enable = true;
-    services.udev.packages = with pkgs; [android-udev-rules];
+    services.udev.packages = with pkgs; [ android-udev-rules ];
   };
 }

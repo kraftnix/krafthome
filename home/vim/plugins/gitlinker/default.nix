@@ -7,14 +7,15 @@
   ...
 }:
 with dsl;
-with lib; {
-  plugins = with pkgs.vimPlugins; [gitlinker-nvim];
+with lib;
+{
+  plugins = with pkgs.vimPlugins; [ gitlinker-nvim ];
   # lua = builtins.readFile ./gitlinker.lua;
   _internal.which-key.gitlinker."['<leader>']".g = {
     y = [
-      "<cmd>lua require'gitlinker'.get_buf_range_url('n', {action_callback = require'gitlinker.actions'.open_in_browser})<cr>" #, {silent = true})
+      "<cmd>lua require'gitlinker'.get_buf_range_url('n', {action_callback = require'gitlinker.actions'.open_in_browser})<cr>" # , {silent = true})
     ];
-    Y = ["<Cmd>lua require'gitlinker'.get_buf_range_url('n')<CR> "];
+    Y = [ "<Cmd>lua require'gitlinker'.get_buf_range_url('n')<CR> " ];
   };
   #lua = builtins.readFile ./gitlinker.lua + ''
   #  vim.api.nvim_set_keymap('n', '<leader>gy', '<cmd>lua require"gitlinker".get_buf_range_url("n", {action_callback = require"gitlinker.actions".open_in_browser})<cr>', {silent = true})

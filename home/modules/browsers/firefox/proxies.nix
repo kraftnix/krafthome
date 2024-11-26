@@ -1,48 +1,64 @@
 {
   lib,
   ...
-}: let
-  inherit
-    (lib)
+}:
+let
+  inherit (lib)
     mkEnableOption
     mkOption
     types
     ;
-  ts = with types; [bool raw str int (listOf str)];
-in {
+  ts = with types; [
+    bool
+    raw
+    str
+    int
+    (listOf str)
+  ];
+in
+{
   options.khome.browsers.firefox.proxies = mkOption {
-    type = types.attrsOf (types.submodule ({config, ...}: {
-      freeformType = with types; attrsOf (oneOf ts);
-      options = {
-        type = mkOption {
-          default = 1;
-          description = "proxy type, default 1 (socks5), corresponds to `network.proxy.type`";
-          type = types.ints.positive;
-        };
-        url = mkOption {
-          default = "";
-          description = "proxy url, corresponds to `network.proxy.socks`";
-          type = types.str;
-        };
-        port = mkOption {
-          default = 1080;
-          description = "proxy port, corresponds to `network.proxy.socks_port`";
-          type = types.ints.positive;
-        };
-        remoteDns = mkEnableOption "use remote dns, corresponds t `network.proxy.socks_remote_dns` option" // {default = true;};
-        __opts = mkOption {
-          default = {
-            "network.proxy.type" = config.type;
-            "network.proxy.socks" = config.url;
-            "network.proxy.socks_port" = config.port;
-            "network.proxy.socks_remote_dns" = config.remoteDns;
-            # "network.proxy.no_proxies_on" = exceptions;
+    type = types.attrsOf (
+      types.submodule (
+        { config, ... }:
+        {
+          freeformType = with types; attrsOf (oneOf ts);
+          options = {
+            type = mkOption {
+              default = 1;
+              description = "proxy type, default 1 (socks5), corresponds to `network.proxy.type`";
+              type = types.ints.positive;
+            };
+            url = mkOption {
+              default = "";
+              description = "proxy url, corresponds to `network.proxy.socks`";
+              type = types.str;
+            };
+            port = mkOption {
+              default = 1080;
+              description = "proxy port, corresponds to `network.proxy.socks_port`";
+              type = types.ints.positive;
+            };
+            remoteDns =
+              mkEnableOption "use remote dns, corresponds t `network.proxy.socks_remote_dns` option"
+              // {
+                default = true;
+              };
+            __opts = mkOption {
+              default = {
+                "network.proxy.type" = config.type;
+                "network.proxy.socks" = config.url;
+                "network.proxy.socks_port" = config.port;
+                "network.proxy.socks_remote_dns" = config.remoteDns;
+                # "network.proxy.no_proxies_on" = exceptions;
+              };
+              description = "final proxy related options";
+            };
           };
-          description = "final proxy related options";
-        };
-      };
-    }));
-    default = {};
+        }
+      )
+    );
+    default = { };
     description = "proxies to use for building firefox, only applies when `khome.browser.firefox.package` is not overridden";
   };
 

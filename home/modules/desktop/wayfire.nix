@@ -1,18 +1,22 @@
-{inputs, ...}: {
+{ inputs, ... }:
+{
   config,
   lib,
   pkgs,
   ...
 }:
-with lib; let
+with lib;
+let
   inherit (inputs.provision.lib.attrs) recursiveMerge;
   cfg = config.programs.wayfire;
-  iniFormat = pkgs.formats.ini {};
-  mkBinding = name: {
-    binding ? null,
-    command ? null,
-    repeatable ? false,
-  }:
+  iniFormat = pkgs.formats.ini { };
+  mkBinding =
+    name:
+    {
+      binding ? null,
+      command ? null,
+      repeatable ? false,
+    }:
     (optionalAttrs (command != null) {
       "command_${name}" = command;
     })
@@ -216,102 +220,117 @@ with lib; let
   };
   genBinding = bindings: recursiveMerge (attrValues (mapAttrs mkBinding bindings));
   configFilePath = "${config.xdg.configHome}/wayfire.conf";
-in {
-  options.programs.wayfire = with types;
+in
+{
+  options.programs.wayfire =
+    with types;
     mkOption {
-      default = {};
+      default = { };
       description = "Wayfire Window Manager Options.";
-      type = submodule ({config, ...}: {
-        options = {
-          enable = mkEnableOption "";
-          package = mkOption {
-            type = package;
-            default = pkgs.wayfire;
-            description = "wayfire package";
-          };
-          plugins = mkOption {
-            description = "default / core plugins";
-            type = listOf str;
-            default = [
-              "alpha"
-              "animate"
-              "autostart"
-              "command"
-              "cube"
-              #"decoration"
-              "expo"
-              "fast-switcher"
-              "fisheye"
-              "grid"
-              "idle"
-              "invert"
-              "move"
-              "oswitch"
-              "place"
-              "resize"
-              "switcher"
-              "vswitch"
-              "window-rules"
-              "wobbly"
-              "wrot"
-              "zoom"
-            ];
-          };
-          extraPlugins = mkOption {
-            description = "additional plugins outside of core set";
-            type = listOf str;
-            default = [];
-            apply = extra: lib.unique (flatten [config.plugins extra]);
-            example = ["blur"];
-          };
-          bindings = mkOption {
-            description = "additional key bindings";
-            type = attrsOf attrs;
-            default = {};
-            example = {
-              launcher.command = "rofi -show drun";
-              custom = {
-                command = "myprogram --with-args";
-                binding = "<super> KEY_T";
-                repeatable = true;
-              };
+      type = submodule (
+        { config, ... }:
+        {
+          options = {
+            enable = mkEnableOption "";
+            package = mkOption {
+              type = package;
+              default = pkgs.wayfire;
+              description = "wayfire package";
             };
-            # NOTE: default key bindings are not removeable
-            #       but are overridable
-            apply = bindings:
-              recursiveMerge [
-                (genBinding defaultBindings)
-                (genBinding bindings)
+            plugins = mkOption {
+              description = "default / core plugins";
+              type = listOf str;
+              default = [
+                "alpha"
+                "animate"
+                "autostart"
+                "command"
+                "cube"
+                #"decoration"
+                "expo"
+                "fast-switcher"
+                "fisheye"
+                "grid"
+                "idle"
+                "invert"
+                "move"
+                "oswitch"
+                "place"
+                "resize"
+                "switcher"
+                "vswitch"
+                "window-rules"
+                "wobbly"
+                "wrot"
+                "zoom"
               ];
+            };
+            extraPlugins = mkOption {
+              description = "additional plugins outside of core set";
+              type = listOf str;
+              default = [ ];
+              apply =
+                extra:
+                lib.unique (flatten [
+                  config.plugins
+                  extra
+                ]);
+              example = [ "blur" ];
+            };
+            bindings = mkOption {
+              description = "additional key bindings";
+              type = attrsOf attrs;
+              default = { };
+              example = {
+                launcher.command = "rofi -show drun";
+                custom = {
+                  command = "myprogram --with-args";
+                  binding = "<super> KEY_T";
+                  repeatable = true;
+                };
+              };
+              # NOTE: default key bindings are not removeable
+              #       but are overridable
+              apply =
+                bindings:
+                recursiveMerge [
+                  (genBinding defaultBindings)
+                  (genBinding bindings)
+                ];
+            };
+            settings = mkOption {
+              description = ''
+                ini settings for wayfire.conf
+                can be used for override of all other options
+                however default options can not be removed
+              '';
+              type = iniFormat.type;
+              default = defaults;
+            };
+            xdgOptions = mkOption {
+              type = bool;
+              description = "whether to set some XDG options such as CURRENT_DESKTOP";
+              default = true;
+            };
           };
-          settings = mkOption {
-            description = ''
-              ini settings for wayfire.conf
-              can be used for override of all other options
-              however default options can not be removed
-            '';
-            type = iniFormat.type;
-            default = defaults;
-          };
-          xdgOptions = mkOption {
-            type = bool;
-            description = "whether to set some XDG options such as CURRENT_DESKTOP";
-            default = true;
-          };
-        };
-      });
+        }
+      );
     };
   config = mkIf cfg.enable {
     home.sessionVariables = {
       WAYFIRE_CONFIG_FILE = "${configFilePath}";
       XDG_CURRENT_DESKTOP = "sway";
     };
-    home.packages = with pkgs; [cfg.package wayfirePlugins.wcm wf-config];
-    xdg.configFile."wayfire.conf" = mkIf (cfg.settings != {}) {
+    home.packages = with pkgs; [
+      cfg.package
+      wayfirePlugins.wcm
+      wf-config
+    ];
+    xdg.configFile."wayfire.conf" = mkIf (cfg.settings != { }) {
       source = iniFormat.generate "wayfire.conf" (recursiveMerge [
         defaults
-        {command = cfg.bindings;}
-        {core.plugins = concatStringsSep " " cfg.extraPlugins;}
+        { command = cfg.bindings; }
+        { core.plugins = concatStringsSep " " cfg.extraPlugins; }
         cfg.settings
       ]);
     };

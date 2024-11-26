@@ -1,11 +1,12 @@
-args: {
+args:
+{
   config,
   lib,
   pkgs,
   ...
-}: let
-  inherit
-    (lib)
+}:
+let
+  inherit (lib)
     mkEnableOption
     mkIf
     optionals
@@ -14,7 +15,8 @@ args: {
     ;
   cfg = config.khome.shell.fzf;
   theme = config.lib.base16.getTheme "fzf";
-in {
+in
+{
   options.khome.shell.fzf = {
     enable = mkEnableOption "enable fzf";
     height = mkOption {
@@ -22,11 +24,9 @@ in {
       default = "40%";
       description = "height of fzf window";
     };
-    enableBackground =
-      mkEnableOption "enable opacity"
-      // {
-        default = config.khome.themes.opacity < 1;
-      };
+    enableBackground = mkEnableOption "enable opacity" // {
+      default = config.khome.themes.opacity < 1;
+    };
   };
 
   config = mkIf cfg.enable {
@@ -51,20 +51,23 @@ in {
           "--height ${cfg.height}"
           "--bind=tab:down,change:top,ctrl-s:toggle --cycle"
         ]
-        ++ optionals config.khome.themes.enable (with theme; [
-          # "${optionalString cfg.enableBackground "--color=bg+:#${base01},bg:#${base00}"}"
-          # "--color=spinner:#${base0C},hl:#${base0D}"
-          # "--color=fg:#${base04},header:#${base0D},info:#${base0A},pointer:#${base0C}"
-          # "--color=marker:#${base0C},fg+:#${base06},prompt:#${base08},hl+:#${base08}"
-        ]);
+        ++ optionals config.khome.themes.enable (
+          with theme;
+          [
+            # "${optionalString cfg.enableBackground "--color=bg+:#${base01},bg:#${base00}"}"
+            # "--color=spinner:#${base0C},hl:#${base0D}"
+            # "--color=fg:#${base04},header:#${base0D},info:#${base0A},pointer:#${base0C}"
+            # "--color=marker:#${base0C},fg+:#${base06},prompt:#${base08},hl+:#${base08}"
+          ]
+        );
 
-      historyWidgetOptions = ["--exact"];
+      historyWidgetOptions = [ "--exact" ];
 
       fileWidgetCommand = "fd --type f";
-      fileWidgetOptions = [''--preview='bat {} --theme="base16" --color=always --style="numbers" ' ''];
+      fileWidgetOptions = [ ''--preview='bat {} --theme="base16" --color=always --style="numbers" ' '' ];
 
       changeDirWidgetCommand = "fd --type d .";
-      changeDirWidgetOptions = [''--preview='lsd {} -l --color=always' ''];
+      changeDirWidgetOptions = [ ''--preview='lsd {} -l --color=always' '' ];
     };
   };
 }

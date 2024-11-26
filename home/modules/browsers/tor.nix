@@ -1,18 +1,20 @@
-args: {
+args:
+{
   config,
   lib,
   pkgs,
   ...
-}: let
+}:
+let
   cfg = config.khome.browsers.tor;
-  inherit
-    (lib)
+  inherit (lib)
     mkEnableOption
     mkIf
     mkOption
     types
     ;
-in {
+in
+{
   options.khome.browsers.tor = {
     enable = mkEnableOption "enable tor browser";
     forceWayland = mkEnableOption "enable mozilla wayland flag";

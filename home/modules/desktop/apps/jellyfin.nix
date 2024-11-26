@@ -1,9 +1,11 @@
-{self, ...}: {
+{ self, ... }:
+{
   config,
   lib,
   pkgs,
   ...
-}: let
+}:
+let
   inherit (lib) mkIf mkMerge optional;
   opts = self.inputs.extra-lib.lib.options;
   mcfg = config.khome.desktop.apps.media;
@@ -102,12 +104,13 @@
     use_web_seek = false;
     write_logs = false;
   };
-in {
+in
+{
   options.khome.desktop.apps.media.jellyfin = {
     mpvShim = {
       enable = opts.enable "enable jellyfin-mpv-shim";
       enableConfig = opts.enable "enable setting config via nix";
-      config = opts.raw {} "set jellyfin-mpv-shim config";
+      config = opts.raw { } "set jellyfin-mpv-shim config";
     };
     mediaPlayer = opts.enable "add jellyfin-media-player";
   };
@@ -116,12 +119,11 @@ in {
     (mkIf mcfg.enable {
       khome.desktop.apps.media.jellyfin.mpvShim.config = conf;
       home.packages =
-        []
+        [ ]
         ++ (optional jcfg.mpvShim.enable pkgs.jellyfin-mpv-shim)
         ++ (optional jcfg.mediaPlayer pkgs.jellyfin-media-player);
       xdg.configFile = mkIf jcfg.mpvShim.enable {
-        "mpv-jellyfin-shim/conf.json".text =
-          builtins.toJSON jcfg.mpvShim.config;
+        "mpv-jellyfin-shim/conf.json".text = builtins.toJSON jcfg.mpvShim.config;
       };
     })
   ];

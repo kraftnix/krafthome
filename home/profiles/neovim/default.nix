@@ -3,9 +3,9 @@
   pkgs,
   lib,
   ...
-}: let
-  inherit
-    (lib)
+}:
+let
+  inherit (lib)
     concatStringsSep
     mkMerge
     mapAttrsToList
@@ -15,17 +15,19 @@
   # inherit (config.lib) base16;
   # colorName = "base16-${base16.theme.scheme-slug}";
   fullNvimTreesitter =
-    (pkgs.vimPlugins.nvim-treesitter.overrideAttrs (oldAttrs:
+    (pkgs.vimPlugins.nvim-treesitter.overrideAttrs (
+      oldAttrs:
       oldAttrs
       // {
         # tree-sitter = pkgs.tree-sitter-with-nu;
         tree-sitter = pkgs.tree-sitter-full;
-      }))
-    .withAllGrammars;
-  # fullNvimTreesitter = pkgs.channels.stable.vimPlugins.nvim-treesitter;
-  # fullNvimTreesitter = pkgs.vimPlugins.nvim-treesitter;
-in {
-  home.packages = [pkgs.zk];
+      }
+    )).withAllGrammars;
+in
+# fullNvimTreesitter = pkgs.channels.stable.vimPlugins.nvim-treesitter;
+# fullNvimTreesitter = pkgs.vimPlugins.nvim-treesitter;
+{
+  home.packages = [ pkgs.zk ];
   home.sessionVariables."ZK_NOTEBOOK_DIR" = lib.mkDefault "/home/$USER/notes";
   # home.activation.neovim-copy = lib.mkForce (lib.hm.dag.entryBetween [ "reloadSystemd" ] [ ] "");
   programs.lazy-neovim = {

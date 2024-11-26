@@ -3,22 +3,25 @@
   pkgs,
   lib,
   ...
-}: let
+}:
+let
   cfg = config.khome.browsers.firefox;
-  inherit
-    (lib)
+  inherit (lib)
     mkEnableOption
     mkIf
     optionalString
     mkOption
     types
     ;
-in {
+in
+{
   options.khome.browsers.firefox.presets = {
-    enableDefaultSettings = mkEnableOption "enable default settings preset groups" // {default = true;};
+    enableDefaultSettings = mkEnableOption "enable default settings preset groups" // {
+      default = true;
+    };
     settings = mkOption {
       type = with types; attrsOf raw;
-      default = {};
+      default = { };
       description = "settings groups / profiles for enablement in firefox profiles.";
     };
   };
@@ -58,21 +61,13 @@ in {
 
         "app.update.auto" = false; # auto update
         "browser.search.update" = false;
-        /*
-        0309: disable sending Flash crash reports **
-        */
+        # 0309: disable sending Flash crash reports **
         "dom.ipc.plugins.flash.subprocess.crashreporter.enabled" = false;
-        /*
-        0310: disable sending the URL of the website where a plugin crashed **
-        */
+        # 0310: disable sending the URL of the website where a plugin crashed **
         "dom.ipc.plugins.reportCrashURL" = false;
-        /*
-        0320: disable about:addons' Recommendations pane (uses Google Analytics) **
-        */
+        # 0320: disable about:addons' Recommendations pane (uses Google Analytics) **
         "extensions.getAddons.showPane" = false;
-        /*
-        0321: disable recommendations in about:addons' Extensions and Themes panes [FF68+] **
-        */
+        # 0321: disable recommendations in about:addons' Extensions and Themes panes [FF68+] **
         "extensions.htmlaboutaddons.recommendations.enabled" = false;
         "accessibility.force_disabled" = 1;
 
@@ -106,24 +101,22 @@ in {
         "dom.event.clipboardevents.enabled" = false;
         "network.prefetch-next" = false;
         /*
-         0602: disable DNS prefetching
-        * [1] https://developer.mozilla.org/docs/Web/HTTP/Headers/X-DNS-Prefetch-Control **
+           0602: disable DNS prefetching
+          * [1] https://developer.mozilla.org/docs/Web/HTTP/Headers/X-DNS-Prefetch-Control **
         */
         "network.dns.disablePrefetch" = true;
         "network.dns.disablePrefetchFromHTTPS" = true;
-        /*
-        0603: disable predictor / prefetching **
-        */
+        # 0603: disable predictor / prefetching **
         "network.predictor.enabled" = false;
         "network.predictor.enable-prefetch" = false;
         /*
-         0605: disable link-mouseover opening connection to linked server
-        * [1] https://news.slashdot.org/story/15/08/14/2321202/how-to-quash-firefoxs-silent-requests **
+           0605: disable link-mouseover opening connection to linked server
+          * [1] https://news.slashdot.org/story/15/08/14/2321202/how-to-quash-firefoxs-silent-requests **
         */
         "network.http.speculative-parallel-limit" = 0;
         /*
-         0606: enforce no "Hyperlink Auditing" (click tracking)
-        * [1] https://www.bleepingcomputer.com/news/software/major-browsers-to-prevent-disabling-of-click-tracking-privacy-risk/ **
+           0606: enforce no "Hyperlink Auditing" (click tracking)
+          * [1] https://www.bleepingcomputer.com/news/software/major-browsers-to-prevent-disabling-of-click-tracking-privacy-risk/ **
         */
         "browser.send_pings" = false;
         "browser.send_pings.require_same_host" = true;
@@ -175,69 +168,63 @@ in {
 
         ### Telemetry
         /*
-         0331: disable Telemetry Coverage
-        * [1] https://blog.mozilla.org/data/2018/08/20/effectively-measuring-search-in-firefox/ **
+           0331: disable Telemetry Coverage
+          * [1] https://blog.mozilla.org/data/2018/08/20/effectively-measuring-search-in-firefox/ **
         */
         "toolkit.telemetry.coverage.opt-out" = true;
         "toolkit.coverage.opt-out" = true;
         "toolkit.coverage.endpoint.base" = "";
         /*
-         0340: disable Health Reports
-        * [SETTING] Privacy & Security>Firefox Data Collection & Use>Allow Firefox to send technical... data **
+           0340: disable Health Reports
+          * [SETTING] Privacy & Security>Firefox Data Collection & Use>Allow Firefox to send technical... data **
         */
         "datareporting.healthreport.uploadEnabled" = false;
         /*
-         0341: disable new data submission, master kill switch [FF41+]
-        * If disabled, no policy is shown or upload takes place, ever
-        * [1] https://bugzilla.mozilla.org/1195552 **
+           0341: disable new data submission, master kill switch [FF41+]
+          * If disabled, no policy is shown or upload takes place, ever
+          * [1] https://bugzilla.mozilla.org/1195552 **
         */
         "datareporting.policy.dataSubmissionEnabled" = false;
         /*
-         0342: disable Studies (see 0503)
-        * [SETTING] Privacy & Security>Firefox Data Collection & Use>Allow Firefox to install and run studies **
+           0342: disable Studies (see 0503)
+          * [SETTING] Privacy & Security>Firefox Data Collection & Use>Allow Firefox to install and run studies **
         */
         "app.shield.optoutstudies.enabled" = false;
         /*
-         0343: disable personalized Extension Recommendations in about:addons and AMO [FF65+]
-        * [NOTE] This pref has no effect when Health Reports (0340) are disabled
-        * [SETTING] Privacy & Security>Firefox Data Collection & Use>Allow Firefox to make personalized extension recommendations
-        * [1] https://support.mozilla.org/kb/personalized-extension-recommendations **
+           0343: disable personalized Extension Recommendations in about:addons and AMO [FF65+]
+          * [NOTE] This pref has no effect when Health Reports (0340) are disabled
+          * [SETTING] Privacy & Security>Firefox Data Collection & Use>Allow Firefox to make personalized extension recommendations
+          * [1] https://support.mozilla.org/kb/personalized-extension-recommendations **
         */
         "browser.discovery.enabled" = false;
-        /*
-        0350: disable Crash Reports **
-        */
+        # 0350: disable Crash Reports **
         "breakpad.reportURL" = "";
         "browser.tabs.crashReporting.sendReport" = false;
         "browser.crashReports.unsubmittedCheck.enabled" = false;
         /*
-         0351: disable backlogged Crash Reports
-        * [SETTING] Privacy & Security>Firefox Data Collection & Use>Allow Firefox to send backlogged crash reports  **
+           0351: disable backlogged Crash Reports
+          * [SETTING] Privacy & Security>Firefox Data Collection & Use>Allow Firefox to send backlogged crash reports  **
         */
         "browser.crashReports.unsubmittedCheck.autoSubmit2" = false;
         # normandy telemetry
         "app.normandy.enabled" = false;
         "app.normandy.api_url" = "";
-        /*
-        0505: disable System Add-on updates **
-        */
+        # 0505: disable System Add-on updates **
         "extensions.systemAddon.update.enabled" = false;
         "extensions.systemAddon.update.url" = "";
         /*
-         0506: disable PingCentre telemetry (used in several System Add-ons) [FF57+]
-        * Currently blocked by 'datareporting.healthreport.uploadEnabled' (see 0340) **
+           0506: disable PingCentre telemetry (used in several System Add-ons) [FF57+]
+          * Currently blocked by 'datareporting.healthreport.uploadEnabled' (see 0340) **
         */
         "browser.ping-centre.telemetry" = false;
-        /*
-        0515: disable Screenshots **
-        */
+        # 0515: disable Screenshots **
         "extensions.screenshots.disabled" = true;
         /*
-         0517: disable Form Autofill
-        * [NOTE] Stored data is NOT secure (uses a JSON file)
-        * [NOTE] Heuristics controls Form Autofill on forms without @autocomplete attributes
-        * [SETTING] Privacy & Security>Forms and Autofill>Autofill addresses
-        * [1] https://wiki.mozilla.org/Firefox/Features/Form_Autofill **
+           0517: disable Form Autofill
+          * [NOTE] Stored data is NOT secure (uses a JSON file)
+          * [NOTE] Heuristics controls Form Autofill on forms without @autocomplete attributes
+          * [SETTING] Privacy & Security>Forms and Autofill>Autofill addresses
+          * [1] https://wiki.mozilla.org/Firefox/Features/Form_Autofill **
         */
         "extensions.formautofill.addresses.enabled" = false;
         "extensions.formautofill.available" = "off";
@@ -245,8 +232,8 @@ in {
         "extensions.formautofill.creditCards.enabled" = false;
         "extensions.formautofill.heuristics.enabled" = false;
         /*
-         0518: disable Web Compatibility Reporter [FF56+]
-        * Web Compatibility Reporter adds a "Report Site Issue" button to send data to Mozilla **
+           0518: disable Web Compatibility Reporter [FF56+]
+          * Web Compatibility Reporter adds a "Report Site Issue" button to send data to Mozilla **
         */
         "extensions.webcompat-reporter.enabled" = false;
 
@@ -261,30 +248,30 @@ in {
         ### HTTP / DNS / PROXY etc.
         "network.dns.disableIPv6" = true;
         /*
-         0703: disable HTTP Alternative Services [FF37+]
-        * [SETUP-PERF] Relax this if you have FPI enabled (see 4000) *AND* you understand the
-        * consequences. FPI isolates these, but it was designed with the Tor protocol in mind,
-        * and the Tor Browser has extra protection, including enhanced sanitizing per Identity.
-        * [1] https://tools.ietf.org/html/rfc7838#section-9
-        * [2] https://www.mnot.net/blog/2016/03/09/alt-svc **
+           0703: disable HTTP Alternative Services [FF37+]
+          * [SETUP-PERF] Relax this if you have FPI enabled (see 4000) *AND* you understand the
+          * consequences. FPI isolates these, but it was designed with the Tor protocol in mind,
+          * and the Tor Browser has extra protection, including enhanced sanitizing per Identity.
+          * [1] https://tools.ietf.org/html/rfc7838#section-9
+          * [2] https://www.mnot.net/blog/2016/03/09/alt-svc **
         */
         "network.http.altsvc.enabled" = false;
         "network.http.altsvc.oe" = false;
         /*
-         0704: enforce the proxy server to do any DNS lookups when using SOCKS
-        * e.g. in Tor, this stops your local DNS server from knowing your Tor destination
-        * as a remote Tor node will handle the DNS request
-        * [1] https://trac.torproject.org/projects/tor/wiki/doc/TorifyHOWTO/WebBrowsers **
+           0704: enforce the proxy server to do any DNS lookups when using SOCKS
+          * e.g. in Tor, this stops your local DNS server from knowing your Tor destination
+          * as a remote Tor node will handle the DNS request
+          * [1] https://trac.torproject.org/projects/tor/wiki/doc/TorifyHOWTO/WebBrowsers **
         */
         "network.file.disable_unc_paths" = true;
         /*
-         0710: disable GIO as a potential proxy bypass vector
-        * Gvfs/GIO has a set of supported protocols like obex, network, archive, computer, dav, cdda,
-        * gphoto2, trash, etc. By default only smb and sftp protocols are accepted so far (as of FF64)
-        * [1] https://bugzilla.mozilla.org/1433507
-        * [2] https://gitlab.torproject.org/tpo/applications/tor-browser/-/issues/23044
-        * [3] https://en.wikipedia.org/wiki/GVfs
-        * [4] https://en.wikipedia.org/wiki/GIO_(software) **
+           0710: disable GIO as a potential proxy bypass vector
+          * Gvfs/GIO has a set of supported protocols like obex, network, archive, computer, dav, cdda,
+          * gphoto2, trash, etc. By default only smb and sftp protocols are accepted so far (as of FF64)
+          * [1] https://bugzilla.mozilla.org/1433507
+          * [2] https://gitlab.torproject.org/tpo/applications/tor-browser/-/issues/23044
+          * [3] https://en.wikipedia.org/wiki/GVfs
+          * [4] https://en.wikipedia.org/wiki/GIO_(software) **
         */
         "network.gio.supported-protocols" = "";
         "browser.taskbar.previews.enable" = false;

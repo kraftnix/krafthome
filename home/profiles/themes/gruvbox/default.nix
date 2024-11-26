@@ -2,7 +2,8 @@
   config,
   pkgs,
   ...
-}: {
+}:
+{
   #themes = {
   #  enable = true;
   #  base16 = {

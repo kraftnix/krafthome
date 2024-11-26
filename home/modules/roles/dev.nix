@@ -1,17 +1,19 @@
-{self, ...}: {
+{ self, ... }:
+{
   config,
   lib,
   pkgs,
   ...
-}: let
+}:
+let
   cfg = config.khome.roles.dev;
   opts = self.inputs.extra-lib.lib.options;
-  inherit
-    (lib)
+  inherit (lib)
     mkEnableOption
     mkIf
     ;
-in {
+in
+{
   options.khome.roles.dev = {
     enable = opts.enable ''
       Enables developer role. Contains:

@@ -1,11 +1,12 @@
-{self, ...}: {
+{ self, ... }:
+{
   config,
   lib,
   pkgs,
   ...
-}: let
-  inherit
-    (lib)
+}:
+let
+  inherit (lib)
     concatStringsSep
     mapAttrsToList
     mkBefore
@@ -18,7 +19,8 @@
   wcfg = config.khome.desktop.wm;
   cfg = wcfg.i3;
   opts = self.inputs.extra-lib.lib.options;
-in {
+in
+{
   options.khome.desktop.wm.i3 = {
     enable = opts.enable "enable i3 config";
     enableDefaults = opts.enableTrue "enable default shared config";
@@ -46,7 +48,7 @@ in {
     };
     keybindings = mkOption {
       type = with types; attrsOf str;
-      default = {};
+      default = { };
       description = "i3 specific keybindings";
     };
     extraPackages = mkOption {
@@ -59,7 +61,7 @@ in {
       type = with types; listOf package;
     };
     sessionVariables = mkOption {
-      default = {};
+      default = { };
       apply = recursiveUpdate {
         MOZ_ENABLE_WAYLAND = 1;
         # set this in tuigreet to not clash
@@ -68,7 +70,12 @@ in {
         SDL_VIDEODRIVER = "wayland";
         NIXOS_OZONE_WL = "1"; # sets all electron apps to use Wayland/Ozone
       };
-      type = with types; attrsOf (oneOf [str int]);
+      type =
+        with types;
+        attrsOf (oneOf [
+          str
+          int
+        ]);
       description = "session variables for i3";
     };
     enableSystemd = opts.enableTrue "enable system integration";
@@ -101,15 +108,16 @@ in {
   config = mkIf cfg.enable {
     home.packages = cfg.extraPackages;
     home.sessionVariables = cfg.sessionVariables;
-    xdg.configFile."i3/env".text = concatStringsSep "\n" (mapAttrsToList (env: val: "${env}=${toString val}") config.home.sessionVariables);
+    xdg.configFile."i3/env".text = concatStringsSep "\n" (
+      mapAttrsToList (env: val: "${env}=${toString val}") config.home.sessionVariables
+    );
 
     xsession.windowManager.i3 = {
       enable = true;
       config = mkMerge [
         (mkIf cfg.enableDefaults wcfg.sharedConfig)
         {
-          inherit
-            (cfg)
+          inherit (cfg)
             bars
             startup
             ;
@@ -125,14 +133,12 @@ in {
           #   up
           #   down
           #   ;
-          keybindings =
-            {
-              Print = "exec --no-startup-id i3-scrot";
-              "$mod+Print" = "exec flameshot gui";
-              # hide/unhide i3status bar
-              "$mod+m" = "bar mode toggle";
-            }
-            // cfg.keybindings;
+          keybindings = {
+            Print = "exec --no-startup-id i3-scrot";
+            "$mod+Print" = "exec flameshot gui";
+            # hide/unhide i3status bar
+            "$mod+m" = "bar mode toggle";
+          } // cfg.keybindings;
         }
       ];
       extraConfig = mkMerge [

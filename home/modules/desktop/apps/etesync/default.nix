@@ -1,13 +1,21 @@
-{self, ...}: {
+{ self, ... }:
+{
   config,
   lib,
   pkgs,
   ...
-}: let
-  inherit (lib) mkIf mkMerge optional optionals;
+}:
+let
+  inherit (lib)
+    mkIf
+    mkMerge
+    optional
+    optionals
+    ;
   opts = self.inputs.extra-lib.lib.options;
   cfg = config.khome.desktop.apps.productivity.etesync;
-in {
+in
+{
   options.khome.desktop.apps.productivity.etesync = {
     enable = opts.enable "enable etesync-dav";
   };
@@ -19,14 +27,14 @@ in {
 
     systemd.user.services.etesync-dav = {
       Unit = {
-        After = ["network.target"];
+        After = [ "network.target" ];
         Description = "Etesync-DAV sync service";
       };
       Service = {
         ExecStart = "${pkgs.etesync-dav}/bin/etesync-dav";
       };
 
-      Install.WantedBy = ["default.target"];
+      Install.WantedBy = [ "default.target" ];
     };
   };
 }

@@ -1,11 +1,12 @@
-{inputs, ...}: {
+{ inputs, ... }:
+{
   config,
   lib,
   pkgs,
   ...
-}: let
-  inherit
-    (lib)
+}:
+let
+  inherit (lib)
     mkEnableOption
     mkForce
     mkIf
@@ -15,15 +16,17 @@
     ;
   cfg = config.khome.programs.wezterm;
   # Pretty print
-  weztermFomatted = str:
+  weztermFomatted =
+    str:
     pkgs.stdenv.mkDerivation {
       name = "wezterm.lua";
       preformatted = pkgs.writeText "pre-formatted-wezterm.lua" str;
-      phases = ["buildPhase"];
+      phases = [ "buildPhase" ];
       buildPhase = "${pkgs.luaformatter}/bin/lua-format $preformatted > $out";
       allowSubstitutes = false; # will never be in cache
     };
-in {
+in
+{
   # disabledModules = [ "programs/wezterm.nix" ];
   options.khome.programs.wezterm = {
     enable = mkEnableOption "wezterm (0.60+)";
@@ -63,12 +66,26 @@ in {
       description = "Config added after default and before final return in config string";
     };
     settings = mkOption {
-      type = with types;
+      type =
+        with types;
         submodule {
-          freeformType = attrsOf (oneOf [attrs str int float bool (listOf (oneOf [attrs str int float bool]))]);
-          options = {};
+          freeformType = attrsOf (oneOf [
+            attrs
+            str
+            int
+            float
+            bool
+            (listOf (oneOf [
+              attrs
+              str
+              int
+              float
+              bool
+            ]))
+          ]);
+          options = { };
         };
-      default = {};
+      default = { };
       example = literalExpression ''
         {
           edit_mode = "vi";
@@ -89,7 +106,10 @@ in {
   };
 
   config = mkIf cfg.enable {
-    home.packages = [cfg.package cfg.package.terminfo];
+    home.packages = [
+      cfg.package
+      cfg.package.terminfo
+    ];
 
     programs.wezterm.enable = true;
     # breaks neovim terminals in tmux: https://github.com/wez/wezterm/issues/5007

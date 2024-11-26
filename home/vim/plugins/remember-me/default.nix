@@ -3,14 +3,19 @@
   pkgs,
   dsl,
   ...
-}: let
-  cmd = command: desc: ["<cmd>${command}<cr>" desc];
+}:
+let
+  cmd = command: desc: [
+    "<cmd>${command}<cr>"
+    desc
+  ];
 in
-  with dsl; {
-    plugins = with pkgs.vimPlugins; [
-      remember-me-nvim
-    ];
+with dsl;
+{
+  plugins = with pkgs.vimPlugins; [
+    remember-me-nvim
+  ];
 
-    # moved into whichkey
-    lua = builtins.readFile ./remember-me.lua;
-  }
+  # moved into whichkey
+  lua = builtins.readFile ./remember-me.lua;
+}

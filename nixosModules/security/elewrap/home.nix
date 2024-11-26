@@ -1,22 +1,24 @@
-localFlake: {
+localFlake:
+{
   config,
   pkgs,
   lib,
   ...
-}: let
-  inherit
-    (lib)
+}:
+let
+  inherit (lib)
     mkEnableOption
     mkIf
     mkOption
     types
     ;
   cfg = config.home.elewrap;
-in {
+in
+{
   options.home.elewrap = {
     enable = mkEnableOption "enable elewrap wrapper";
     wrappers = mkOption {
-      default = {};
+      default = { };
       description = ''
         Collects binaries to pass onto host level `security.elewrap`.
 
@@ -25,9 +27,11 @@ in {
         be baked into the wrapper at compile-time, cutting down any attack surface
         to the absolute bare minimum.
       '';
-      type = types.attrsOf (types.submoduleWith {
-        modules = [./elewrap-element.nix];
-      });
+      type = types.attrsOf (
+        types.submoduleWith {
+          modules = [ ./elewrap-element.nix ];
+        }
+      );
     };
   };
 }

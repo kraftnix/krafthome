@@ -3,19 +3,25 @@
   pkgs,
   lib,
   ...
-}: let
+}:
+let
   cfg = config.khome.media.bluray;
-  inherit
-    (lib)
+  inherit (lib)
     mkEnableOption
     mkIf
     ;
-in {
+in
+{
   options.khome.media.bluray = {
     enable = mkEnableOption "enable bluray tools";
   };
 
   config = mkIf cfg.enable {
-    environment.systemPackages = with pkgs; [libaacs libbluray mpv cdrtools];
+    environment.systemPackages = with pkgs; [
+      libaacs
+      libbluray
+      mpv
+      cdrtools
+    ];
   };
 }

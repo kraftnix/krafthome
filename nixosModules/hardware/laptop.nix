@@ -3,15 +3,16 @@
   pkgs,
   lib,
   ...
-}: let
+}:
+let
   cfg = config.khome.hardware.laptop;
-  inherit
-    (lib)
+  inherit (lib)
     mkEnableOption
     mkIf
     mkMerge
     ;
-in {
+in
+{
   options.khome.hardware.laptop = {
     headless = mkEnableOption "headless laptop mode";
     powersave = mkEnableOption "powersave mode";

@@ -1,15 +1,17 @@
-{self, ...}: {
+{ self, ... }:
+{
   config,
   lib,
   ...
-}: let
-  inherit
-    (lib)
+}:
+let
+  inherit (lib)
     mkIf
     ;
   cfg = config.khome.desktop.wm;
   opts = self.inputs.extra-lib.lib.options;
-in {
+in
+{
   options.khome.desktop.wm = {
     legacyTheme = {
       enable = opts.enable "enable legacy theme";

@@ -5,9 +5,11 @@
   pkgs,
   ...
 }:
-with lib; let
+with lib;
+let
   super = "<super>";
-in {
+in
+{
   home.packages = with pkgs; [
     # display / lockscreen
     swayidle # autolock
@@ -41,7 +43,7 @@ in {
         #dm = "${pkgs.greetd.gtkgreet}/bin/gtkgreet -l && wayland-logout";
       };
     };
-    extraPlugins = ["blur"];
+    extraPlugins = [ "blur" ];
     bindings = {
       launcher.command = "rofi -show-icons -modi drun,calc,filebrowser -show drun";
       volume_up.command = "${pkgs.pulseaudio}/bin/pactl set-sink-volume 0 +5%";

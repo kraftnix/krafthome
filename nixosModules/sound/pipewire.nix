@@ -3,26 +3,37 @@
   lib,
   pkgs,
   ...
-}: let
+}:
+let
   cfg = config.khome.sound.pipewire;
-  inherit
-    (lib)
+  inherit (lib)
     mkEnableOption
     mkIf
     mkOption
     types
     ;
-in {
-  imports = [./media-session.nix];
+in
+{
+  imports = [ ./media-session.nix ];
 
   options.khome.sound.pipewire = {
-    enable = mkEnableOption "use pipewire for sound" // {default = config.khome.sound.enable;};
-    rtkit = mkEnableOption "enable real-time kit" // {default = true;};
-    alsa.enable = mkEnableOption "enable alsa" // {default = true;};
-    pulse.enable = mkEnableOption "enable pulse" // {default = config.khome.sound.pulse.enable;};
+    enable = mkEnableOption "use pipewire for sound" // {
+      default = config.khome.sound.enable;
+    };
+    rtkit = mkEnableOption "enable real-time kit" // {
+      default = true;
+    };
+    alsa.enable = mkEnableOption "enable alsa" // {
+      default = true;
+    };
+    pulse.enable = mkEnableOption "enable pulse" // {
+      default = config.khome.sound.pulse.enable;
+    };
     jack.enable = mkEnableOption "enable jack";
     media-session.enable = mkEnableOption "enable media session";
-    wireplumber.enable = mkEnableOption "enable wireplumber" // {default = true;};
+    wireplumber.enable = mkEnableOption "enable wireplumber" // {
+      default = true;
+    };
   };
 
   config = mkIf cfg.enable {
@@ -47,7 +58,11 @@ in {
             "bluez5.enable-hw-volume" = true;
             # attempt enforce A2DP while using mic on headphones
             "bluez5.autoswitch-profile" = true;
-            "bluez5.roles" = ["hfp_hf" "hsp_hs" "a2dp_sink"];
+            "bluez5.roles" = [
+              "hfp_hf"
+              "hsp_hs"
+              "a2dp_sink"
+            ];
             # "bluez5.roles" = [ "hsp_hs" "hsp_ag" "hfp_hf" "hfp_ag" ];
             # "bluez5.reconnect-profiles" = [ "hfp_hf" "hsp_hs" "a2dp_sink" ];
           };

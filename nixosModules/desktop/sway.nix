@@ -3,29 +3,37 @@
   lib,
   pkgs,
   ...
-}: let
+}:
+let
   cfg = config.khome.desktop.sway;
-  inherit
-    (lib)
+  inherit (lib)
     mkEnableOption
     mkIf
     mkOption
     types
     ;
-in {
+in
+{
   options.khome.desktop.sway = {
     enable = mkEnableOption "enable Sway core system level config";
     polkitAgent = mkOption {
       description = "which polkit agent to use with sway";
       default = "gnome";
-      type = types.enum ["none" "gnome"];
+      type = types.enum [
+        "none"
+        "gnome"
+      ];
     };
   };
 
   config = mkIf cfg.enable {
     khome.desktop.gnome-polkit.enable = cfg.polkitAgent == "gnome";
     security.pam.services.swaylock.text = "auth include login";
-    environment.systemPackages = with pkgs; [grim slurp swappy];
+    environment.systemPackages = with pkgs; [
+      grim
+      slurp
+      swappy
+    ];
     programs.sway.enable = true;
     programs.sway.extraSessionCommands = ''
       dbus-update-activation-environment --systemd DISPLAY SWAYSOCK WAYLAND_DISPLAY XDG_CURRENT_DESKTOP NIXOS_OZONE_WL
@@ -46,8 +54,7 @@ in {
     };
 
     services.displayManager.sessionPackages =
-      lib.mkIf
-      config.services.xserver.displayManager.gdm.enable
-      [config.programs.sway.package];
+      lib.mkIf config.services.xserver.displayManager.gdm.enable
+        [ config.programs.sway.package ];
   };
 }

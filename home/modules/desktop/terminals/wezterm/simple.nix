@@ -2,13 +2,15 @@
   lib,
   config,
   ...
-}: let
+}:
+let
   inherit (lib) mkDefault;
   # WIP: not working
   #hyperlink_rules = attrValues (import ./hyperlink-rules.nix);
   kcfg = config.khome.desktop.terminals.wezterm;
   cfg = config.khome.programs.wezterm;
-in {
+in
+{
   # imports = [
   #   ./style.nix
   # ];

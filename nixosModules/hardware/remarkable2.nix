@@ -3,14 +3,15 @@
   lib,
   pkgs,
   ...
-}: let
+}:
+let
   cfg = config.khome.hardware.remarkable2;
-  inherit
-    (lib)
+  inherit (lib)
     mkEnableOption
     mkIf
     ;
-in {
+in
+{
   options.khome.hardware.remarkable2 = {
     enable = mkEnableOption "enable remarkable 2 udev rules";
   };

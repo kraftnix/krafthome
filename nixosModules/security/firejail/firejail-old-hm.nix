@@ -3,9 +3,9 @@
   lib,
   pkgs,
   ...
-}: let
-  inherit
-    (lib)
+}:
+let
+  inherit (lib)
     filter
     flatten
     flip
@@ -20,7 +20,8 @@
     types
     ;
   cfg = config.home-manager.firejail;
-in {
+in
+{
   options.home-manager.firejail = {
     enable = mkEnableOption ''
       enable firejail integration.
@@ -30,40 +31,42 @@ in {
     '';
     users = mkOption {
       type = with types; listOf str;
-      default = [];
+      default = [ ];
       description = "home manager users to collect `home.firejail.wrappedBinaries` from";
     };
     # Copied from upstream
     wrappedBinaries = mkOption {
-      type = types.attrsOf (types.submodule {
-        options = {
-          # default options
-          executable = mkOption {
-            type = types.path;
-            description = "Executable to run sandboxed";
-            example = literalExpression ''"''${lib.getBin pkgs.firefox}/bin/firefox"'';
+      type = types.attrsOf (
+        types.submodule {
+          options = {
+            # default options
+            executable = mkOption {
+              type = types.path;
+              description = "Executable to run sandboxed";
+              example = literalExpression ''"''${lib.getBin pkgs.firefox}/bin/firefox"'';
+            };
+            desktop = mkOption {
+              type = with types; nullOr path;
+              default = null;
+              description = ".desktop file to modify. Only necessary if it uses the absolute path to the executable.";
+              example = literalExpression ''"''${pkgs.firefox}/share/applications/firefox.desktop"'';
+            };
+            profile = mkOption {
+              type = with types; nullOr path;
+              default = null;
+              description = "Profile to use";
+              example = literalExpression ''"''${pkgs.firejail}/etc/firejail/firefox.profile"'';
+            };
+            extraArgs = mkOption {
+              type = with types; listOf str;
+              default = [ ];
+              description = "Extra arguments to pass to firejail";
+              example = [ "--private=~/.firejail_home" ];
+            };
           };
-          desktop = mkOption {
-            type = with types; nullOr path;
-            default = null;
-            description = ".desktop file to modify. Only necessary if it uses the absolute path to the executable.";
-            example = literalExpression ''"''${pkgs.firefox}/share/applications/firefox.desktop"'';
-          };
-          profile = mkOption {
-            type = with types; nullOr path;
-            default = null;
-            description = "Profile to use";
-            example = literalExpression ''"''${pkgs.firejail}/etc/firejail/firefox.profile"'';
-          };
-          extraArgs = mkOption {
-            type = with types; listOf str;
-            default = [];
-            description = "Extra arguments to pass to firejail";
-            example = ["--private=~/.firejail_home"];
-          };
-        };
-      });
-      default = {};
+        }
+      );
+      default = { };
       example = literalExpression ''
         {
           firefox = {
@@ -85,7 +88,7 @@ in {
     home-manager.firejail.wrappedBinaries = pipe cfg.users [
       (filter (user: config.home-manager.users.${user}.home.firejail.enable))
       (map (user: config.home-manager.users.${user}.home.firejail.wrappedBinaries))
-      (map (mapAttrs (_: flip removeAttrs ["whitelist"])))
+      (map (mapAttrs (_: flip removeAttrs [ "whitelist" ])))
       mkMerge
     ];
     programs.firejail.wrappedBinaries = cfg.wrappedBinaries;

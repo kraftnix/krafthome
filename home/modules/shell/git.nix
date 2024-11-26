@@ -1,28 +1,32 @@
-args: {
+args:
+{
   config,
   lib,
   pkgs,
   ...
-}: let
-  inherit
-    (lib)
+}:
+let
+  inherit (lib)
     mkEnableOption
     mkIf
     optionals
     ;
   cfg = config.khome.shell.git;
-in {
+in
+{
   options.khome.shell.git = {
     enable = mkEnableOption "enable xplr";
     enableDelta = mkEnableOption "enable delta pager";
-    enableDifftastic = mkEnableOption "enable difftastic pager" // {default = true;};
+    enableDifftastic = mkEnableOption "enable difftastic pager" // {
+      default = true;
+    };
   };
 
   config = {
     home.packages =
-      []
-      ++ (optionals cfg.enableDifftastic [pkgs.difftastic])
-      ++ (optionals cfg.enableDelta [pkgs.delta]);
+      [ ]
+      ++ (optionals cfg.enableDifftastic [ pkgs.difftastic ])
+      ++ (optionals cfg.enableDelta [ pkgs.delta ]);
     programs.git = {
       enable = true;
       delta = mkIf cfg.enableDelta {

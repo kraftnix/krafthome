@@ -1,19 +1,22 @@
-{self, ...}: {
+{ self, ... }:
+{
   config,
   pkgs,
   lib,
   ...
-}: let
+}:
+let
   inherit (lib) mkIf mapAttrs mkOptionDefault;
   cfg = config.khome.desktop.wm.sway;
   opts = self.inputs.extra-lib.lib.options;
   inherit (self.lib.khome) toggleApp wrapSwayrLog;
-in {
+in
+{
   options.khome.desktop.wm.sway = {
     swayr = {
       enable = opts.enableTrue "enable swayr integration";
       systemd = opts.enableTrue "use systemd user unit";
-      settings = opts.raw {} "settings to add to swayr config.toml";
+      settings = opts.raw { } "settings to add to swayr config.toml";
     };
   };
 
@@ -28,14 +31,15 @@ in {
     khome.desktop.wm.sway = {
       startup = [
         (
-          if cfg.swayr.systemd
-          then {
-            command = "systemctl --user restart swayrd";
-            always = true;
-          }
-          else {
-            command = "exec env RUST_BACKTRACE=1 RUST_LOG=swayr=debug swayrd > /tmp/swayrd.log 2>&1";
-          }
+          if cfg.swayr.systemd then
+            {
+              command = "systemctl --user restart swayrd";
+              always = true;
+            }
+          else
+            {
+              command = "exec env RUST_BACKTRACE=1 RUST_LOG=swayr=debug swayrd > /tmp/swayrd.log 2>&1";
+            }
         )
       ];
 

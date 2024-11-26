@@ -1,17 +1,19 @@
-{self, ...}: {
+{ self, ... }:
+{
   config,
   lib,
   pkgs,
   ...
-}: let
+}:
+let
   cfg = config.khome.roles.basic;
   opts = self.inputs.extra-lib.lib.options;
-  inherit
-    (lib)
+  inherit (lib)
     mkEnableOption
     mkIf
     ;
-in {
+in
+{
   options.khome.roles.basic = {
     enable = opts.enable ''
       Enables basic role. Contains:

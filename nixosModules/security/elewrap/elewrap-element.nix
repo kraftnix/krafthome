@@ -3,14 +3,15 @@
   config,
   lib,
   ...
-}: let
-  inherit
-    (lib)
+}:
+let
+  inherit (lib)
     literalExpression
     mkOption
     types
     ;
-in {
+in
+{
   options = {
     path = mkOption {
       type = types.str;
@@ -38,21 +39,27 @@ in {
     };
 
     allowedUsers = mkOption {
-      default = [];
-      example = ["user1" "user2"];
+      default = [ ];
+      example = [
+        "user1"
+        "user2"
+      ];
       type = types.listOf types.str;
       description = "The users allowed to execute this wrapper.";
     };
 
     allowedGroups = mkOption {
-      default = [];
-      example = ["group1" "group2"];
+      default = [ ];
+      example = [
+        "group1"
+        "group2"
+      ];
       type = types.listOf types.str;
       description = "The groups allowed to execute this wrapper.";
     };
 
     passEnvironment = mkOption {
-      default = [];
+      default = [ ];
       type = types.listOf types.str;
       description = "The environment variables in this list will be allowed to be passed to the target command. Anything else will be erased.";
     };

@@ -3,19 +3,22 @@
   lib,
   pkgs,
   ...
-}: let
+}:
+let
   cfg = config.khome.sound.bluetooth;
-  inherit
-    (lib)
+  inherit (lib)
     mkEnableOption
     mkIf
     mkOption
     types
     ;
-in {
+in
+{
   options.khome.sound.bluetooth = {
     enable = mkEnableOption "enable bluetooth";
-    blueman = mkEnableOption "use blueman as bluetooth manager" // {default = true;};
+    blueman = mkEnableOption "use blueman as bluetooth manager" // {
+      default = true;
+    };
   };
 
   config = mkIf cfg.enable {

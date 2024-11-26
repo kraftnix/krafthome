@@ -2,14 +2,16 @@
   config,
   pkgs,
   ...
-}: let
+}:
+let
   local = import ../themes.nix;
   base16 = config.lib.base16;
   colors = with base16.theme; {
     primary = magenta;
     secondary = cyan;
   };
-in {
+in
+{
   khome.themes = with base16.theme; {
     enable = true;
     # base16 = {

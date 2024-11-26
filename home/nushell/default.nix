@@ -2,18 +2,20 @@
   inputs,
   self,
   ...
-}: {
+}:
+{
   lib,
   config,
   pkgs,
   ...
 }:
-with lib; {
+with lib;
+{
   /*
-   NOTE: wip fzf
-  open ~/.zsh_history | split row ': ' | str trim | parse -r '(?P<timestamp>\d+):0;(?P<cmd>.*)' | get cmd | str collect "\n" | fzf
+     NOTE: wip fzf
+    open ~/.zsh_history | split row ': ' | str trim | parse -r '(?P<timestamp>\d+):0;(?P<cmd>.*)' | get cmd | str collect "\n" | fzf
   */
-  imports = [self.homeModules.nushell-unstable];
+  imports = [ self.homeModules.nushell-unstable ];
   programs.nushell-unstable = {
     enable = true;
     enableStarship = true;

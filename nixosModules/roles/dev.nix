@@ -2,9 +2,9 @@
   config,
   lib,
   ...
-}: let
-  inherit
-    (lib)
+}:
+let
+  inherit (lib)
     genAttrs
     mkDefault
     mkEnableOption
@@ -15,7 +15,8 @@
   cfg = config.khome.roles.dev;
   secEnable = cfg.security.enable;
   defaultSec = mkDefault secEnable;
-in {
+in
+{
   options.khome.roles.dev = {
     enable = mkEnableOption ''
       Enables developer role.
@@ -24,7 +25,7 @@ in {
       Enables graphical options.
     '';
     users = mkOption {
-      default = [];
+      default = [ ];
       description = "user to passthrough `khome.roles.dev` home-manager options for";
       type = with types; listOf str;
     };
@@ -35,13 +36,19 @@ in {
     provision.security.enable = defaultSec;
     provision.security.addWrappers = defaultSec;
     provision.security.collectHomeManager = defaultSec;
-    home-manager.users = genAttrs cfg.users (user: ({config, ...}: {
-      home.firejail.enable = defaultSec;
-      home.firejail.addToHomePackages = defaultSec;
-      provision.security.addWrappers = defaultSec;
-      khome.roles.dev = {
-        inherit (cfg) enable graphical;
-      };
-    }));
+    home-manager.users = genAttrs cfg.users (
+      user:
+      (
+        { config, ... }:
+        {
+          home.firejail.enable = defaultSec;
+          home.firejail.addToHomePackages = defaultSec;
+          provision.security.addWrappers = defaultSec;
+          khome.roles.dev = {
+            inherit (cfg) enable graphical;
+          };
+        }
+      )
+    );
   };
 }

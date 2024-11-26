@@ -1,4 +1,5 @@
-{...}: {
+{ ... }:
+{
   imports = [
     ./plugins/essentials.nix
     ./plugins/style.nix

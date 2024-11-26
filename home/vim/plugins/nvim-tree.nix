@@ -1,6 +1,7 @@
 # NERD tree style plugin, show a list of files + directories in a side panel
-{pkgs, ...}: {
-  plugins = with pkgs.vimPlugins; [nvim-tree-lua];
+{ pkgs, ... }:
+{
+  plugins = with pkgs.vimPlugins; [ nvim-tree-lua ];
 
   setup.nvim-tree = {
     disable_netrw = true;
@@ -26,15 +27,15 @@
     update_focused_file = {
       enable = false;
       update_cwd = false;
-      ignore_list = {};
+      ignore_list = { };
     };
     system_open = {
       cmd = null;
-      args = {};
+      args = { };
     };
     filters = {
       dotfiles = false;
-      custom = {};
+      custom = { };
     };
     git = {
       enable = true;
@@ -48,7 +49,7 @@
       adaptive_size = true;
       mappings = {
         custom_only = false;
-        list = {};
+        list = { };
       };
     };
   };

@@ -5,13 +5,14 @@ args:
   pkgs,
   lib,
   ...
-}: let
+}:
+let
   /*
-   Layout / base16 notes:
-  base00 = background
-  base01 = alternate highlight
-  base05 = border
-  base06 = select
+     Layout / base16 notes:
+    base00 = background
+    base01 = alternate highlight
+    base05 = border
+    base06 = select
   */
   # mkTheme = overrides: lib.recursiveUpdate
   #   {
@@ -66,8 +67,7 @@ args:
   #     };
   #   }
   #   overrides;
-  inherit
-    (lib)
+  inherit (lib)
     mkDefault
     mkEnableOption
     mkIf
@@ -76,12 +76,21 @@ args:
     types
     ;
   cfg = config.khome.desktop.rofi;
-in {
+in
+{
   options.khome.desktop.rofi = {
     enable = mkEnableOption "enable mako integration";
-    enableWayland = mkEnableOption "use rofi-wayland" // {default = true;};
+    enableWayland = mkEnableOption "use rofi-wayland" // {
+      default = true;
+    };
     theme = mkOption {
-      type = with types; nullOr (oneOf [str path raw]);
+      type =
+        with types;
+        nullOr (oneOf [
+          str
+          path
+          raw
+        ]);
       default = null;
       description = "optional theme to pass in as override, sets `programs.rofi.theme`";
       example = lib.literalExpression "./mytheme.rasi";
@@ -103,12 +112,12 @@ in {
       ];
     };
     themeOverrides = mkOption {
-      default = {};
+      default = { };
       description = "overrides passed to custom mkTheme function";
       type = types.raw;
     };
     extraConfig = mkOption {
-      default = {};
+      default = { };
       type = types.raw;
       description = "extra configuration to add to `services.mako`";
     };
@@ -121,10 +130,7 @@ in {
     stylix.targets.rofi.enable = true;
     programs.rofi = {
       enable = true;
-      package =
-        if cfg.enableWayland
-        then pkgs.rofi-wayland
-        else pkgs.rofi;
+      package = if cfg.enableWayland then pkgs.rofi-wayland else pkgs.rofi;
       inherit (cfg) plugins terminal;
       theme = mkDefault cfg.theme;
       extraConfig = mkMerge [

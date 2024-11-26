@@ -1,11 +1,12 @@
-args: {
+args:
+{
   config,
   lib,
   pkgs,
   ...
-}: let
-  inherit
-    (lib)
+}:
+let
+  inherit (lib)
     mapAttrsToList
     mkDefault
     mkEnableOption
@@ -15,25 +16,27 @@ args: {
     types
     ;
   cfg = config.khome.desktop.waybar;
-  mkStrOption = default: description:
+  mkStrOption =
+    default: description:
     mkOption {
       inherit description default;
       type = types.str;
     };
   hyprlandEnable = cfg.wm == "hyprland";
-in {
+in
+{
   options.khome.desktop.waybar = {
     enable = mkEnableOption "enable waybar integration";
     colorsRelPath = mkStrOption ".config/waybar/colors.css" "path to place `colors.css` relative to home";
     stylecss = mkStrOption (builtins.readFile ./lightweight.css) "style css file";
     wm = mkStrOption "sway" "window manager to optimise for, `sway` or `hyprland` supported.";
     colors = mkOption {
-      default = {};
+      default = { };
       type = types.raw;
       description = "lib.base16 color attribute set";
     };
     extraConfig = mkOption {
-      default = {};
+      default = { };
       type = types.raw;
       description = "extra configuration to merge into mainbar";
     };
@@ -41,9 +44,9 @@ in {
 
   config = mkIf cfg.enable {
     khome.desktop.waybar.colors = mkDefault (config.lib.base16.getColorsH "waybar");
-    home.file."${cfg.colorsRelPath}".text =
-      builtins.concatStringsSep "\n"
-      (mapAttrsToList (name: value: "@define-color ${name} ${value};") cfg.colors);
+    home.file."${cfg.colorsRelPath}".text = builtins.concatStringsSep "\n" (
+      mapAttrsToList (name: value: "@define-color ${name} ${value};") cfg.colors
+    );
 
     programs.waybar = {
       enable = true;
@@ -59,11 +62,25 @@ in {
           position = "top";
           height = 30;
           modules-left =
-            if hyprlandEnable
-            then ["${cfg.wm}/workspaces"]
-            else ["${cfg.wm}/workspaces" "sway/mode"];
-          modules-center = ["clock"];
-          modules-right = ["idle_inhibitor" "pulseaudio" "network" "cpu" "memory" "disk" "temperature" "battery" "tray"];
+            if hyprlandEnable then
+              [ "${cfg.wm}/workspaces" ]
+            else
+              [
+                "${cfg.wm}/workspaces"
+                "sway/mode"
+              ];
+          modules-center = [ "clock" ];
+          modules-right = [
+            "idle_inhibitor"
+            "pulseaudio"
+            "network"
+            "cpu"
+            "memory"
+            "disk"
+            "temperature"
+            "battery"
+            "tray"
+          ];
           "${cfg.wm}/workspaces" = {
             disable-scroll = true;
             all-outputs = false;
@@ -71,7 +88,13 @@ in {
           };
           "battery" = {
             format = "{capacity}% {icon}";
-            format-icons = ["" "" "" "" ""];
+            format-icons = [
+              ""
+              ""
+              ""
+              ""
+              ""
+            ];
             states = {
               critical = 15;
               warning = 30;
@@ -119,7 +142,11 @@ in {
             critical-threshold = 80;
             format-critical = "<span style=\"bold\"> CRITICAL: {temperatureC}°C {icon}</span>";
             format = " {temperatureC}°C {icon}";
-            format-icons = ["" "" ""];
+            format-icons = [
+              ""
+              ""
+              ""
+            ];
           };
           #"backlight" = {
           #  device = "acpi_video1";
@@ -149,7 +176,11 @@ in {
               phone = "";
               portable = "";
               car = "";
-              default = ["" "" ""];
+              default = [
+                ""
+                ""
+                ""
+              ];
             };
             on-click = "pavucontrol";
           };

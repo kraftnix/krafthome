@@ -2,9 +2,9 @@
   lib,
   config,
   ...
-}: let
-  inherit
-    (lib)
+}:
+let
+  inherit (lib)
     concatStringsSep
     filterAttrs
     mapAttrsToList
@@ -13,8 +13,7 @@
   # NOTE: improve this handling with base16 refactoring
   colors = config.lib.stylix.colors.withHashtag;
   baseColors =
-    if config.khome.themes.enable
-    then
+    if config.khome.themes.enable then
       (with colors; {
         background = base00;
         backgroundAlt = base01;
@@ -26,21 +25,25 @@
         orange = base09;
         base02 = base02;
       })
-    else rec {
-      background = "#0b0022";
-      backgroundAlt = "#0b3322";
-      foreground = "#c0c0c0";
-      primary = "#2b2042";
-      secondary = "#c0c0c0";
-      blue = "#7aa2f7";
-      green = "#9ece6a";
-      orange = "#ff9e64";
-      base02 = green;
-    };
-  colorVars = concatStringsSep "\n" (mapAttrsToList
-    (name: val: ''local ${name} = "${val}";'')
-    (filterAttrs (n: _: !(lib.hasInfix "-" n)) baseColors));
-in {
+    else
+      rec {
+        background = "#0b0022";
+        backgroundAlt = "#0b3322";
+        foreground = "#c0c0c0";
+        primary = "#2b2042";
+        secondary = "#c0c0c0";
+        blue = "#7aa2f7";
+        green = "#9ece6a";
+        orange = "#ff9e64";
+        base02 = green;
+      };
+  colorVars = concatStringsSep "\n" (
+    mapAttrsToList (name: val: ''local ${name} = "${val}";'') (
+      filterAttrs (n: _: !(lib.hasInfix "-" n)) baseColors
+    )
+  );
+in
+{
   khome.programs.wezterm = {
     extraPre = mkBefore colorVars;
     settings = {

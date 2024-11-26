@@ -4,7 +4,8 @@
   fetchurl,
   fetchFromGitHub,
   dockerTools,
-}: {
+}:
+{
   tree-sitter-bash = {
     pname = "tree-sitter-bash";
     version = "49c31006d8307dcb12bc5770f35b6d5b9e2be68e";

@@ -4,7 +4,8 @@
   fetchurl,
   fetchFromGitHub,
   dockerTools,
-}: {
+}:
+{
   browser-bookmarks-nvim = {
     pname = "browser-bookmarks-nvim";
     version = "06cfcb53bf3012792f36eb8eb6cd08f782c9b329";

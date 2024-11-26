@@ -1,4 +1,5 @@
-source: cargoHash: {
+source: cargoHash:
+{
   stdenv,
   lib,
   rustPlatform,
@@ -15,7 +16,7 @@ rustPlatform.buildRustPackage rec {
     mainProgram = "nu_plugin_explore";
     homepage = "https://github.com/amtoine/nu_plugin_explore";
     license = licenses.mit;
-    maintainers = with maintainers; [];
+    maintainers = with maintainers; [ ];
     platforms = with platforms; all;
   };
 }

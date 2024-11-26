@@ -1,12 +1,13 @@
-args: {
+args:
+{
   config,
   pkgs,
   lib,
   ...
-}: let
+}:
+let
   cfg = config.khome.shell.gpg;
-  inherit
-    (lib)
+  inherit (lib)
     mapAttrs
     mkDefault
     mkEnableOption
@@ -15,16 +16,15 @@ args: {
     optionalAttrs
     types
     ;
-in {
+in
+{
   options.khome.shell.gpg = {
-    enable =
-      mkEnableOption "enable gpg-agent with ssh integration"
-      // {
-        default = cfg.sshKeys != [];
-      };
+    enable = mkEnableOption "enable gpg-agent with ssh integration" // {
+      default = cfg.sshKeys != [ ];
+    };
     yubikey = mkEnableOption "diable ccid for yubiky compat";
     sshKeys = mkOption {
-      default = [];
+      default = [ ];
       description = "limit allowed auth keys via gpg";
       type = with types; listOf str;
     };
@@ -72,7 +72,7 @@ in {
         enableScDaemon = true;
         inherit (cfg) pinentryPackage;
       }
-      // (optionalAttrs (cfg.sshKeys != []) {
+      // (optionalAttrs (cfg.sshKeys != [ ]) {
         inherit (cfg) sshKeys;
       })
       // {

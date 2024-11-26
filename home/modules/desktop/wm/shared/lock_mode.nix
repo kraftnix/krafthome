@@ -1,12 +1,15 @@
-{self, ...}: {
+{ self, ... }:
+{
   config,
   lib,
   ...
-}: let
+}:
+let
   inherit (lib) mkIf mkBefore;
   cfg = config.khome.desktop.wm;
   opts = self.inputs.extra-lib.lib.options;
-in {
+in
+{
   options.khome.desktop.wm = {
     modes.lock = {
       enable = opts.enableTrue "enable extra opts";

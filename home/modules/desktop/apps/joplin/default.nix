@@ -1,10 +1,18 @@
-{self, ...}: {
+{ self, ... }:
+{
   config,
   lib,
   pkgs,
   ...
-}: let
-  inherit (lib) mkIf mkMerge genAttrs mapAttrs' nameValuePair;
+}:
+let
+  inherit (lib)
+    mkIf
+    mkMerge
+    genAttrs
+    mapAttrs'
+    nameValuePair
+    ;
   opts = self.inputs.extra-lib.lib.options;
   cfg = config.khome.desktop.apps.productivity.joplin;
 
@@ -25,7 +33,8 @@
   ];
   pluginAttrs = genAttrs pluginList (name: mkPluginLink name);
   homeLinks = mapAttrs' (name: value: nameValuePair "${pluginDir}/${name}.jpl" value) pluginAttrs;
-in {
+in
+{
   options.khome.desktop.apps.productivity.joplin = {
     enable = opts.enable "enable joplin";
     sway = opts.enableTrue "enable sway (and i3) integration (command + keybind)";
@@ -52,7 +61,9 @@ in {
         window.commands = [
           {
             command = "move scratchpad, scratchpad show, resize set 1400 950";
-            criteria = {app_id = "joplin";};
+            criteria = {
+              app_id = "joplin";
+            };
           }
         ];
       };
@@ -60,7 +71,9 @@ in {
         window.commands = [
           {
             command = "move scratchpad, scratchpad show, resize set 1400 950";
-            criteria = {app_id = "joplin";};
+            criteria = {
+              app_id = "joplin";
+            };
           }
         ];
       };

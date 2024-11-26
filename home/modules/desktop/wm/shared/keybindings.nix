@@ -1,8 +1,10 @@
-args: {
+args:
+{
   config,
   lib,
   ...
-}: let
+}:
+let
   cfg = config.khome.desktop.wm;
   sharedKeybindings = lib.mapAttrs (n: lib.mkDefault) {
     "$mod+Return" = "exec ${cfg.terminal}";
@@ -69,6 +71,7 @@ args: {
 
     "$mod+r" = "mode resize";
   };
-in {
+in
+{
   khome.desktop.wm.keybindings = sharedKeybindings;
 }

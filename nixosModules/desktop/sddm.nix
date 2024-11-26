@@ -3,16 +3,17 @@
   lib,
   pkgs,
   ...
-}: let
+}:
+let
   cfg = config.khome.desktop.sddm;
-  inherit
-    (lib)
+  inherit (lib)
     mkEnableOption
     mkIf
     mkOption
     types
     ;
-in {
+in
+{
   options.khome.desktop.sddm = {
     enable = mkEnableOption "enable SDDM as display manager";
     defaultSession = mkOption {
@@ -27,7 +28,7 @@ in {
     services.displayManager.defaultSession = cfg.defaultSession;
     services.displayManager.sddm = {
       enable = true;
-      settings = {};
+      settings = { };
     };
   };
 }

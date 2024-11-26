@@ -1,4 +1,5 @@
-localFlake: let
+localFlake:
+let
   lib = localFlake.lib;
   krafthome-local = {
     mdbook.src = ./.;
@@ -8,43 +9,37 @@ localFlake: let
     };
     docgen.flake-all = {
       hostOptions =
-        (localFlake.flake-parts-lib.evalFlakeModule
-          {inputs.self = localFlake.self;}
-          {
-            imports = [
-              # localFlake.self.auto-import.flake.modules.vim-plugins
-              ./flakeModules/vim-plugins.nix
-            ];
-            systems = [(throw "The `systems` option value is not available when generating documentation. This is generally caused by a missing `defaultText` on one or more options in the trace. Please run this evaluation with `--show-trace`, look for `while evaluating the default value of option` and add a `defaultText` to the one or more of the options involved.")];
-          })
-        .options;
-      filter = option: let
-        flakeEnabled = (
-          builtins.elemAt option.loc 0
-          == "flake"
-          && builtins.length option.loc > 1
-        );
-        perSystemEnabled = (
-          builtins.elemAt option.loc 0
-          == "perSystem"
-          && builtins.length option.loc > 1
-        );
-        loc1 = name: builtins.elemAt option.loc 1 == name;
-      in
+        (localFlake.flake-parts-lib.evalFlakeModule { inputs.self = localFlake.self; } {
+          imports = [
+            # localFlake.self.auto-import.flake.modules.vim-plugins
+            ./flakeModules/vim-plugins.nix
+          ];
+          systems = [
+            (throw "The `systems` option value is not available when generating documentation. This is generally caused by a missing `defaultText` on one or more options in the trace. Please run this evaluation with `--show-trace`, look for `while evaluating the default value of option` and add a `defaultText` to the one or more of the options involved.")
+          ];
+        }).options;
+      filter =
+        option:
+        let
+          flakeEnabled = (builtins.elemAt option.loc 0 == "flake" && builtins.length option.loc > 1);
+          perSystemEnabled = (builtins.elemAt option.loc 0 == "perSystem" && builtins.length option.loc > 1);
+          loc1 = name: builtins.elemAt option.loc 1 == name;
+        in
         # (flakeEnabled
         #   && (
         #     (loc1 "docs")
         #     || (loc1 "hosts")
         #   ))
         # ||
-        (perSystemEnabled
+        (
+          perSystemEnabled
           && (
             (loc1 "vimPlugins")
             # || (loc1 "sites")
-          ));
+          )
+        );
     };
-    docgen.nixos-all.filter = option:
-      builtins.elemAt option.loc 0 == "khome";
+    docgen.nixos-all.filter = option: builtins.elemAt option.loc 0 == "khome";
     docgen.home-all.hostOptions =
       # (lib.evalModules {
       #   specialArgs = { inherit lib; };
@@ -63,20 +58,22 @@ localFlake: let
             localFlake.inputs.provision.homeManagerModules.provision-scripts
             # localFlake.inputs.nix-index-database.hmModules.nix-index
             localFlake.inputs.stylix.homeManagerModules.stylix
-            ({config, ...}: {
-              options.meta.doc = lib.mkOption {default = {};};
-              config.home.stateVersion = "23.11";
-              config.home.username = "devuser";
-              config.home.homeDirectory = "/home/devuser";
-            })
+            (
+              { config, ... }:
+              {
+                options.meta.doc = lib.mkOption { default = { }; };
+                config.home.stateVersion = "23.11";
+                config.home.username = "devuser";
+                config.home.homeDirectory = "/home/devuser";
+              }
+            )
           ];
-      })
-      .options;
+      }).options;
 
-    docgen.home-all.filter = option:
-      builtins.elemAt option.loc 0 == "khome";
+    docgen.home-all.filter = option: builtins.elemAt option.loc 0 == "khome";
   };
-in {
+in
+{
   flake.docs = {
     enable = true;
     defaults = {

@@ -1,17 +1,19 @@
-args: {
+args:
+{
   config,
   lib,
   pkgs,
   ...
-}: let
-  inherit
-    (lib)
+}:
+let
+  inherit (lib)
     mkEnableOption
     mkIf
     optionals
     ;
   cfg = config.khome.shell.ssh-rebind;
-in {
+in
+{
   options.khome.shell.ssh-rebind = {
     enable = mkEnableOption "enable ssh rebind";
   };

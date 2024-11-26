@@ -1,10 +1,17 @@
-{self, ...}: {
+{ self, ... }:
+{
   config,
   pkgs,
   lib,
   ...
-}: let
-  inherit (lib) concatStringsSep mkIf mapAttrs mkOptionDefault;
+}:
+let
+  inherit (lib)
+    concatStringsSep
+    mkIf
+    mapAttrs
+    mkOptionDefault
+    ;
   cfg = config.khome.desktop.wm.sway;
   opts = self.inputs.extra-lib.lib.options;
   inherit (self.lib.khome) toggleApp wrapSwayrLog;
@@ -17,7 +24,8 @@
     "XDG_SESSION_DESKTOP"
     "XDG_CURRENT_DESKTOP"
   ];
-in {
+in
+{
   options.khome.desktop.wm.sway = {
     full = opts.enableTrue "enable full default config";
   };
@@ -41,30 +49,25 @@ in {
           command = "dbus-update-activation-environment --systemd ${concatStringsSep " " variableUpdates}";
           always = true;
         }
-        (
-          mkIf (config.programs.eww-hyprland.enable)
-          (
-            if config.programs.eww-hyprland.systemd
-            then {
+        (mkIf (config.programs.eww-hyprland.enable) (
+          if config.programs.eww-hyprland.systemd then
+            {
               command = "systemctl --user reload eww";
               always = true;
             }
-            else {
+          else
+            {
               command = "exec eww daemon";
             }
-          )
-        )
+        ))
         (mkIf (config.services.mako.enable) {
           command = "exec mako";
           always = true;
         })
-        (
-          mkIf (config.programs.waybar.enable && config.programs.waybar.systemd.enable)
-          {
-            command = "systemctl --user restart waybar";
-            always = true;
-          }
-        )
+        (mkIf (config.programs.waybar.enable && config.programs.waybar.systemd.enable) {
+          command = "systemctl --user restart waybar";
+          always = true;
+        })
         (mkIf (config.services.kanshi.enable) {
           command = "systemctl --user restart kanshi";
           always = true;

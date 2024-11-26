@@ -1,11 +1,12 @@
-{inputs, ...}: {
+{ inputs, ... }:
+{
   pkgs,
   config,
   lib,
   ...
-}: let
-  inherit
-    (lib)
+}:
+let
+  inherit (lib)
     mkEnableOption
     mkIf
     mkMerge
@@ -16,7 +17,8 @@
     ;
   anyrunPkgs = inputs.anyrun.packages.${pkgs.system};
   cfg = config.khome.desktop.anyrun;
-in {
+in
+{
   options.khome.desktop.anyrun = {
     enable = mkEnableOption "anyrun khome anyrun config";
     modKeybind = mkOption {
@@ -48,7 +50,7 @@ in {
       type = types.path;
     };
     extraConfig = mkOption {
-      default = {};
+      default = { };
       description = "extra config to add to `programs.anyrun.config`";
       type = types.raw;
     };

@@ -3,16 +3,17 @@
   lib,
   pkgs,
   ...
-}: let
+}:
+let
   cfg = config.khome.desktop;
-  inherit
-    (lib)
+  inherit (lib)
     mkEnableOption
     mkIf
     mkOption
     types
     ;
-in {
+in
+{
   imports = [
     ./disable-caps-tty.nix
     ./flatpak.nix
@@ -60,7 +61,7 @@ in {
         gnome.gnome-settings-daemon
       ];
     };
-    environment.systemPackages = with pkgs; [xorg.xeyes];
+    environment.systemPackages = with pkgs; [ xorg.xeyes ];
     services.xserver = {
       enable = true;
       xkb.layout = cfg.keyboardLayout;

@@ -1,11 +1,12 @@
-args: {
+args:
+{
   config,
   lib,
   pkgs,
   ...
-}: let
-  inherit
-    (lib)
+}:
+let
+  inherit (lib)
     mkEnableOption
     mkIf
     mkOption
@@ -13,7 +14,8 @@ args: {
     ;
   cfg = config.khome.shell.starship;
   theme = cfg.themes.${cfg.theme};
-in {
+in
+{
   options.khome.shell.starship = {
     enable = mkEnableOption "enable starship";
     theme = mkOption {

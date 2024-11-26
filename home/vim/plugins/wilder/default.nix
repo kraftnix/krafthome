@@ -1,6 +1,7 @@
 # Fancy vim menus for ':', ':', '/', '?'
 # allows fuzzy searching terms better
-{pkgs, ...}: {
+{ pkgs, ... }:
+{
   plugins = [
     pkgs.vimPlugins.wilder-nvim
     pkgs.vimPlugins.cpsm

@@ -1,11 +1,12 @@
-localFlake: {
+localFlake:
+{
   config,
   pkgs,
   lib,
   ...
-}: let
-  inherit
-    (lib)
+}:
+let
+  inherit (lib)
     attrValues
     mapAttrsToList
     mkEnableOption
@@ -15,16 +16,19 @@ localFlake: {
     types
     ;
   cfg = config.home.firejail;
-  homeFirejailModule = {config, ...}: {
-    config._module.args.descriptions.enable = "enable home-manager firejail integration";
-    options = {
-      addAllToHomePackages = mkEnableOption "add single firejail package with all firejail wrapped binaries to `home.packages`";
-      addToHomePackages = mkEnableOption "add firejail wrapped binaries to `home.packages`";
+  homeFirejailModule =
+    { config, ... }:
+    {
+      config._module.args.descriptions.enable = "enable home-manager firejail integration";
+      options = {
+        addAllToHomePackages = mkEnableOption "add single firejail package with all firejail wrapped binaries to `home.packages`";
+        addToHomePackages = mkEnableOption "add firejail wrapped binaries to `home.packages`";
+      };
     };
-  };
-in {
+in
+{
   options.home.firejail = mkOption {
-    default = {};
+    default = { };
     description = ''
       Define firejail binaries in home-manager configurations, optionally add wrappers to home.packages.
 
@@ -34,13 +38,13 @@ in {
       modules = [
         ./submodule.nix
         homeFirejailModule
-        {config._module.args.pkgs = pkgs;}
+        { config._module.args.pkgs = pkgs; }
       ];
     };
   };
 
   config = mkIf cfg.enable (mkMerge [
-    {home.packages = mkIf cfg.addAllToHomePackages [cfg.allBinaries];}
-    {home.packages = mkIf cfg.addToHomePackages (attrValues cfg.binaries);}
+    { home.packages = mkIf cfg.addAllToHomePackages [ cfg.allBinaries ]; }
+    { home.packages = mkIf cfg.addToHomePackages (attrValues cfg.binaries); }
   ]);
 }

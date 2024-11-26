@@ -1,11 +1,12 @@
-args @ {self, ...}: {
+args@{ self, ... }:
+{
   config,
   lib,
   pkgs,
   ...
-}: let
-  inherit
-    (lib)
+}:
+let
+  inherit (lib)
     mkIf
     mkMerge
     mkOption
@@ -17,7 +18,8 @@ args @ {self, ...}: {
     config = cfg.sharedConfig;
     extraConfig = cfg.sharedExtraConfig;
   };
-in {
+in
+{
   imports = [
     (import ./extended.nix args)
     (import ./keybindings.nix args)
@@ -26,7 +28,7 @@ in {
   ];
 
   options.khome.desktop.wm = {
-    sharedConfig = opts.raw {} "shared config to apply to all window managers";
+    sharedConfig = opts.raw { } "shared config to apply to all window managers";
     sharedExtraConfig = opts.string "" "extra config to apply to all window managers";
 
     modifier = opts.string "Mod4" "wm modifier key";
@@ -38,17 +40,13 @@ in {
     fonts = opts.raw {
       # only works for hm atm
       # names = [ config.themes.font.fontSizeStr ];
-      names = ["Fira Code Nerd Font Mono"];
+      names = [ "Fira Code Nerd Font Mono" ];
       style = "Bold Semi-Condensed";
       size = lib.mkDefault config.stylix.fonts.sizes.desktop;
     } "fonts for window manager";
-    menu =
-      opts.string
-      "fuzzel --show-actions"
-      "command runner command"
-      // {
-        example = ''"rofi -show-icons -modi ssh,drun,filebrowser,emoji -show drun"'';
-      };
+    menu = opts.string "fuzzel --show-actions" "command runner command" // {
+      example = ''"rofi -show-icons -modi ssh,drun,filebrowser,emoji -show drun"'';
+    };
     gaps.enable = opts.enableTrue "enable gaps configuration";
     focus = opts.raw {
       newWindow = "urgent";
@@ -62,45 +60,27 @@ in {
     };
     keybindings = mkOption {
       type = with types; attrsOf str;
-      default = {};
+      default = { };
       description = "shared keybindings";
     };
     bars = mkOption {
       type = with types; listOf raw;
-      default = [];
+      default = [ ];
       description = "shared bars";
     };
     brightness = {
       enable = opts.enableTrue "enable brightness key settings";
       increment = opts.int 5 "increment/decrement percent";
-      upCommand =
-        opts.string
-        "brightnessctl set ${toString cfg.volume.increment}+% && notify-send 'brightness up'"
-        "command to set when brightness up pressed";
-      downCommand =
-        opts.string
-        "brightnessctl set ${toString cfg.volume.increment}-% && notify-send 'brightness down'"
-        "command to set when brightness down pressed";
-      minCommand =
-        opts.string
-        "brightnessctl set 1% && notify-send 'brightness low'"
-        "command to set when shift+brightness down pressed";
+      upCommand = opts.string "brightnessctl set ${toString cfg.volume.increment}+% && notify-send 'brightness up'" "command to set when brightness up pressed";
+      downCommand = opts.string "brightnessctl set ${toString cfg.volume.increment}-% && notify-send 'brightness down'" "command to set when brightness down pressed";
+      minCommand = opts.string "brightnessctl set 1% && notify-send 'brightness low'" "command to set when shift+brightness down pressed";
     };
     volume = {
       enable = opts.enableTrue "enable volume key settings";
       increment = opts.int 5 "increment/decrement percent";
-      raise =
-        opts.string
-        "--no-startup-id ${pkgs.pulseaudio}/bin/pactl set-sink-volume 0 +${toString cfg.volume.increment}%"
-        "increase volume via volume up key";
-      lower =
-        opts.string
-        "--no-startup-id ${pkgs.pulseaudio}/bin/pactl set-sink-volume 0 -${toString cfg.volume.increment}%"
-        "reduce volume via volume down key";
-      mute =
-        opts.string
-        "--no-startup-id ${pkgs.pulseaudio}/bin/pactl set-sink-mute 0 toggle"
-        "toggle mute";
+      raise = opts.string "--no-startup-id ${pkgs.pulseaudio}/bin/pactl set-sink-volume 0 +${toString cfg.volume.increment}%" "increase volume via volume up key";
+      lower = opts.string "--no-startup-id ${pkgs.pulseaudio}/bin/pactl set-sink-volume 0 -${toString cfg.volume.increment}%" "reduce volume via volume down key";
+      mute = opts.string "--no-startup-id ${pkgs.pulseaudio}/bin/pactl set-sink-mute 0 toggle" "toggle mute";
     };
     media = {
       enable = opts.enableTrue "enable media key settings";
@@ -135,8 +115,7 @@ in {
 
     khome.desktop.wm.sharedExtraConfig = mkIf cfg.legacyTheme.enable cfg.legacyTheme.extraConfig;
     khome.desktop.wm.sharedConfig = {
-      inherit
-        (cfg)
+      inherit (cfg)
         modifier
         terminal
         fonts

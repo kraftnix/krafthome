@@ -3,14 +3,15 @@
   lib,
   pkgs,
   ...
-}: let
-  inherit
-    (lib)
+}:
+let
+  inherit (lib)
     mkEnableOption
     mkIf
     ;
   cfg = config.khome.hardware.weylus;
-in {
+in
+{
   options.khome.hardware.weylus.enable = mkEnableOption "enable weylus integration";
 
   config = mkIf cfg.enable {

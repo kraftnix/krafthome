@@ -1,8 +1,9 @@
-{...}: {
-  security.elewrap = {};
+{ ... }:
+{
+  security.elewrap = { };
   provision.roles.desktop = {
     enable = true;
-    nixTrustedUsers = ["test"];
+    nixTrustedUsers = [ "test" ];
   };
   provision.virt.qemu.guestAgent = true;
   provision.fs = {
@@ -16,24 +17,26 @@
   khome.roles.dev = {
     enable = true;
     graphical = true;
-    users = ["myuser"];
+    users = [ "myuser" ];
     security.enable = true;
   };
 
-  home-manager.users.myuser = {hmProfiles, ...}: {
-    imports = [hmProfiles.neovim];
-    khome.misc.keepass.firejail.enable = true;
-    khome.desktop.anyrun = {
-      enable = true;
-      modKeybind = "b";
+  home-manager.users.myuser =
+    { hmProfiles, ... }:
+    {
+      imports = [ hmProfiles.neovim ];
+      khome.misc.keepass.firejail.enable = true;
+      khome.desktop.anyrun = {
+        enable = true;
+        modKeybind = "b";
+      };
+      khome.desktop.wm.legacyTheme.enable = true;
+      khome.desktop.wm.sway = {
+        enable = true;
+        full = true;
+      };
+      programs.eww-hyprland.enable = true;
     };
-    khome.desktop.wm.legacyTheme.enable = true;
-    khome.desktop.wm.sway = {
-      enable = true;
-      full = true;
-    };
-    programs.eww-hyprland.enable = true;
-  };
 
   khome = {
     desktop = {
@@ -52,7 +55,7 @@
       polkit = {
         enable = true;
         allowedUser = "myuser";
-        allowedReaders = ["Yubico YubiKey OTP+FIDO+CCID 00 00"];
+        allowedReaders = [ "Yubico YubiKey OTP+FIDO+CCID 00 00" ];
       };
     };
     sound = {

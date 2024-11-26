@@ -1,14 +1,17 @@
-{self, ...}: {
+{ self, ... }:
+{
   config,
   pkgs,
   lib,
   ...
-}: let
+}:
+let
   inherit (lib) mkIf mkOption;
   cfg = config.khome.desktop.wm.sway;
   opts = self.inputs.extra-lib.lib.options;
   inherit (self.lib.khome) toggleApp wrapSwayrLog;
-in {
+in
+{
   options.khome.desktop.wm.sway.swaylock = {
     enable = opts.enableTrue "enable swaylock integration";
     screensaver = mkOption {

@@ -1,8 +1,9 @@
-args @ {
+args@{
   self,
   inputs,
   ...
-}: {
+}:
+{
   imports = inputs.provision.auto-import.flake.all;
 
   flake.hosts.hostsDir = ./.;
@@ -14,7 +15,7 @@ args @ {
       ++ self.auto-import.nixos.all
       ++ self.externalModules
       ++ [
-        {stylix.image = ../../home/modules/themes/wallpaper.jpg;}
+        { stylix.image = ../../home/modules/themes/wallpaper.jpg; }
         inputs.home.nixosModules.home-manager
         inputs.provision.inputs.disko.nixosModules.disko
         self.nixosModules.home-manager-integration
@@ -31,28 +32,34 @@ args @ {
             ];
         }
       ];
-    overlays =
-      [
-        self.overlays.default
-        # (final: prev: {
-        #   # inherit (self.channels.${final.system}.stable.pkgs) logseq;
-        #  })
-        inputs.nur.overlay
-      ]
-      ++ self.overlaysLists.core;
+    overlays = [
+      self.overlays.default
+      # (final: prev: {
+      #   # inherit (self.channels.${final.system}.stable.pkgs) logseq;
+      #  })
+      inputs.nur.overlay
+    ] ++ self.overlaysLists.core;
     specialArgs = {
       inherit self;
-      inherit (self) inputs nixosModules profiles hmProfiles homeManagerModules;
+      inherit (self)
+        inputs
+        nixosModules
+        profiles
+        hmProfiles
+        homeManagerModules
+        ;
     };
   };
 
-  perSystem = {...}: {
-    channels = {
-      nixpkgs.config.permittedInsecurePackages = [
-        "electron-28.3.3"
-        "electron-27.3.11"
-      ];
-      stable = {};
+  perSystem =
+    { ... }:
+    {
+      channels = {
+        nixpkgs.config.permittedInsecurePackages = [
+          "electron-28.3.3"
+          "electron-27.3.11"
+        ];
+        stable = { };
+      };
     };
-  };
 }

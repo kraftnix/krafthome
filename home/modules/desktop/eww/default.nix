@@ -1,12 +1,13 @@
 # width issue: https://github.com/elkowar/eww/issues/1110
-args: {
+args:
+{
   config,
   pkgs,
   lib,
   ...
-}: let
-  inherit
-    (lib)
+}:
+let
+  inherit (lib)
     literalExpression
     mkIf
     mkOption
@@ -24,7 +25,8 @@ args: {
       eww open $w
     done
   '';
-in {
+in
+{
   options.programs.eww-hyprland = {
     enable = lib.mkEnableOption "eww Hyprland config";
     systemd = lib.mkEnableOption "enable systemd user";
@@ -92,9 +94,11 @@ in {
     # remove nix files
     xdg.configFile."eww" = {
       source = lib.cleanSourceWith {
-        filter = name: _type: let
-          baseName = baseNameOf (toString name);
-        in
+        filter =
+          name: _type:
+          let
+            baseName = baseNameOf (toString name);
+          in
           !(lib.hasSuffix ".nix" baseName) && (baseName != "_colors.scss");
         src = lib.cleanSource cfg.configDir;
       };
@@ -102,31 +106,26 @@ in {
       # links each file individually, which lets us insert the colors file separately
       recursive = true;
 
-      onChange =
-        if cfg.autoReload
-        then reload_script.outPath
-        else "";
+      onChange = if cfg.autoReload then reload_script.outPath else "";
     };
 
     # colors file
     xdg.configFile."eww/css/_colors.scss".text =
-      if cfg.colors != null
-      then cfg.colors
-      else (builtins.readFile "${cfg.configDir}/css/_colors.scss");
+      if cfg.colors != null then cfg.colors else (builtins.readFile "${cfg.configDir}/css/_colors.scss");
 
     systemd.user.services.eww = {
       Unit = {
         Description = "Eww Daemon";
-        PartOf = ["graphical-session.target"];
+        PartOf = [ "graphical-session.target" ];
       };
       Service = {
         Environment = "PATH=/run/wrappers/bin:${lib.makeBinPath cfg.extraPackages}";
         ExecStart = "${cfg.package}/bin/eww daemon --no-daemonize";
         Restart = "on-failure";
         Type = "simple";
-        ReadOnlyPaths = ["/home/%u/.config/eww"];
+        ReadOnlyPaths = [ "/home/%u/.config/eww" ];
       };
-      Install.WantedBy = ["graphical-session.target"];
+      Install.WantedBy = [ "graphical-session.target" ];
     };
   };
 }

@@ -1,12 +1,13 @@
-args: {
+args:
+{
   config,
   lib,
   pkgs,
   ...
-}: let
+}:
+let
   inherit (pkgs) fetchFromGitHub;
-  inherit
-    (lib)
+  inherit (lib)
     flatten
     mkDefault
     mkEnableOption
@@ -19,7 +20,8 @@ args: {
     ;
   cfg = config.khome.shell.yazi;
   plugs = cfg.plugins;
-  mkStringOption = default: description:
+  mkStringOption =
+    default: description:
     mkOption {
       inherit default description;
       type = types.str;
@@ -30,13 +32,19 @@ args: {
     rev = "a882e3828cdeee243ede2bff0524cbe7e27104cf";
     hash = "sha256-+amnL025nNHcP/gXY57FYUhUXNlPRqbQHS4EkOL/INs=";
   };
-in {
+in
+{
   options.khome.shell.yazi = {
     enable = mkEnableOption "enable yazi file manager";
     linemode = mkStringOption "size" "manager linemode, one of (permissions,size,mtime)";
     theme = {
       src = mkOption {
-        type = with types; nullOr (oneOf [path package]);
+        type =
+          with types;
+          nullOr (oneOf [
+            path
+            package
+          ]);
         description = "source for theme";
         default = null;
       };
@@ -47,18 +55,32 @@ in {
       };
     };
     sort_by = mkStringOption "natural" "sort by";
-    show_hidden = mkEnableOption "show hidden files" // {default = false;};
-    show_symlink = mkEnableOption "show symlink files" // {default = true;};
+    show_hidden = mkEnableOption "show hidden files" // {
+      default = false;
+    };
+    show_symlink = mkEnableOption "show symlink files" // {
+      default = true;
+    };
     plugins = {
-      fg.enable = mkEnableOption "enable fg.yazi plugin (fuzzy find files)" // {default = true;};
-      glow.enable = mkEnableOption "enable glow.yazi plugin (preview md files)" // {default = true;};
-      mime.enable = mkEnableOption "enable mime.yazi plugin (speedup preview of large files)" // {default = false;};
-      bookmarks.enable = mkEnableOption "enable bookmarks-persistence.yazi plugin (persistent bookmarks)" // {default = false;};
+      fg.enable = mkEnableOption "enable fg.yazi plugin (fuzzy find files)" // {
+        default = true;
+      };
+      glow.enable = mkEnableOption "enable glow.yazi plugin (preview md files)" // {
+        default = true;
+      };
+      mime.enable = mkEnableOption "enable mime.yazi plugin (speedup preview of large files)" // {
+        default = false;
+      };
+      bookmarks.enable =
+        mkEnableOption "enable bookmarks-persistence.yazi plugin (persistent bookmarks)"
+        // {
+          default = false;
+        };
     };
     __ups = mkOption {
       type = types.raw;
       description = "extra settings to merge in with `programs.yazi`";
-      default = {};
+      default = { };
     };
   };
 
@@ -119,110 +141,158 @@ in {
         keymap.manager.prepend_keymap = flatten [
           {
             desc = "Enter the child directory, or open the file";
-            on = ["l"];
+            on = [ "l" ];
             run = "plugin --sync smart-enter";
           }
           {
             desc = "navigate parent dir (up)";
-            on = ["K"];
+            on = [ "K" ];
             run = "plugin --sync parent-arrow --args=-1";
           }
           {
             desc = "navigate parent dir (down)";
-            on = ["J"];
+            on = [ "J" ];
             run = "plugin --sync parent-arrow --args=1";
           }
           {
             desc = "Show help";
-            on = ["<C-h>"];
+            on = [ "<C-h>" ];
             run = "help";
           }
           {
             desc = "Open lazygit";
-            on = ["<C-g>"];
+            on = [ "<C-g>" ];
             run = ''shell "lazygit" --block --confirm'';
           }
           {
             desc = "Open shell here";
-            on = ["C" "C"];
+            on = [
+              "C"
+              "C"
+            ];
             run = "shell --block --confirm $SHELL";
           }
           {
             desc = "Cd into path";
-            on = ["C" "c"];
+            on = [
+              "C"
+              "c"
+            ];
             run = "cd --interactive";
           }
           {
             desc = "tab create";
-            on = ["t" "t"];
+            on = [
+              "t"
+              "t"
+            ];
             run = "tab_create";
           }
           {
             desc = "tab delete";
-            on = ["t" "d"];
+            on = [
+              "t"
+              "d"
+            ];
             run = "tab_close";
           }
           {
             desc = "tab next";
-            on = ["t" "n"];
+            on = [
+              "t"
+              "n"
+            ];
             run = "tab_switch --relative 1";
           }
           {
             desc = "tab prev";
-            on = ["t" "p"];
+            on = [
+              "t"
+              "p"
+            ];
             run = "tab_switch --relative -1";
           }
           {
             desc = "Show tasks";
-            on = ["T" "T"];
+            on = [
+              "T"
+              "T"
+            ];
             run = "tasks_show";
           }
           {
             desc = "Hide or show preview";
-            on = ["M" "m"];
+            on = [
+              "M"
+              "m"
+            ];
             run = "plugin --sync hide-preview";
           }
           {
             desc = "Maximize or restore preview";
-            on = ["M" "M"];
+            on = [
+              "M"
+              "M"
+            ];
             run = "plugin --sync max-preview";
           }
           {
             desc = "Chmod on selected files";
-            on = ["c" "m"];
+            on = [
+              "c"
+              "m"
+            ];
             run = "plugin chmod";
           }
           (optionals plugs.fg.enable [
             {
               desc = "find file by content";
-              on = ["f" "g"];
+              on = [
+                "f"
+                "g"
+              ];
               run = "plugin fg";
             }
             {
               desc = "find file by file name";
-              on = ["f" "f"];
+              on = [
+                "f"
+                "f"
+              ];
               run = "plugin fg --args='fzf'";
             }
           ])
           (optionals plugs.bookmarks.enable [
             {
               desc = "Save current position as a bookmark";
-              on = ["u" "a"];
+              on = [
+                "u"
+                "a"
+              ];
               run = "plugin bookmarks-persistence --args=save";
             }
             {
               desc = "Jump to a bookmark";
-              on = ["u" "g"];
+              on = [
+                "u"
+                "g"
+              ];
               run = "plugin bookmarks-persistence --args=jump";
             }
             {
               desc = "Delete a bookmark";
-              on = ["u" "d"];
+              on = [
+                "u"
+                "d"
+              ];
               run = "plugin bookmarks-persistence --args=delete";
             }
             {
               desc = "Delete all bookmarks";
-              on = ["u" "D"];
+              on = [
+                "u"
+                "D"
+              ];
               run = "plugin bookmarks-persistence --args=delete_all";
             }
           ])
@@ -230,7 +300,12 @@ in {
         settings = {
           log.enabled = true;
           manager = {
-            inherit (cfg) sort_by show_hidden show_symlink linemode;
+            inherit (cfg)
+              sort_by
+              show_hidden
+              show_symlink
+              linemode
+              ;
             sort_sensitive = mkDefault false;
             sort_reverse = mkDefault false;
             dir_first = mkDefault false;

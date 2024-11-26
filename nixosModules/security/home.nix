@@ -1,11 +1,12 @@
-localFlake: {
+localFlake:
+{
   config,
   pkgs,
   lib,
   ...
-}: let
-  inherit
-    (lib)
+}:
+let
+  inherit (lib)
     mapAttrsToList
     filterAttrs
     flatten
@@ -17,23 +18,26 @@ localFlake: {
     ;
   cfg = config.provision.security;
   enabledWrappers = filterAttrs (_: w: w.enable) cfg.wrappers;
-in {
+in
+{
   options.provision.security = {
     addWrappers = mkEnableOption "add firejail wrapped binaries to `home.packages`";
     wrappers = mkOption {
-      default = {};
+      default = { };
       description = ''
         Security wrappers which use `firejail` and/or `elewrap` to generate
         executable sandboxed wrappers.
           - firejail provides sandboxing
           - elewrap provides setuid, checksum verification, acl per user/group
       '';
-      type = types.attrsOf (types.submoduleWith {
-        modules = [
-          ./wrapper.nix
-          {config._module.args.pkgs = pkgs;}
-        ];
-      });
+      type = types.attrsOf (
+        types.submoduleWith {
+          modules = [
+            ./wrapper.nix
+            { config._module.args.pkgs = pkgs; }
+          ];
+        }
+      );
     };
   };
 

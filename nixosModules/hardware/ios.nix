@@ -3,14 +3,15 @@
   lib,
   pkgs,
   ...
-}: let
-  inherit
-    (lib)
+}:
+let
+  inherit (lib)
     mkEnableOption
     mkIf
     ;
   cfg = config.khome.hardware.ios;
-in {
+in
+{
   options.khome.hardware.ios.enable = mkEnableOption "enable ios backup tools";
 
   config = mkIf cfg.enable {

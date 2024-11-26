@@ -1,12 +1,13 @@
 # from nixpkgs
-{lib, ...}: let
-  inherit
-    (lib)
+{ lib, ... }:
+let
+  inherit (lib)
     literalExpression
     mkOption
     types
     ;
-in {
+in
+{
   options = {
     executable = mkOption {
       type = types.path;
@@ -27,9 +28,9 @@ in {
     };
     extraArgs = mkOption {
       type = types.listOf types.str;
-      default = [];
+      default = [ ];
       description = "Extra arguments to pass to firejail";
-      example = ["--private=~/.firejail_home"];
+      example = [ "--private=~/.firejail_home" ];
     };
   };
 }

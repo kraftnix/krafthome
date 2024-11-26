@@ -1,4 +1,5 @@
-{pkgs, ...}: {
+{ pkgs, ... }:
+{
   plugin = pkgs.vimPlugins.fzf-vim;
   config = ''
     set rtp+=${pkgs.fzf}/bin/fzf

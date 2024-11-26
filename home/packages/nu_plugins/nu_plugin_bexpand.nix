@@ -1,4 +1,5 @@
-source: cargoHash: {
+source: cargoHash:
+{
   stdenv,
   lib,
   rustPlatform,
@@ -12,7 +13,7 @@ rustPlatform.buildRustPackage rec {
     mainProgram = "nu_plugin_bexpand";
     homepage = "https://codeberg.org/Taywee/nu-plugin-bexpand";
     license = licenses.mit;
-    maintainers = with maintainers; [];
+    maintainers = with maintainers; [ ];
     platforms = with platforms; all;
   };
 }

@@ -1,11 +1,12 @@
-args: {
+args:
+{
   config,
   lib,
   pkgs,
   ...
-}: let
-  inherit
-    (lib)
+}:
+let
+  inherit (lib)
     mkEnableOption
     mkIf
     mkOption
@@ -13,11 +14,12 @@ args: {
     types
     ;
   cfg = config.khome.shell.aliases;
-in {
+in
+{
   options.khome.shell.aliases = {
     enable = mkEnableOption "enable aliases";
     aliases = mkOption {
-      default = {};
+      default = { };
       description = "aliases for all home-manager users";
       type = types.attrsOf types.str;
     };

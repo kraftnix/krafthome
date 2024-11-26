@@ -1,47 +1,39 @@
-localFlake @ {
+localFlake@{
   self,
   inputs,
   ...
-}: {
+}:
+{
   imports = [
     ./hosts
     ./packages
     ./flakeModules/vim-plugins.nix
     ./lib
     (import ./site.nix localFlake)
-    inputs.devshell.flakeModule
-    inputs.git-hooks-nix.flakeModule
+    inputs.provision.flakeModules.provision-shells
   ];
 
   ## Devshells
-  perSystem = {
-    config,
-    pkgs,
-    ...
-  }: {
-    devshells.default = {
-      imports = [inputs.provision.devshellModules.provision];
+  perSystem =
+    {
+      config,
+      pkgs,
+      ...
+    }:
+    {
       provision.enable = true;
-      provision.nvfetcher.enable = true;
-      provision.nvfetcher.sources.nixos.baseDir = "./nixos/packages";
-      provision.nvfetcher.sources.home.baseDir = "./home/packages";
-      devshell.startup.pre-commit = {
-        text = config.pre-commit.installationScript;
-      };
-      packages = with pkgs;
-        [
+      provision.enableDefaults = true;
+      devshells.default = {
+        provision.enable = true;
+        provision.nvfetcher.enable = true;
+        provision.nvfetcher.sources.nixos.baseDir = "./nixos/packages";
+        provision.nvfetcher.sources.home.baseDir = "./home/packages";
+        packages = with pkgs; [
           just
           openssh
-        ]
-        ++ config.pre-commit.settings.enabledPackages;
-    };
-    pre-commit = {
-      settings.hooks = {
-        alejandra.enable = true;
-        nil.enable = true;
+        ];
       };
     };
-  };
 
   # flake.profiles = self.lib.importDirToAttrs ./profiles;
 

@@ -4,9 +4,9 @@
   pkgs,
   lib,
   ...
-}: let
-  inherit
-    (lib)
+}:
+let
+  inherit (lib)
     foldl'
     hasAttr
     listToAttrs
@@ -17,8 +17,7 @@
     nameValuePair
     ;
 
-  inherit
-    (lib.types)
+  inherit (lib.types)
     attrsOf
     bool
     listOf
@@ -32,60 +31,70 @@
 
   luafiles = hlib.load {
     src = config.sourceDir;
-    inputs = {inherit lib;};
+    inputs = {
+      inherit lib;
+    };
     loader = [
       (hlib.matchers.extension "lua" hlib.loaders.path)
     ];
   };
 
-  nameValuePairs = mapAttrsToList (name: value: {inherit name value;});
+  nameValuePairs = mapAttrsToList (name: value: { inherit name value; });
 
-  flattenAttrsFileStructure = attrs: let
-    recurse = root:
-      foldl'
-      (
-        acc: item:
-        #trace ("item ${builtins.toJSON item}\nacc: ${builtins.toJSON acc}")
-        (
-          if (builtins.typeOf item.value) == "set"
-          then acc ++ (recurse "${root}/${item.name}" (nameValuePairs item.value))
-          else
-            acc
-            ++ [
-              {
-                name = "${root}/${item.name}.lua";
-                value = item.value;
-              }
-            ]
-        )
-      ) [];
-  in
+  flattenAttrsFileStructure =
+    attrs:
+    let
+      recurse =
+        root:
+        foldl' (
+          acc: item:
+          #trace ("item ${builtins.toJSON item}\nacc: ${builtins.toJSON acc}")
+          (
+            if (builtins.typeOf item.value) == "set" then
+              acc ++ (recurse "${root}/${item.name}" (nameValuePairs item.value))
+            else
+              acc
+              ++ [
+                {
+                  name = "${root}/${item.name}.lua";
+                  value = item.value;
+                }
+              ]
+          )
+        ) [ ];
+    in
     recurse "" (nameValuePairs attrs);
 
   neovimLinks = listToAttrs (flattenAttrsFileStructure luafiles);
-  neovimFileLinks = mapAttrs' (path: source: nameValuePair "${config.targetDir}/${path}" {inherit source;}) neovimLinks;
+  neovimFileLinks = mapAttrs' (
+    path: source: nameValuePair "${config.targetDir}/${path}" { inherit source; }
+  ) neovimLinks;
 
-  pluginFileLinks = listToAttrs (map
-    (pkg: let
-      pluginName =
-        if (hasAttr pkg.pname config.pluginNameRemaps)
-        then config.pluginNameRemaps.${pkg.pname}
-        else pkg.pname;
-    in
+  pluginFileLinks = listToAttrs (
+    map (
+      pkg:
+      let
+        pluginName =
+          if (hasAttr pkg.pname config.pluginNameRemaps) then
+            config.pluginNameRemaps.${pkg.pname}
+          else
+            pkg.pname;
+      in
       nameValuePair "${config.targetDir}/nix-plugins/${pluginName}" {
         source = pkg;
         # recursive = true;
-      })
-    config.plugins);
+      }
+    ) config.plugins
+  );
 
-  treesitterParsers =
-    mapAttrs'
-    (name: pkg:
-      nameValuePair "${config.targetDir}/parser/${name}" {
-        source = "${pkg}/parser/${name}.so";
-      })
-    pkgs.vimPlugins.nvim-treesitter.grammarPlugins;
-in {
+  treesitterParsers = mapAttrs' (
+    name: pkg:
+    nameValuePair "${config.targetDir}/parser/${name}" {
+      source = "${pkg}/parser/${name}.so";
+    }
+  ) pkgs.vimPlugins.nvim-treesitter.grammarPlugins;
+in
+{
   options = {
     enable = mkOption {
       description = "Enable neovim-lazy configuration.";
@@ -95,8 +104,8 @@ in {
     plugins = mkOption {
       description = "Neovim Plugins to install via Nix.";
       type = listOf package;
-      default = [];
-      apply = plugins: [pkgs.vimPlugins.lazy-nvim] ++ plugins;
+      default = [ ];
+      apply = plugins: [ pkgs.vimPlugins.lazy-nvim ] ++ plugins;
     };
     pluginNameRemaps = mkOption {
       description = ''
@@ -138,7 +147,7 @@ in {
     extraPackages = mkOption {
       description = "Extra packages for neovim binary (such as LSPs).";
       type = listOf package;
-      default = [];
+      default = [ ];
     };
 
     __pluginFileLinks = mkOption {

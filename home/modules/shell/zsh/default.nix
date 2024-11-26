@@ -1,11 +1,12 @@
-args: {
+args:
+{
   config,
   lib,
   pkgs,
   ...
-}: let
-  inherit
-    (lib)
+}:
+let
+  inherit (lib)
     mkEnableOption
     mkIf
     optionalString
@@ -18,12 +19,15 @@ args: {
     zstyle ':completion:*' list-colors ${"\${(s.:.)LS_COLORS}"}
     zstyle ':fzf-tab:complete:cd:*' fzf-preview 'lsd -1 --color=always $realpath'
   '';
-in {
-  imports = [./fix-nix-shell-completions.nix];
+in
+{
+  imports = [ ./fix-nix-shell-completions.nix ];
 
   options.khome.shell.zsh = {
     enable = mkEnableOption "enable zsh";
-    enableYazi = mkEnableOption "enable zsh" // {default = true;}; # TODO: change to `khome.shell.yazi.enable` default
+    enableYazi = mkEnableOption "enable zsh" // {
+      default = true;
+    }; # TODO: change to `khome.shell.yazi.enable` default
   };
 
   config = mkIf cfg.enable {
@@ -76,16 +80,16 @@ in {
           export SSH_AUTH_SOCK="/home/$USER/.ssh/auth_sock"
 
            ${optionalString cfg.enableYazi ''
-            # yazi
-            function yy() {
-              local tmp="$(mktemp -t "yazi-cwd.XXXXXX")"
-              yazi "$@" --cwd-file="$tmp"
-              if cwd="$(cat -- "$tmp")" && [ -n "$cwd" ] && [ "$cwd" != "$PWD" ]; then
-                cd -- "$cwd"
-              fi
-              rm -f -- "$tmp"
-            }
-          ''}
+             # yazi
+             function yy() {
+               local tmp="$(mktemp -t "yazi-cwd.XXXXXX")"
+               yazi "$@" --cwd-file="$tmp"
+               if cwd="$(cat -- "$tmp")" && [ -n "$cwd" ] && [ "$cwd" != "$PWD" ]; then
+                 cd -- "$cwd"
+               fi
+               rm -f -- "$tmp"
+             }
+           ''}
         '';
       autocd = true;
       dotDir = ".config/zsh";

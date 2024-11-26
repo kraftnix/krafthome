@@ -3,18 +3,25 @@
   lib,
   pkgs,
   ...
-}: let
+}:
+let
   cfg = config.khome.browsers.firefox.policies;
-  inherit
-    (lib)
+  inherit (lib)
     mkEnableOption
     mkIf
     mkOption
     types
     ;
-  mkEnableTrueOption = opt: mkEnableOption opt // {default = true;};
-  ts = with types; [bool raw str int (listOf str)];
-in {
+  mkEnableTrueOption = opt: mkEnableOption opt // { default = true; };
+  ts = with types; [
+    bool
+    raw
+    str
+    int
+    (listOf str)
+  ];
+in
+{
   options.khome.browsers.firefox.policies = mkOption {
     type = types.submodule {
       freeformType = with types; attrsOf (oneOf ts);
@@ -55,7 +62,7 @@ in {
         };
       };
     };
-    default = {};
+    default = { };
     description = "policies to use for building firefox, only applies when `khome.browser.firefox.package` is not overridden";
   };
 }

@@ -1,16 +1,18 @@
-args: {
+args:
+{
   config,
   lib,
   pkgs,
   ...
-}: let
+}:
+let
   cfg = config.khome.browsers;
-  inherit
-    (lib)
+  inherit (lib)
     mkEnableOption
     mkIf
     ;
-in {
+in
+{
   # imports = [
   #   ./chromium.nix
   #   ./tor.nix
@@ -22,6 +24,6 @@ in {
   };
 
   config = {
-    home.packages = with pkgs; mkIf cfg.links.enable [links];
+    home.packages = with pkgs; mkIf cfg.links.enable [ links ];
   };
 }

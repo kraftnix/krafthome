@@ -3,14 +3,15 @@
   pkgs,
   lib,
   ...
-}: let
+}:
+let
   cfg = config.khome.shell.ssh-symlink;
-  inherit
-    (lib)
+  inherit (lib)
     mkEnableOption
     mkIf
     ;
-in {
+in
+{
   options.khome.shell.ssh-symlink = {
     enable = mkEnableOption "enable ssh symlink integration";
   };

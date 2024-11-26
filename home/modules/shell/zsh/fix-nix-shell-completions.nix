@@ -3,8 +3,7 @@
   lib,
   ...
 }:
-lib.mkIf config.khome.shell.zsh.enable
-{
+lib.mkIf config.khome.shell.zsh.enable {
   programs.zsh.initExtra = lib.mkBefore ''
     _prompt_executing=""
     function __prompt_precmd() {

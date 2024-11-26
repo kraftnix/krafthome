@@ -3,14 +3,15 @@
   pkgs,
   lib,
   ...
-}: let
+}:
+let
   cfg = config.khome.media.steam;
-  inherit
-    (lib)
+  inherit (lib)
     mkEnableOption
     mkIf
     ;
-in {
+in
+{
   options.khome.media.steam = {
     enable = mkEnableOption "steam enablement";
     forceSteamUnfree = mkEnableOption "force allow steam command unfree predicate";
@@ -22,7 +23,8 @@ in {
     hardware.steam-hardware.enable = true;
     # not set by default due to potential conflict with how `nixpkgs` is set in NixOS
     nixpkgs = mkIf cfg.forceSteamUnfree {
-      config.allowUnfreePredicate = pkg:
+      config.allowUnfreePredicate =
+        pkg:
         builtins.elem (lib.getName pkg) [
           "steam"
           "steamcmd"

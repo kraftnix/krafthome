@@ -1,11 +1,12 @@
-localFlake: {
+localFlake:
+{
   config,
   lib,
   pkgs,
   ...
-}: let
-  inherit
-    (lib)
+}:
+let
+  inherit (lib)
     mkDefault
     mkEnableOption
     mkIf
@@ -16,8 +17,9 @@ localFlake: {
   opts = localFlake.inputs.provision.lib.options;
   cfg = config.khome.themes;
   colours = config.lib.stylix.colors.withHashtag;
-in {
-  imports = [./base16-nix];
+in
+{
+  imports = [ ./base16-nix ];
   options.khome.themes = {
     enable = mkEnableOption "enable themes integration";
     hosts = {
@@ -32,7 +34,7 @@ in {
         type = types.str;
       };
       colours = mkOption {
-        default = {};
+        default = { };
         description = "set of (host -> colour), assign a unique colour per host";
         type = with types; attrsOf str;
       };
@@ -43,7 +45,13 @@ in {
       };
     };
     polarity = mkOption {
-      type = with types; enum ["either" "dark" "light"];
+      type =
+        with types;
+        enum [
+          "either"
+          "dark"
+          "light"
+        ];
       default = "dark";
       description = "dark or light theming";
     };
@@ -54,7 +62,7 @@ in {
     };
     override = mkOption {
       type = types.attrs;
-      default = {};
+      default = { };
       description = "default override";
     };
     stylix = {
@@ -63,13 +71,19 @@ in {
         name = opts.string "tokyo-night-storm" "name of base16 scheme";
         scheme = mkOption {
           description = "base16 scheme to use, inferred from name";
-          type = with types; oneOf [path lines attrs];
+          type =
+            with types;
+            oneOf [
+              path
+              lines
+              attrs
+            ];
           default = "${pkgs.base16-schemes}/share/themes/${cfg.stylix.base16.name}.yaml";
         };
       };
       extra = mkOption {
         type = types.raw;
-        default = {};
+        default = { };
         description = "extra options to add to `stylix`";
       };
     };
@@ -107,32 +121,31 @@ in {
   config = mkIf cfg.enable {
     khome.themes.hosts.defaultColour = colours.cyan;
     khome.themes.hosts.currHostColour =
-      if cfg.hosts.colours ? cfg.hosts.currHostname
-      then cfg.hosts.colours.${cfg.hosts.currHostname}
-      else cfg.hosts.defaultColour;
-    stylix =
-      {
-        enable = cfg.stylix.enable;
-        image = cfg.images.wallpaper;
-        polarity = cfg.polarity;
-        base16Scheme = cfg.stylix.base16.scheme;
-        targets.wezterm.enable = false;
-        targets.gtk.enable = cfg.gtk.enable;
-        opacity = {
-          terminal = mkDefault cfg.opacity;
-          applications = mkDefault cfg.opacity;
-          popups = mkDefault cfg.opacity;
-          desktop = mkDefault cfg.opacity;
-        };
-        override = mkDefault cfg.override;
-      }
-      // cfg.stylix.extra;
+      if cfg.hosts.colours ? cfg.hosts.currHostname then
+        cfg.hosts.colours.${cfg.hosts.currHostname}
+      else
+        cfg.hosts.defaultColour;
+    stylix = {
+      enable = cfg.stylix.enable;
+      image = cfg.images.wallpaper;
+      polarity = cfg.polarity;
+      base16Scheme = cfg.stylix.base16.scheme;
+      targets.wezterm.enable = false;
+      targets.gtk.enable = cfg.gtk.enable;
+      opacity = {
+        terminal = mkDefault cfg.opacity;
+        applications = mkDefault cfg.opacity;
+        popups = mkDefault cfg.opacity;
+        desktop = mkDefault cfg.opacity;
+      };
+      override = mkDefault cfg.override;
+    } // cfg.stylix.extra;
 
     gtk.theme.package = mkIf (cfg.gtk.theme != null) cfg.gtk.theme;
     gtk.theme.name = mkIf (cfg.gtk.theme != null) cfg.gtk.theme.name;
 
     home.sessionVariables =
-      {}
+      { }
       // mkIf (cfg.gtk.enable && cfg.gtk.theme != null) {
         GTK_THEME = cfg.gtk.theme.name;
       }
@@ -152,8 +165,16 @@ in {
       set $gnome-schema org.gnome.desktop.interface
 
       exec_always {
-          ${optionalString (cfg.gtk.theme != null) "gsettings set $gnome-schema gtk-theme '${cfg.gtk.theme.name}'"}
-          ${optionalString (cfg.gtk.icon != null) "gsettings set $gnome-schema icon-theme '${cfg.gtk.icon.name}'"}
+          ${
+            optionalString (
+              cfg.gtk.theme != null
+            ) "gsettings set $gnome-schema gtk-theme '${cfg.gtk.theme.name}'"
+          }
+          ${
+            optionalString (
+              cfg.gtk.icon != null
+            ) "gsettings set $gnome-schema icon-theme '${cfg.gtk.icon.name}'"
+          }
           #gsettings set $gnome-schema cursor-theme 'Your cursor Theme'
           gsettings set $gnome-schema font-name '${config.stylix.fonts.monospace.name}'
       }

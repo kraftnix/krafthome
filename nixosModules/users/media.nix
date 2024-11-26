@@ -2,11 +2,11 @@
   config,
   lib,
   ...
-}: let
+}:
+let
   cfg = config.khome.users.media;
   inherit (config._module.args) hmProfiles; # remove once all home profiles are ported to modules
-  inherit
-    (lib)
+  inherit (lib)
     flatten
     mkEnableOption
     mkOption
@@ -15,7 +15,8 @@
     optionals
     types
     ;
-in {
+in
+{
   options.khome.users.media = {
     enable = mkEnableOption "enable media user";
     userName = mkOption {
@@ -27,12 +28,12 @@ in {
     addToWheel = mkEnableOption "add to wheel group";
     extraGroups = mkOption {
       description = "extra groups to add user to";
-      default = [];
+      default = [ ];
       type = with types; listOf str;
     };
     keyFiles = mkOption {
       description = "pubkey files to add to openssh authorized";
-      default = [];
+      default = [ ];
       type = with types; listOf path;
     };
     uid = mkOption {
@@ -47,43 +48,45 @@ in {
     };
     home = mkOption {
       type = types.raw;
-      default = {};
+      default = { };
       description = "home-manager configuration to pass through";
     };
   };
 
   config = mkIf cfg.enable {
-    home-manager.users.${cfg.userName} = {...}: {
-      imports =
-        flatten [
-          cfg.home
-        ]
-        ++ (optionals cfg.fullGraphical [
-          hmProfiles.desktop.wayfire
-          hmProfiles.desktop.tokyo-night
-        ]);
-      khome.roles.basic.enable = true;
+    home-manager.users.${cfg.userName} =
+      { ... }:
+      {
+        imports =
+          flatten [
+            cfg.home
+          ]
+          ++ (optionals cfg.fullGraphical [
+            hmProfiles.desktop.wayfire
+            hmProfiles.desktop.tokyo-night
+          ]);
+        khome.roles.basic.enable = true;
 
-      khome.nushell.enable = true;
-      khome.shell.core-tools.enable = true;
-      khome.shell.misc.enable = true;
-      khome.shell.starship.enable = true;
-      khome.shell.tmux.enable = true;
+        khome.nushell.enable = true;
+        khome.shell.core-tools.enable = true;
+        khome.shell.misc.enable = true;
+        khome.shell.starship.enable = true;
+        khome.shell.tmux.enable = true;
 
-      khome.desktop.misc.enable = true;
-      khome.browsers.firefox.enable = true;
-      khome.browsers.tor.enable = true;
-      khome.misc.sound.enable = true;
-      khome.misc.keepass.enable = true;
+        khome.desktop.misc.enable = true;
+        khome.browsers.firefox.enable = true;
+        khome.browsers.tor.enable = true;
+        khome.misc.sound.enable = true;
+        khome.misc.keepass.enable = true;
 
-      home.stateVersion = "22.05";
-    };
+        home.stateVersion = "22.05";
+      };
 
     # System user config
     users.users.${cfg.userName} = {
       inherit (cfg) uid hashedPassword;
       isNormalUser = true;
-      extraGroups = ["tty"] ++ (optional cfg.addToWheel "wheel") ++ cfg.extraGroups;
+      extraGroups = [ "tty" ] ++ (optional cfg.addToWheel "wheel") ++ cfg.extraGroups;
       openssh.authorizedKeys.keyFiles = cfg.keyFiles;
     };
   };

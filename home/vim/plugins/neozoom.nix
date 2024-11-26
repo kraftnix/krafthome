@@ -3,9 +3,14 @@
   dsl,
   ...
 }:
-with dsl; let
-  cmd = command: desc: ["<cmd>${command}<cr>" desc];
-in {
+with dsl;
+let
+  cmd = command: desc: [
+    "<cmd>${command}<cr>"
+    desc
+  ];
+in
+{
   plugins = with pkgs.vimPlugins; [
     neozoom-nvim
   ];
@@ -15,7 +20,7 @@ in {
   };
   use.neo-zoom.setup = callWith {
     width_ratio = 0.9;
-    left_ratio = 0.03;
+    left_ratio = 3.0e-2;
     border = "single";
   };
 }

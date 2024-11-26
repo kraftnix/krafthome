@@ -1,16 +1,18 @@
-args: {
+args:
+{
   config,
   lib,
   pkgs,
   ...
-}: let
-  inherit
-    (lib)
+}:
+let
+  inherit (lib)
     mkEnableOption
     mkIf
     ;
   cfg = config.khome.misc.sound;
-in {
+in
+{
   options.khome.misc.sound.enable = mkEnableOption "add sound packages";
 
   config = mkIf cfg.enable {

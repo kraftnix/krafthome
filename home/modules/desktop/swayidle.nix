@@ -1,11 +1,12 @@
-args: {
+args:
+{
   config,
   lib,
   pkgs,
   ...
-}: let
-  inherit
-    (lib)
+}:
+let
+  inherit (lib)
     mkDefault
     mkEnableOption
     mkOption
@@ -24,7 +25,8 @@ args: {
       }
     }
   '';
-in {
+in
+{
   options.khome.desktop.swayidle = {
     enable = mkEnableOption "enable swayidle integration";
     lockTimeout = mkOption {
@@ -43,7 +45,12 @@ in {
         can be added to `wayland.windowManager.sway.config.startup.*.command`
       '';
       default = "swayidle";
-      type = with types; oneOf [str package];
+      type =
+        with types;
+        oneOf [
+          str
+          package
+        ];
       readOnly = true;
     };
     appendToSwayConfig = mkEnableOption ''
@@ -54,7 +61,11 @@ in {
     '';
     extraPackages = mkOption {
       type = types.listOf types.package;
-      default = with pkgs; [swaylock libnotify nushell];
+      default = with pkgs; [
+        swaylock
+        libnotify
+        nushell
+      ];
       description = "extra packages to provide to systemd service or add to home path";
     };
   };
@@ -69,7 +80,9 @@ in {
       }
     ];
     programs.hyprland.execOnce.swayidle = cfg.swayStartupCommand;
-    systemd.user.services.swayidle.Service.Environment = lib.mkForce ["PATH=${lib.makeBinPath ([pkgs.bash] ++ cfg.extraPackages)}"];
+    systemd.user.services.swayidle.Service.Environment = lib.mkForce [
+      "PATH=${lib.makeBinPath ([ pkgs.bash ] ++ cfg.extraPackages)}"
+    ];
     home.packages = lib.mkIf cfg.appendToSwayConfig cfg.extraPackages;
     services.swayidle = {
       enable = true;

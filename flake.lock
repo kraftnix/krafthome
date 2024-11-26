@@ -1164,11 +1164,11 @@
         "systems": "systems_3"
       },
       "locked": {
-        "lastModified": 1732576953,
-        "narHash": "sha256-FsB/LdnNXi6Di8iOYQLJmi7eYEgWku6niJKIDITVWKk=",
+        "lastModified": 1732600221,
+        "narHash": "sha256-8IgZkCGMX5m7NoVVyd5KzvwGSu5/FIE4mtrpVrG+Iz0=",
         "owner": "kraftnix",
         "repo": "provision-nix",
-        "rev": "68a3042a1995a2fd0bfb78a6fd169a1ee45c9a86",
+        "rev": "aedd1b8c840cfab54146ff97fc9c3fdfe7df3e28",
         "type": "github"
       },
       "original": {

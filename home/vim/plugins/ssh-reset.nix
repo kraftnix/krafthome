@@ -3,11 +3,18 @@
   dsl,
   ...
 }:
-with dsl; let
-  cmd = command: desc: ["<cmd>${command}<cr>" desc];
-in {
-  plugins = with pkgs.vimPlugins; [
+with dsl;
+let
+  cmd = command: desc: [
+    "<cmd>${command}<cr>"
+    desc
   ];
+in
+{
+  plugins =
+    with pkgs.vimPlugins;
+    [
+    ];
   # add in terminal mapping to close Term
   _internal.which-key.resetSsh = {
     "['<leader>']".a.r = cmd "lua ResetSsh()" "Reset SSH_AUTH_SOCK";

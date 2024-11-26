@@ -1,9 +1,11 @@
-{self, ...}: {
+{ self, ... }:
+{
   config,
   lib,
   pkgs,
   ...
-}: let
+}:
+let
   inherit (lib) mkIf;
   opts = self.inputs.extra-lib.lib.options;
   cfg = config.khome.desktop.apps.productivity.trilium;
@@ -12,7 +14,8 @@
     "$mod+n" = lib.mkOverride 500 "firefox -P home --new-window ${cfg.url}";
     "$mod+Shift+n" = lib.mkOverride 500 "move scratchpad, scratchpad show, ${cfg.swayResize}";
   };
-in {
+in
+{
   options.khome.desktop.apps.productivity.trilium = {
     enable = opts.enable "enable trilium";
     sway = opts.enableTrue "enable sway integration (keybind)";
@@ -21,7 +24,7 @@ in {
   };
 
   config = mkIf cfg.enable {
-    home.packages = with pkgs; [trilium-desktop];
+    home.packages = with pkgs; [ trilium-desktop ];
     wayland.windowManager.sway.config = mkIf cfg.sway {
       keybindings = keybindings;
     };

@@ -1,3 +1,3 @@
 localFlake: args: {
-  imports = [./homeModule.nix];
+  imports = [ ./homeModule.nix ];
 }

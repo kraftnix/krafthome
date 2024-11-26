@@ -7,7 +7,7 @@ flake-parts-lib.mkTransposedPerSystemModule {
   name = "vimPlugins";
   option = lib.mkOption {
     type = lib.types.anything;
-    default = {};
+    default = { };
     description = ''
       An attribute set of system-specific library functions.
     '';

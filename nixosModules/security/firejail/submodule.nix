@@ -5,9 +5,9 @@
   pkgs,
   descriptions,
   ...
-}: let
-  inherit
-    (lib)
+}:
+let
+  inherit (lib)
     concatStringsSep
     filterAttrs
     literalExpression
@@ -20,70 +20,72 @@
     ;
   cfg = config;
 
-  finalDescriptions =
-    {
-      enable = "firejail, a sandboxing tool for Linux";
-    }
-    // descriptions;
+  finalDescriptions = {
+    enable = "firejail, a sandboxing tool for Linux";
+  } // descriptions;
 
-  wrappedBinContents = command: value: let
-    opts =
-      if builtins.isAttrs value
-      then value
-      else {
-        executable = value;
-        desktop = null;
-        profile = null;
-        extraArgs = [];
-      };
-    args = lib.escapeShellArgs (
-      opts.extraArgs
-      ++ (lib.optional (opts.profile != null) "--profile=${builtins.toString opts.profile}")
-    );
-  in ''
-    cat <<_EOF >$out/bin/${command}
-    #! ${pkgs.runtimeShell} -e
-    exec /run/wrappers/bin/firejail ${args} -- ${builtins.toString opts.executable} "\$@"
-    _EOF
-    chmod 0755 $out/bin/${command}
-
-    ${lib.optionalString (opts.desktop != null) ''
-      substitute ${opts.desktop} $out/share/applications/$(basename ${opts.desktop}) \
-        --replace ${opts.executable} $out/bin/${command}
-    ''}
-  '';
-  wrappedBin = command: value:
-    pkgs.runCommand "firejail-wrapped-${command}"
-    {
-      preferLocalBuild = true;
-      allowSubstitutes = false;
-      # take precedence over non-firejailed versions
-      meta.priority = -3; # more priority to individual wrappedBin
-    }
+  wrappedBinContents =
+    command: value:
+    let
+      opts =
+        if builtins.isAttrs value then
+          value
+        else
+          {
+            executable = value;
+            desktop = null;
+            profile = null;
+            extraArgs = [ ];
+          };
+      args = lib.escapeShellArgs (
+        opts.extraArgs
+        ++ (lib.optional (opts.profile != null) "--profile=${builtins.toString opts.profile}")
+      );
+    in
     ''
-      mkdir -p $out/bin
-      mkdir -p $out/share/applications
-      ${wrappedBinContents command value}
+      cat <<_EOF >$out/bin/${command}
+      #! ${pkgs.runtimeShell} -e
+      exec /run/wrappers/bin/firejail ${args} -- ${builtins.toString opts.executable} "\$@"
+      _EOF
+      chmod 0755 $out/bin/${command}
+
+      ${lib.optionalString (opts.desktop != null) ''
+        substitute ${opts.desktop} $out/share/applications/$(basename ${opts.desktop}) \
+          --replace ${opts.executable} $out/bin/${command}
+      ''}
     '';
+  wrappedBin =
+    command: value:
+    pkgs.runCommand "firejail-wrapped-${command}"
+      {
+        preferLocalBuild = true;
+        allowSubstitutes = false;
+        # take precedence over non-firejailed versions
+        meta.priority = -3; # more priority to individual wrappedBin
+      }
+      ''
+        mkdir -p $out/bin
+        mkdir -p $out/share/applications
+        ${wrappedBinContents command value}
+      '';
 
   wrappedBins =
     pkgs.runCommand "firejail-wrapped-all-binaries"
-    {
-      preferLocalBuild = true;
-      allowSubstitutes = false;
-      # take precedence over non-firejailed versions
-      meta.priority = -2;
-    }
-    ''
-      mkdir -p $out/bin
-      mkdir -p $out/share/applications
-      ${concatStringsSep "\n" (
-        mapAttrsToList
-        wrappedBinContents
-        (filterAttrs (_: b: b.enable) cfg.wrappedBinaries)
-      )}
-    '';
-in {
+      {
+        preferLocalBuild = true;
+        allowSubstitutes = false;
+        # take precedence over non-firejailed versions
+        meta.priority = -2;
+      }
+      ''
+        mkdir -p $out/bin
+        mkdir -p $out/share/applications
+        ${concatStringsSep "\n" (
+          mapAttrsToList wrappedBinContents (filterAttrs (_: b: b.enable) cfg.wrappedBinaries)
+        )}
+      '';
+in
+{
   options = {
     enable = mkEnableOption finalDescriptions.enable;
 
@@ -103,14 +105,18 @@ in {
     };
 
     wrappedBinaries = mkOption {
-      type = types.attrsOf (types.either types.path (types.submoduleWith {
-        modules = [
-          ./binary-extensions.nix
-          ./binary-wrapper.nix
-          {config._module.args.pkgs = pkgs;}
-        ];
-      }));
-      default = {};
+      type = types.attrsOf (
+        types.either types.path (
+          types.submoduleWith {
+            modules = [
+              ./binary-extensions.nix
+              ./binary-wrapper.nix
+              { config._module.args.pkgs = pkgs; }
+            ];
+          }
+        )
+      );
+      default = { };
       example = literalExpression ''
         {
           firefox = {

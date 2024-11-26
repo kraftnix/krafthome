@@ -3,10 +3,10 @@
   lib,
   pkgs,
   ...
-}: let
+}:
+let
   cfg = config.khome.tuigreet;
-  inherit
-    (lib)
+  inherit (lib)
     attrValues
     concatStringsSep
     filter
@@ -20,58 +20,58 @@
     types
     ;
 
-  mkScript = session: scfg:
+  mkScript =
+    session: scfg:
     pkgs.writeScript "greetd-start-${session}" ''
       ${concatStringsSep "\n" (mapAttrsToList (env: val: "export ${env}=${val}") scfg.environment)}
       exec systemd-cat --identifier=${session} ${scfg.command} $@
     '';
 
-  sessionModule = {
-    name,
-    config,
-    ...
-  }: {
-    options = {
-      enable = mkOption {
-        default = true;
-        description = "`enable` this session.";
-        type = types.bool;
+  sessionModule =
+    {
+      name,
+      config,
+      ...
+    }:
+    {
+      options = {
+        enable = mkOption {
+          default = true;
+          description = "`enable` this session.";
+          type = types.bool;
+        };
+        session = mkOption {
+          default = name;
+          description = "session name";
+          type = types.str;
+        };
+        command = mkOption {
+          default = "";
+          description = "start command of session";
+          type = types.str;
+        };
+        ignoreDefaultEnvironment = mkOption {
+          default = false;
+          description = "ignore toplevel environment, often useful for shell or irregular sessions";
+          type = types.bool;
+        };
+        environment = mkOption {
+          default = { };
+          description = "environment variables to launch wrapper script with";
+          type = types.attrsOf (types.nullOr types.str);
+          apply = filterAttrs (_: c: c != null);
+        };
+        __finalStartCmd = mkOption {
+          default = "";
+          description = "final string to use for command";
+          type = types.str;
+        };
       };
-      session = mkOption {
-        default = name;
-        description = "session name";
-        type = types.str;
-      };
-      command = mkOption {
-        default = "";
-        description = "start command of session";
-        type = types.str;
-      };
-      ignoreDefaultEnvironment = mkOption {
-        default = false;
-        description = "ignore toplevel environment, often useful for shell or irregular sessions";
-        type = types.bool;
-      };
-      environment = mkOption {
-        default = {};
-        description = "environment variables to launch wrapper script with";
-        type = types.attrsOf (types.nullOr types.str);
-        apply = filterAttrs (_: c: c != null);
-      };
-      __finalStartCmd = mkOption {
-        default = "";
-        description = "final string to use for command";
-        type = types.str;
+      config = mkIf config.enable {
+        __finalStartCmd = "${mkScript config.session config}";
+        environment = if config.ignoreDefaultEnvironment then { } else cfg.defaultEnvironment;
       };
     };
-    config = mkIf config.enable {
-      __finalStartCmd = "${mkScript config.session config}";
-      environment =
-        if config.ignoreDefaultEnvironment
-        then {}
-        else cfg.defaultEnvironment;
-    };
-  };
 
   # swaySession = pkgs.writeTextFile {
   #   name = "sway-session.desktop";
@@ -83,7 +83,8 @@
   #       '';
   # };
 
-  mkSession = scfg:
+  mkSession =
+    scfg:
     pkgs.writeTextFile {
       name = "${scfg.session}-session.desktop";
       destination = "/${scfg.session}-session.desktop";
@@ -95,19 +96,18 @@
     };
 
   # First session is used by default
-  sortSessionList = defaultSessionName: sessions:
+  sortSessionList =
+    defaultSessionName: sessions:
     [
       sessions.${defaultSessionName}
     ]
     ++ (attrValues (filterAttrs (_: s: s.session != defaultSessionName) sessions));
 
-  sessionDirs = sessions:
-    builtins.concatStringsSep ":" (
-      map
-      mkSession
-      (sortSessionList cfg.defaultSession sessions)
-    );
-in {
+  sessionDirs =
+    sessions:
+    builtins.concatStringsSep ":" (map mkSession (sortSessionList cfg.defaultSession sessions));
+in
+{
   options.khome.tuigreet = {
     enable = mkOption {
       default = false;
@@ -146,7 +146,7 @@ in {
     };
 
     sessions = mkOption {
-      default = {};
+      default = { };
       description = "launchable desktop environments";
       type = types.attrsOf (types.submodule sessionModule);
     };
@@ -158,7 +158,7 @@ in {
     };
 
     defaultEnvironment = mkOption {
-      default = {};
+      default = { };
       description = "default environment variables to add to all sessions";
       type = types.attrsOf types.str;
     };
@@ -206,7 +206,7 @@ in {
     };
 
     users.users.${cfg.greeterUser}.group = cfg.greeterUser;
-    users.groups.${cfg.greeterUser} = {};
+    users.groups.${cfg.greeterUser} = { };
 
     systemd.services.display-manager.enable = false;
     services.xserver.displayManager.lightdm.enable = lib.mkForce false;

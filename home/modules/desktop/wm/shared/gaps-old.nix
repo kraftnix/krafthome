@@ -3,7 +3,8 @@
   pkgs,
   lib,
   ...
-}: let
+}:
+let
   gaps = {
     inner = 14;
     outer = -2;
@@ -53,14 +54,19 @@
         bindsym Escape mode "default"
     }
   '';
-in {
+in
+{
   wayland.windowManager.sway = {
     inherit extraConfig;
-    config = {inherit gaps;};
+    config = {
+      inherit gaps;
+    };
   };
   xsession.windowManager.i3 = {
     inherit extraConfig;
     package = pkgs.i3-gaps;
-    config = {inherit gaps;};
+    config = {
+      inherit gaps;
+    };
   };
 }

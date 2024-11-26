@@ -1,10 +1,12 @@
-nixpkgs: let
+nixpkgs:
+let
   libbluray-full = nixpkgs.libbluray.override {
     inherit (nixpkgs) libaacs libbdplus;
     withAACS = true;
     withBDplus = true;
   };
-in {
+in
+{
   libbluray = libbluray-full;
   mpv-bluray = nixpkgs.mpv-unwrapped.override {
     libbluray = libbluray-full;

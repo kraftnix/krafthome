@@ -1,11 +1,12 @@
-args @ {self, ...}: {
+args@{ self, ... }:
+{
   config,
   lib,
   pkgs,
   ...
-}: let
-  inherit
-    (lib)
+}:
+let
+  inherit (lib)
     concatStringsSep
     mapAttrsToList
     mkBefore
@@ -18,7 +19,8 @@ args @ {self, ...}: {
   wcfg = config.khome.desktop.wm;
   cfg = wcfg.sway;
   opts = self.inputs.extra-lib.lib.options;
-in {
+in
+{
   imports = [
     (import ./swayr.nix args)
     (import ./swaylock.nix args)
@@ -44,7 +46,7 @@ in {
     };
     keybindings = mkOption {
       type = with types; attrsOf str;
-      default = {};
+      default = { };
       description = "sway specific keybindings";
     };
     extraPackages = mkOption {
@@ -62,7 +64,7 @@ in {
       type = with types; listOf package;
     };
     sessionVariables = mkOption {
-      default = {};
+      default = { };
       apply = recursiveUpdate {
         MOZ_ENABLE_WAYLAND = 1;
         # set this in tuigreet to not clash
@@ -71,7 +73,12 @@ in {
         SDL_VIDEODRIVER = "wayland";
         NIXOS_OZONE_WL = "1"; # sets all electron apps to use Wayland/Ozone
       };
-      type = with types; attrsOf (oneOf [str int]);
+      type =
+        with types;
+        attrsOf (oneOf [
+          str
+          int
+        ]);
       description = "session variables for sway";
     };
     enableSystemd = opts.enableTrue "enable system integration";
@@ -93,7 +100,9 @@ in {
   config = mkIf cfg.enable {
     home.packages = cfg.extraPackages;
     home.sessionVariables = cfg.sessionVariables;
-    xdg.configFile."sway/env".text = concatStringsSep "\n" (mapAttrsToList (env: val: "${env}=${toString val}") config.home.sessionVariables);
+    xdg.configFile."sway/env".text = concatStringsSep "\n" (
+      mapAttrsToList (env: val: "${env}=${toString val}") config.home.sessionVariables
+    );
 
     stylix.targets.sway.enable = true;
     wayland.windowManager.sway = {
@@ -109,8 +118,7 @@ in {
       config = mkMerge [
         (mkIf cfg.enableDefaults wcfg.sharedConfig)
         {
-          inherit
-            (cfg)
+          inherit (cfg)
             bars
             startup
             keybindings

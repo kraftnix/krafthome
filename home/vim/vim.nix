@@ -2,14 +2,16 @@
   inputs,
   cell,
   ...
-}: {
+}:
+{
   config,
   pkgs,
   lib,
   ...
 }:
 with builtins;
-with lib; let
+with lib;
+let
   base16 = config.lib.base16;
   vimColors = base16.programs.vim;
   base = readFile ./old/base_vimrc;
@@ -29,7 +31,8 @@ with lib; let
   opts = config.themes.extra;
   transparent = hasAttr "opacity" opts && opts.opacity < 1;
   vimPlugins = pkgs.vimPlugins // cell.vimPlugins;
-in {
+in
+{
   # home.file = lib.mkIf config.khome.themes.enable {
   #   ".vim/colors/${colorName}.vim".source = vimColors.template "vim";
   #   ".vim/autoload/airline-${colorName}.vim".source = base16.getTemplate "vim-airline-themes";

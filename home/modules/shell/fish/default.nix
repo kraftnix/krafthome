@@ -1,16 +1,18 @@
-args: {
+args:
+{
   config,
   lib,
   pkgs,
   ...
-}: let
-  inherit
-    (lib)
+}:
+let
+  inherit (lib)
     mkEnableOption
     mkIf
     ;
   cfg = config.khome.shell.fish;
-in {
+in
+{
   options.khome.shell.fish = {
     enable = mkEnableOption "enable fish";
   };
