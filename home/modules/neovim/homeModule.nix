@@ -31,6 +31,7 @@ in
   config = mkIf (cfg.enable == true) {
     home.packages = [
       pkgs.nixpkgs-fmt
+      pkgs.nixfmt-rfc-style
       pkgs.alejandra
     ]; # TODO(cleanup): move elsewhere
     # home.activation.neovim-copy = lib.mkForce (lib.hm.dag.entryBetween [ "reloadSystemd" ] [ ] "");

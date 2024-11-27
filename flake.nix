@@ -4,7 +4,7 @@
   # Core
   inputs.nixpkgs.url = "github:nixos/nixpkgs/nixos-unstable";
   inputs.nixos.follows = "nixpkgs";
-  inputs.stable.url = "github:nixos/nixpkgs/release-24.05";
+  inputs.stable.url = "github:nixos/nixpkgs/release-24.11";
   inputs.home.url = "github:nix-community/home-manager";
   inputs.home.inputs.nixpkgs.follows = "nixpkgs";
   inputs.wezterm.url = "github:wez/wezterm?dir=nix";
