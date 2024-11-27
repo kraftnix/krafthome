@@ -51,7 +51,6 @@ in
           str
           package
         ];
-      readOnly = true;
     };
     appendToSwayConfig = mkEnableOption ''
       Automatically append the swayidle command to `home-manager`'s sway configuration.
