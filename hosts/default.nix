@@ -15,7 +15,7 @@ args@{
       ++ self.auto-import.nixos.all
       ++ self.externalModules
       ++ [
-        { stylix.image = ../../home/modules/themes/wallpaper.jpg; }
+        { stylix.image = ../home/modules/themes/wallpaper.jpg; }
         inputs.home.nixosModules.home-manager
         inputs.provision.inputs.disko.nixosModules.disko
         self.nixosModules.home-manager-integration
