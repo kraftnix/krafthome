@@ -8,7 +8,7 @@
   flake.lib = rec {
     provision = self.inputs.provision.lib;
     # NOTE(URGENT): THESE NEED BACKPORTING TO KRAFTHOME
-    khome.toggleApp = cmd: "exec nu ${../../home/modules/desktop/wm/sway/sway-toggle-app.nu} ${cmd}";
+    khome.toggleApp = cmd: "exec nu ${../home/modules/desktop/wm/sway/sway-toggle-app.nu} ${cmd}";
     khome.wrapSwayrLog = cmd: "exec env RUST_BACKTRACE=1 swayr ${cmd} >> /tmp/swayr.log 2>&1";
 
     kebabCaseToCamelCase = builtins.replaceStrings (map (s: "-${s}") lib.lowerChars) lib.upperChars;

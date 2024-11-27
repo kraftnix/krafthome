@@ -65,9 +65,9 @@ in
       si = "sudo -i";
       stl = "doas systemctl";
       sudo = "doas";
-      up = "doas systemctl start";
-      down = "doas systemctl stop";
-      status = "doas systemctl status";
+      sup = "doas systemctl start";
+      sdown = "doas systemctl stop";
+      ssta = "doas systemctl status";
       d = "doas";
 
       # lsd
