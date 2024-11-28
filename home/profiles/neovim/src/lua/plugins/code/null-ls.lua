@@ -59,34 +59,34 @@ return h.mapNixPlugin {
     dependencies = { 'nvim-tools/none-ls.nvim' }
   },
 
-  -- NullLS
-  { 'nvim-tools/none-ls.nvim',
-    nix_name = 'none-ls.nvim',
-    config = function()
-      local null_ls = require("null-ls")
-      null_ls.setup({
-        sources = {
-          -- null_ls.builtins.formatting.stylua,
-          -- null_ls.builtins.diagnostics.eslint,
-          null_ls.builtins.completion.spell,
-          -- null_ls.builtins.formatting.nixpkgs_fmt, # does auto-formatting on save
-        },
-        debug = true,
-        on_attach = function(client, bufnr)
-          if client.supports_method("textDocument/formatting") then
-            vim.api.nvim_clear_autocmds({ group = augroup, buffer = bufnr })
-            vim.api.nvim_create_autocmd("BufWritePost", {
-              group = augroup,
-              buffer = bufnr,
-              callback = function()
-                async_formatting(bufnr)
-                lsp_formatting(bufnr)
-              end,
-            })
-          end
-        end,
-      })
-    end
-  }
+  -- -- NullLS
+  -- { 'nvim-tools/none-ls.nvim',
+  --   nix_name = 'none-ls.nvim',
+  --   config = function()
+  --     local null_ls = require("null-ls")
+  --     null_ls.setup({
+  --       sources = {
+  --         -- null_ls.builtins.formatting.stylua,
+  --         -- null_ls.builtins.diagnostics.eslint,
+  --         null_ls.builtins.completion.spell,
+  --         -- null_ls.builtins.formatting.nixpkgs_fmt, # does auto-formatting on save
+  --       },
+  --       debug = true,
+  --       on_attach = function(client, bufnr)
+  --         if client.supports_method("textDocument/formatting") then
+  --           vim.api.nvim_clear_autocmds({ group = augroup, buffer = bufnr })
+  --           vim.api.nvim_create_autocmd("BufWritePost", {
+  --             group = augroup,
+  --             buffer = bufnr,
+  --             callback = function()
+  --               async_formatting(bufnr)
+  --               lsp_formatting(bufnr)
+  --             end,
+  --           })
+  --         end
+  --       end,
+  --     })
+  --   end
+  -- }
 
 }

@@ -273,8 +273,7 @@ return h.mapNixPlugin {
       lspconfig.nixd.setup({
         -- autostart = false,
         autostart = true,
-        -- cmd = { "nixd", "--log=verbose", "--pretty" },
-        -- cmd = { "nixd", "--inlay-hints=true", "--semantic-tokens=true", "--log=verbose", "--pretty", "&>", ("/home/"..user.."/nixd.log") },
+        -- cmd = { "nixd", "--log=verbose"},
         cmd = { "nixd", "--inlay-hints=true", "--semantic-tokens=true" },
         -- cmd = { "nixd" },
         on_attach = on_attach,
@@ -286,27 +285,27 @@ return h.mapNixPlugin {
               expr = 'import (builtins.getFlake "/home/' .. user .. '/config").inputs.nixpkgs { }',
             },
             formatting = {
-              command = { "alejandro" },
+              command = { "nix fmt" },
             },
             options = {
               nixos = {
-                -- expr = '(let currFlake = builtins.getFlake ("git+file://" + toString ./.); in if builtins.hasAttr "nixd" currFlake then currFlake.nixd.options.nixos else '..config_flake..'.nixosConfigurations.' .. hostname .. '.options)',
-                expr = config_flake..'.nixosConfigurations.'..hostname..'.options',
+                expr = '(let currFlake = builtins.getFlake ("git+file://" + toString ./.); in if builtins.hasAttr "nixd" currFlake then currFlake.nixd.options.nixos else '..config_flake..'.nixosConfigurations.' .. hostname .. '.options)',
+                -- expr = config_flake..'.nixosConfigurations.'..hostname..'.options',
               },
-              nixos_currflake = {
-                expr = '(builtins.getFlake ("git+file://" + toString ./.)).nixd.options.nixos'
-              },
+              -- nixos_currflake = {
+              --   expr = '(builtins.getFlake ("git+file://" + toString ./.)).nixd.options.nixos'
+              -- },
               home_manager = {
-                -- expr = '(builtins.getFlake ("git+file://" + toString ./.)).homeConfigurations.' .. user .. '.options',
-                expr = config_flake..'.homeConfigurations.'..user..'.options',
+                expr = '(let currFlake = builtins.getFlake ("git+file://" + toString ./.); in if (builtins.hasAttr "nixd" currFlake) && (builtins.hasAttr "home-manager" currFlake.nixd.options) then currFlake.nixd.options.home-manager else '..config_flake..'.homeConfigurations.' .. user .. '.options)',
+                -- expr = config_flake..'.homeConfigurations.'..user..'.options',
               },
-              home_manager_currflake = {
-                expr = '(builtins.getFlake ("git+file://" + toString ./.)).nixd.options.home-manager'
-              },
+              -- -- home_manager_currflake = {
+              -- --   expr = '(builtins.getFlake ("git+file://" + toString ./.)).nixd.options.home-manager'
+              -- -- },
               flake_parts = {
                 expr = '(builtins.getFlake ("git+file://" + toString ./.)).debug.options',
               },
-              flake_parts2 = {
+              perSystem = {
                 expr = '(builtins.getFlake ("git+file://" + toString ./.)).currentSystem.options',
               },
             },

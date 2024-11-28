@@ -45,9 +45,9 @@ local nvim_cmp_cmdline = {
       mapping = cmdline_mapping,
       sources = cmp.config.sources({
         -- { name = "cmdline", option = { ignore_cmds = { "lua" } } },
-        { name = "cmdline",         priority = 10 },
+        { name = "cmdline",         priority = 3 },
         { name = "cmdline_history", priority = 5, keyword_length = 4 },
-        { name = "path",            priority = 3 },
+        { name = "path",            priority = 15 },
         -- {
         --   name = "buffer",
         --   keyword_length = 4,
@@ -101,7 +101,7 @@ local nvim_cmp = {
     'saadparwaiz1/cmp_luasnip', -- luasnip
     'hrsh7th/cmp-nvim-lsp',     -- lsp
     'hrsh7th/cmp-buffer',       -- open buffera
-    'hrsh7th/cmp-path',         -- plete paths
+    'hrsh7th/cmp-path',         -- complete paths
     'hrsh7th/cmp-rg',           -- rg in local files
     {'tzachar/cmp-fuzzy-buffer',
       nix_disable = true,
@@ -143,47 +143,59 @@ local nvim_cmp = {
         ghost_text = true,
       },
 
+      performance = {
+        -- debounce = 0,
+        -- throttle = 0,
+        -- fetching_timeout = 500,
+        -- confirm_resolve_timeout = 80,
+        -- async_budget = 1,
+        -- max_view_entries = 400,
+      },
+
       completion = {
         autocomplete = {
           cmp.TriggerEvent.TextChanged,
           cmp.TriggerEvent.InsertEnter,
         },
         completeopt = "menuone,noinsert,noselect",
-        keyword_length = 1,
+        keyword_length = 2,
       },
 
-      sources = {
+      sources = cmp.config.sources({
         { name = 'nvim_lsp' },
         { name = 'nvim_lsp_signature_help' },
         -- { name = 'nixpkgs' },
         -- { name = 'nixos' },
         { name = "nvim_lua" },
         --{ name = 'orgmode' },
-        -- { name = 'fuzzy_buffer' },
-        { name = 'fuzzy_buffer' ,
-          option = {
-            get_bufnrs = function()
-              local bufs = {}
-              for _, buf in ipairs(vim.api.nvim_list_bufs()) do
-                local buftype = vim.api.nvim_buf_get_option(buf, 'buftype')
-                if buftype ~= 'nofile' and buftype ~= 'prompt' then
-                  bufs[#bufs + 1] = buf
-                end
-              end
-              return bufs
-            end
-          },
-        },
-        { name = 'path' },
         { name = "luasnip" },
-        { name = 'vsnip' },
-        -- { name = "rg" }, -- causing massive slowdowns
-        { name = 'buffer', options = {
-          get_bufnrs = function()
-            return vim.api.nvim_list_bufs()
-          end
-        } },
-      },
+        -- { name = 'vsnip' },
+        -- { name = 'fuzzy_buffer' },
+        -- { name = 'fuzzy_buffer' ,
+        --   option = {
+        --     get_bufnrs = function()
+        --       local bufs = {}
+        --       for _, buf in ipairs(vim.api.nvim_list_bufs()) do
+        --         local buftype = vim.api.nvim_buf_get_option(buf, 'buftype')
+        --         if buftype ~= 'nofile' and buftype ~= 'prompt' then
+        --           bufs[#bufs + 1] = buf
+        --         end
+        --       end
+        --       return bufs
+        --     end
+        --   },
+        -- },
+      }, {
+        { name = 'path' },
+      }, {
+        -- { name = "rg", max_item_count = 10 }, -- causing massive slowdowns
+        { name = 'buffer', keyword_length = 3 },
+        -- { name = 'buffer', options = {
+        --   get_bufnrs = function()
+        --     return vim.api.nvim_list_bufs()
+        --   end
+        -- } },
+      }),
 
       view = {
         -- entries = "native",
@@ -244,7 +256,7 @@ local nvim_cmp = {
             -- vim_item.kind = icons[vim_item.kind] .. " " .. vim_item.kind
             vim_item.kind = lspkind.presets.default[vim_item.kind] .. " " .. vim_item.kind
           end
-          local msg = string.format('CMPDEBUG:\n%s\n%s\n____', vim.inspect(entry), vim.inspect(vim_item))
+          -- local msg = string.format('CMPDEBUG:\n%s\n%s\n____', vim.inspect(entry), vim.inspect(vim_item))
           -- require('notify'). (msg, 'info')
           -- require('noice').redirect(function ()
           --   vim.print(msg)
@@ -267,19 +279,22 @@ local nvim_cmp = {
             --orgmode = "[Org]",
           })[entry.source.name]
           if entry.source.name == 'cmdline' then
-            local vim_item = require("lspkind").cmp_format({ mode = "symbol_text", maxwidth = 50 })(entry, vim_item)
+            vim_item = lspkind.cmp_format({ mode = "symbol_text", maxwidth = 50 })(entry, vim_item)
             vim_item.kind = "λ"
             vim_item.menu = menu
           elseif entry.source.name == 'cmdline_history' then
-            local vim_item = require("lspkind").cmp_format({ mode = "symbol_text", maxwidth = 50 })(entry, vim_item)
+            vim_item = lspkind.cmp_format({ mode = "symbol_text", maxwidth = 50 })(entry, vim_item)
             vim_item.kind = "∞"
             vim_item.menu = menu
           else
-            local kind = require("lspkind").cmp_format({ mode = "symbol_text", maxwidth = 50 })(entry, vim_item)
+            local kind = lspkind.cmp_format({ mode = "symbol_text", maxwidth = 50 })(entry, vim_item)
             local strings = vim.split(kind.kind, "%s", { trimempty = true })
-            kind.kind = " " .. (strings[1] or "") .. " "
-            -- vim_item.menu = "    (" .. (strings[2] or "") .. ") "
-            kind.menu = "    (" .. (strings[2] or "") .. ") " .. (menu or "[]") .. ""
+            kind.kind = (strings[1] or "") .. " "
+            if entry.completion_item.detail == nil then
+              kind.menu = "  (" .. (strings[2] or "") .. ") " .. (menu or "[]")
+            else
+              kind.menu = "  (" .. (strings[2] or "") .. ") " .. "<" .. entry.completion_item.detail .. ">"
+            end
             -- kind.info = menu or "[]"
             vim_item = kind
           end
@@ -364,13 +379,14 @@ local nvim_cmp = {
       sorting = {
         priority_weight = 2,
         comparators = {
-          require('cmp_fuzzy_buffer.compare'),
-          cmp.config.compare.offset,
+          -- require('cmp_fuzzy_buffer.compare'),
           cmp.config.compare.exact,
-          cmp.config.compare.score,
+          cmp.config.compare.locality,
           cmp.config.compare.recently_used,
-          require("cmp-under-comparator").under,
+          cmp.config.compare.score,
+          -- require("cmp-under-comparator").under,
           cmp.config.compare.kind,
+          cmp.config.compare.offset,
         },
       },
 
