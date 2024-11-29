@@ -103,14 +103,16 @@ local nvim_cmp = {
     'hrsh7th/cmp-buffer',       -- open buffera
     'hrsh7th/cmp-path',         -- complete paths
     'hrsh7th/cmp-rg',           -- rg in local files
-    {'tzachar/cmp-fuzzy-buffer',
-      nix_disable = true,
-      dependencies = {
-        'tzachar/fuzzy.nvim'
-      }
-    },
+    -- {'tzachar/cmp-fuzzy-buffer',
+    --   nix_disable = true,
+    --   dependencies = {
+    --     'tzachar/fuzzy.nvim'
+    --   }
+    -- },
     -- h.NixPlugin('hrsh7th/cmp-nixpkgs'),    -- nixpkgs (legacy)
 
+    'ray-x/cmp-treesitter',
+    'FelipeLema/cmp-async-path',
     -- snippets
     'l3mon4d3/luasnip',             -- write custom snippets
     'rafamadriz/friendly-snippets', -- snippets collection
@@ -186,7 +188,10 @@ local nvim_cmp = {
         --   },
         -- },
       }, {
-        { name = 'path' },
+        { name = "treesitter" },
+      }, {
+        -- { name = 'path' },
+        { name = 'async_path' },
       }, {
         -- { name = "rg", max_item_count = 10 }, -- causing massive slowdowns
         { name = 'buffer', keyword_length = 3 },
@@ -248,13 +253,16 @@ local nvim_cmp = {
       formatting = {
         fields = { "kind", "abbr", "menu" },
 
-        -- old format
+
         format = function(entry, vim_item)
-          --vim_item.kind = require("lspkind").presets.default[vim_item.kind] .. " " .. vim_item.kind
-          -- workaround for nix/nixpkgs
+          local kinds = lspkind.presets.default
+          -- extras for TreeSitter source
+          kinds['VariableMember'] = kinds['Variable']
+          kinds['Comment'] = "#"
+          kinds['None'] = "_"
+          kinds['String'] = kinds['Text']
           if not (vim_item.kind == "Attr") then
-            -- vim_item.kind = icons[vim_item.kind] .. " " .. vim_item.kind
-            vim_item.kind = lspkind.presets.default[vim_item.kind] .. " " .. vim_item.kind
+            vim_item.kind = (kinds[vim_item.kind] or "[??]") .. " " .. vim_item.kind
           end
           -- local msg = string.format('CMPDEBUG:\n%s\n%s\n____', vim.inspect(entry), vim.inspect(vim_item))
           -- require('notify'). (msg, 'info')
@@ -276,6 +284,7 @@ local nvim_cmp = {
             latex_symbols = "[Latex]",
             cmdline = "[Cmd]",
             cmdline_history = "[Hist]",
+            treesitter = "[TS]",
             --orgmode = "[Org]",
           })[entry.source.name]
           if entry.source.name == 'cmdline' then
@@ -302,32 +311,24 @@ local nvim_cmp = {
           return vim_item
         end,
 
-        -- -- symbol in front
         -- format = function(entry, vim_item)
-        --   local kind = require("lspkind").cmp_format({ mode = "symbol_text", maxwidth = 50 })(entry, vim_item)
-        --   local strings = vim.split(kind.kind, "%s", { trimempty = true })
-        --   kind.kind = " " .. (strings[1] or "") .. " "
-        --   kind.menu = "    (" .. (strings[2] or "") .. ")"
-        --
-        --   return kind
-        -- end,
-
-        -- old format
-        -- format = function(entry, vim_item)
-        --   --vim_item.kind = require("lspkind").presets.default[vim_item.kind] .. " " .. vim_item.kind
-        --   -- workaround for nix/nixpkgs
+        --   local kinds = lspkind.presets.default
+        --   -- extras for TreeSitter source
+        --   kinds['VariableMember'] = kinds['Variable']
+        --   kinds['Comment'] = "#"
+        --   kinds['None'] = "_"
+        --   kinds['String'] = kinds['Text']
         --   if not (vim_item.kind == "Attr") then
-        --     -- vim_item.kind = icons[vim_item.kind] .. " " .. vim_item.kind
-        --     vim_item.kind = lspkind.presets.default[vim_item.kind] .. " " .. vim_item.kind
+        --     vim_item.kind = (kinds[vim_item.kind] or "[Unknown]") .. " " .. vim_item.kind
         --   end
-        --   local msg = string.format('CMPDEBUG:\n%s\n%s\n____', vim.inspect(entry), vim.inspect(vim_item))
+        --   -- local msg = string.format('CMPDEBUG:\n%s\n%s\n____', vim.inspect(entry), vim.inspect(vim_item))
         --   -- require('notify'). (msg, 'info')
         --   -- require('noice').redirect(function ()
         --   --   vim.print(msg)
         --   -- end)
         --   -- local js = vim.fn.json_encode(entry)
-        --   vim.fn.writefile({entry[1]}, "cmp-event-json.log", 'a')
-        --   vim_item.menu = ({
+        --   -- vim.fn.writefile({entry[1]}, "cmp-event-json.log", 'a')
+        --   local menu = ({
         --     rg = "[RG]",
         --     path = "[Path]",
         --     buffer = "[Buffer]",
@@ -338,43 +339,35 @@ local nvim_cmp = {
         --     vsnip = "[VSnip]",
         --     nvim_lua = "[Lua]",
         --     latex_symbols = "[Latex]",
+        --     cmdline = "[Cmd]",
+        --     cmdline_history = "[Hist]",
+        --     treesitter = "[TS]",
         --     --orgmode = "[Org]",
         --   })[entry.source.name]
+        --   if entry.source.name == 'cmdline' then
+        --     vim_item = lspkind.cmp_format({ mode = "symbol_text", maxwidth = 50 })(entry, vim_item)
+        --     vim_item.kind = "λ"
+        --     vim_item.menu = menu
+        --   elseif entry.source.name == 'cmdline_history' then
+        --     vim_item = lspkind.cmp_format({ mode = "symbol_text", maxwidth = 50 })(entry, vim_item)
+        --     vim_item.kind = "∞"
+        --     vim_item.menu = menu
+        --   else
+        --     local kind = lspkind.cmp_format({ mode = "symbol_text", maxwidth = 50 })(entry, vim_item)
+        --     local strings = vim.split(kind.kind, "%s", { trimempty = true })
+        --     kind.kind = (strings[1] or "") .. " "
+        --     if entry.completion_item.detail == nil then
+        --       kind.menu = "  (" .. (strings[2] or "") .. ") " .. (menu or "[]")
+        --     else
+        --       kind.menu = "  (" .. (strings[2] or "") .. ") " .. "<" .. entry.completion_item.detail .. ">"
+        --     end
+        --     -- kind.info = menu or "[]"
+        --     vim_item = kind
+        --   end
+        --
         --   return vim_item
         -- end,
-
       },
-
-      -- formatting = {
-      --   format = require('lspkind').cmp_format({
-      --     mode = 'symbol', -- show only symbol annotations
-      --     maxwidth = 50, -- prevent the popup from showing more than provided characters (e.g 50 will not show more than 50 characters)
-      --     ellipsis_char = '...', -- when popup menu exceed maxwidth, the truncated part would show ellipsis_char instead (must define maxwidth first)
-      --
-      --     -- The function below will be called before any actual modifications from lspkind
-      --     -- so that you can provide more controls on popup customization. (See [#30](https://github.com/onsails/lspkind-nvim/pull/30))
-      --     before = function (entry, vim_item)
-      --       --vim_item.kind = require("lspkind").presets.default[vim_item.kind] .. " " .. vim_item.kind
-      --       -- workaround for nix/nixpkgs
-      --       if not (vim_item.kind == "Attr") then
-      --         vim_item.kind = icons[vim_item.kind] .. " " .. vim_item.kind
-      --       end
-      --       vim_item.menu = ({
-      --         path = "[Path]",
-      --         buffer = "[Buffer]",
-      --         nvim_lsp = "[LSP]",
-      --         nixpkgs = "[nixpkgs]",
-      --         nixos = "[nixos]",
-      --         luasnip = "[LuaSnip]",
-      --         vsnip = "[VSnip]",
-      --         nvim_lua = "[Lua]",
-      --         latex_symbols = "[Latex]",
-      --         --orgmode = "[Org]",
-      --       })[entry.source.name]
-      --       return vim_item
-      --     end
-      --   })
-      -- },
 
       sorting = {
         priority_weight = 2,

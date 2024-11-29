@@ -82,6 +82,8 @@ in
       cmp-cmdline-history # include history of commands/searchs
       cmp-buffer # buffer sources
       cmp-path # path sources
+      cmp-async-path # path (async) sources
+      cmp-treesitter # treesitter sources
       #cmp-nixpkgs           # nixpkgs sources # replace by nil
       cmp-rg # rg source, searches well across buffers
       cmp-under-comparator # lowers priority of __ in completions (comparator)
@@ -163,7 +165,6 @@ in
       todo-comments-nvim # highlight comments
       sqlite-lua # sqlite API (used by other plugins)
       vim-oscyank # yank out of neovim through ssh/tmux with OSC52 escape
-      nvim-osc52 # yank out of neovim through ssh/tmux with OSC52 escape
       vim-suda # sudo write file with w!!
       vim-sleuth # detect tabstop and shiftwidth automatically
 
