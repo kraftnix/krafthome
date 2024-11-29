@@ -42,7 +42,7 @@ return h.mapNixPlugin {
       }
     },
     keycommands = {
-      { '<leader>lt', 'BqfToggle', 'Enable/Disable auto quickfix toggle', cmd_gen_skip = true },
+      { '<leader>lt', 'BqfAutoToggle', 'Enable/Disable auto quickfix toggle', cmd_gen_skip = true },
       -- Diagnostic keymaps
       -- { 'n', '[d', vim.diagnostic.goto_prev, { desc = 'Go to previous diagnostic message' } },
       -- { 'n', ']d', vim.diagnostic.goto_next, { desc = 'Go to next diagnostic message' } },

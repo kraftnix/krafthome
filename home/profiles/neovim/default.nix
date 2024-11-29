@@ -57,12 +57,10 @@ in
       harpoon # mark buffers and jump between them
       portal-nvim # jump around lists with keys
       neoscroll-nvim # animated/speed scrolling (laggy over SSH tho)
-      windows-nvim # windows zooming / resizing
       nvim-surround # autopairs ()[]<>{} completion (with treesitter magic)
 
       ## LSP
       nvim-lspconfig # configure LSPs
-      fidget-nvim # LSP progress (old)
       neodev-nvim # configure lua + neovim projects
       nvim-nu # old-school null-ls nushell LSP
       none-ls-nvim # none-ls (language agnostic LSP)
@@ -84,7 +82,6 @@ in
       cmp-path # path sources
       cmp-async-path # path (async) sources
       cmp-treesitter # treesitter sources
-      #cmp-nixpkgs           # nixpkgs sources # replace by nil
       cmp-rg # rg source, searches well across buffers
       cmp-under-comparator # lowers priority of __ in completions (comparator)
       cmp_luasnip # complete luasnip snippets in cmp (source)
@@ -92,6 +89,7 @@ in
       sniprun # run snippets with a binding (lua + rust)
       friendly-snippets # extra snippet source
       wilder-nvim # cmdline/search completion (use cmp now)
+      cpsm # wilder dependency
 
       ## Dap
       nvim-dap # Debug Adapter Protocol
@@ -117,7 +115,6 @@ in
       tabline-nvim # tabline (old, replaced by lualine)
       zen-mode-nvim # remove distractions
       tokyonight-nvim # nice theme
-      zephyr-nvim # treesitter based theme
       urlview-nvim # picker (ui.select support) for URLs
 
       ## Lib
@@ -133,9 +130,6 @@ in
       glow-nvim # markdown preview
       zk-nvim # zk knowledge base lsp
       nvim-neoclip-lua # clipboard/macro manager
-
-      ## ?
-      cpsm
 
       ## File Manager
       fm-nvim # generic file manager for cli tools (ranger)
