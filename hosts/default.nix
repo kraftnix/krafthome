@@ -34,6 +34,7 @@ args@{
       ];
     overlays = [
       self.overlays.default
+      inputs.provision.overlays.nix-curl
       # (final: prev: {
       #   # inherit (self.channels.${final.system}.stable.pkgs) logseq;
       #  })
