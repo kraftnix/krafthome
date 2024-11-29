@@ -37,9 +37,6 @@ args@{
       # jellyfin-mpv-shim fixes: https://github.com/NixOS/nixpkgs/pull/353833
       inherit (final.channels.stable.pkgs) jellyfin-mpv-shim;
     };
-    tools = final: prev: {
-      nix-fast-build = inputs.nix-fast-build.packages.${final.system}.nix-fast-build;
-    };
     wezterm-upstream = final: prev: {
       wezterm-upstream = inputs.wezterm.packages.${final.system}.default;
     };
@@ -50,7 +47,6 @@ args@{
       vimPlugins
       nushellPlugins
       misc-fixes
-      tools
       wezterm-upstream
       inputs.elewrap.overlays.default
     ];

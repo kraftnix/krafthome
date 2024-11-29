@@ -45,12 +45,6 @@
 
     elewrap.url = "github:oddlama/elewrap";
     elewrap.inputs.nixpkgs.follows = "nixpkgs";
-
-    nix-fast-build.url = "github:Mic92/nix-fast-build";
-    nix-fast-build.inputs = {
-      flake-parts.follows = "provision/flake-parts";
-      nixpkgs.follows = "nixpkgs";
-    };
   };
 
   # follows

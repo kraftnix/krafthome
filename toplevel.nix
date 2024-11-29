@@ -50,7 +50,6 @@ localFlake@{
       nixpkgs.overlays = [
         (final: prev: {
           lib = prev.lib.extend (_: _: self.lib);
-          nix-fast-build = inputs.nix-fast-build.packages.${final.system}.nix-fast-build;
         })
         inputs.elewrap.overlays.default
       ];
