@@ -41,6 +41,7 @@ in
           vimv-rs # batch rename files with vim
           difftastic # awesome diff tool
           zenith # best top alternative
+          tre-command # tree alternative
 
           # tui
           ranger # tui file browser
