@@ -196,8 +196,12 @@ in
       nvim-ts-context-commentstring # add commentstring context to treesitter
       rainbow-delimiters-nvim # fancy rainbow brackets
       playground
+
       # fullNvimTreesitter
       pkgs.nvim-treesitter-full
+      # nvim-treesitter.withAllGrammars
+      # nvim-treesitter-parsers.nu
+
       # "nvim-treesitter" = nvim-treesitter.withAllGrammars;
       # workaround required for using nvim-treesitter with `lazy.nvim`
       # (pkgs.stdenv.mkDerivation {
@@ -214,13 +218,16 @@ in
       #   '';
       # })
     ];
+    # ] ++ (lib.attrValues (lib.removeAttrs nvim-treesitter-parsers ["recurseForDerivations"]));
   };
   xdg.configFile = mkMerge [
     {
       # ".config/nvim/colors/${colorName}.vim".source = vimColors.template "vim";
       # ".config/nvim/autoload/airline-${colorName}.vim".source = base16.getTemplate "vim-airline-themes";
       # ".config/nvim/parser/nu.so".source = "${pkgs.tree-sitter-full.builtGrammars.tree-sitter-nu}/parser";
+
       "nvim/parser".source = pkgs.tree-sitter-parsers;
+      # "nvim/parser".source = pkgs.vimPlugins.nvim-treesitter-parsers;
     }
   ];
 }

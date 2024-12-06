@@ -26,7 +26,7 @@ localFlake@{
       devshells.default = {
         provision.enable = true;
         provision.nvfetcher.enable = true;
-        provision.nvfetcher.sources.nixos.baseDir = "./nixos/packages";
+        provision.nvfetcher.sources.nixos.baseDir = "./packages";
         provision.nvfetcher.sources.home.baseDir = "./home/packages";
         packages = with pkgs; [
           just

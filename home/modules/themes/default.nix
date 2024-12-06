@@ -109,10 +109,22 @@ in
       wallpaper = mkOption {
         default = ./wallpaper.jpg;
         description = "path to default wallpaper";
+        type =
+          with types;
+          oneOf [
+            pathInStore
+            str
+          ];
       };
       screensaver = mkOption {
         default = cfg.images.wallpaper;
         description = "path screensaver image";
+        type =
+          with types;
+          oneOf [
+            pathInStore
+            str
+          ];
       };
       wallpaperDir = opts.string "/home/$user/Pictures/Wallpapers" "path to wallpapers directory";
     };

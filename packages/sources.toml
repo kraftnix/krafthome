@@ -1,10 +1,5 @@
 # TreeSitter
 [tree-sitter-nu]
-#src.github = "LhKipp/tree-sitter-nu" # track releases
-src.git = "https://github.com/LhKipp/tree-sitter-nu" # track master
-fetch.github = "LhKipp/tree-sitter-nu"
-
-[tree-sitter-nu-new]
 src.git = "https://github.com/nushell/tree-sitter-nu" # track master
 fetch.github = "nushell/tree-sitter-nu"
 

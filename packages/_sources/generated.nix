@@ -20,51 +20,39 @@
   };
   tree-sitter-markdown = {
     pname = "tree-sitter-markdown";
-    version = "5cdc549ab8f461aff876c5be9741027189299cec";
+    version = "c89a30ce556a5ea5552e816e5dc2f2c0de96237d";
     src = fetchFromGitHub {
       owner = "tree-sitter-grammars";
       repo = "tree-sitter-markdown";
-      rev = "5cdc549ab8f461aff876c5be9741027189299cec";
+      rev = "c89a30ce556a5ea5552e816e5dc2f2c0de96237d";
       fetchSubmodules = false;
-      sha256 = "sha256-dLj233xHPCJbawUVqkxxhHXbu/CrJIHcCyLXTgsWMFo=";
+      sha256 = "sha256-v1M6CBOjBwtxkO2k1hksQS4ZkdFNcoXmu1nc7X8OKG0=";
     };
-    date = "2024-10-21";
+    date = "2024-12-01";
   };
   tree-sitter-nu = {
     pname = "tree-sitter-nu";
-    version = "ef943c6f2f7bfa061aad7db7bcaca63a002f354c";
-    src = fetchFromGitHub {
-      owner = "LhKipp";
-      repo = "tree-sitter-nu";
-      rev = "ef943c6f2f7bfa061aad7db7bcaca63a002f354c";
-      fetchSubmodules = false;
-      sha256 = "sha256-U7IHAXo3yQgbLv7pC1/dOa/cXte+ToMc8QsDEiCMSRg=";
-    };
-    date = "2023-09-30";
-  };
-  tree-sitter-nu-new = {
-    pname = "tree-sitter-nu-new";
-    version = "9eedcb303de0b4e046477161fb3d2932a0146d2a";
+    version = "a94fdf1df5deba1aa1a3fff23e1276333b5ab666";
     src = fetchFromGitHub {
       owner = "nushell";
       repo = "tree-sitter-nu";
-      rev = "9eedcb303de0b4e046477161fb3d2932a0146d2a";
+      rev = "a94fdf1df5deba1aa1a3fff23e1276333b5ab666";
       fetchSubmodules = false;
-      sha256 = "sha256-5Dxx+0LE34OgWWX/bEDpIH5/AZCqTVUnVTvSTX+jSy0=";
+      sha256 = "sha256-5hZRTL7lKDHiwtxn+xhQpsLTrXZoFGc2wjCPtjZApjk=";
     };
-    date = "2024-11-22";
+    date = "2024-12-06";
   };
   tree-sitter-python = {
     pname = "tree-sitter-python";
-    version = "6d14e44ea217bc5bb1c1804180e9818d7d1b8d91";
+    version = "1ee3e775477f913ae3a46cde7a6a512deb06052c";
     src = fetchFromGitHub {
       owner = "tree-sitter";
       repo = "tree-sitter-python";
-      rev = "6d14e44ea217bc5bb1c1804180e9818d7d1b8d91";
+      rev = "1ee3e775477f913ae3a46cde7a6a512deb06052c";
       fetchSubmodules = false;
-      sha256 = "sha256-/jYGi2yksifMGPitlS8oM/g3YrR7RJ57imBhEyow/jc=";
+      sha256 = "sha256-DojFqb5YJsqF95Hb2fjjeyNpwaexyJ8KkdxJWSYx7aY=";
     };
-    date = "2024-11-11";
+    date = "2024-12-04";
   };
   tree-sitter-yuck = {
     pname = "tree-sitter-yuck";

@@ -48,13 +48,13 @@ let
   nuPlugins =
     prev: sources:
     mapAttrs (importNuPlugin prev sources) {
-      nu_plugin_explore = "sha256-ZIu94B9Gkgi0yCUP5dUZsyk2hwi88xr4mhbpGQ1TzDk=";
+      nu_plugin_explore = "sha256-560ULTbfvxoAiCBRkAOmFhFmNxe9kH110hvOOvXIjvI=";
       # nu_plugin_dialog = ""; # required cargo 1.38
       nu_plugin_dbus = "sha256-6T2DiJpMtt5VshjU2TaVjWzPO7aGlzYjtVO+HMhwKX0=";
       # nu_plugin_file = "";
       nu_plugin_port_list = "sha256-BJg3gNocQThwfn4Lp+deXJk3zdKpv5AYDm4Y5hRlX3k=";
       nu_plugin_prometheus = "sha256-OSNaYffOJZxJriSvbDCNeCWEKorZsz3z4wdrtFhYF7E=";
-      nu_plugin_skim = "sha256-Sjg1D9FiUYtX5gZVdeDtaRe8wcUMk2M8nkJXtcH48ww=";
+      nu_plugin_skim = "sha256-CYfI1yy28eW/p67V6M9H6g0UaQQoqG3pyv7Q7AFJZJ8=";
     };
   getVimSources = prev: prev.callPackage (import ./_sources/generated.nix) { };
 

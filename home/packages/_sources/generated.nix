@@ -128,15 +128,15 @@
   };
   nu_plugin_explore = {
     pname = "nu_plugin_explore";
-    version = "d430fed4d558db8d64247f3ab6832950dd63aafd";
+    version = "023c815e73e193dafe406940912ffb6d0321874d";
     src = fetchFromGitHub {
       owner = "amtoine";
       repo = "nu_plugin_explore";
-      rev = "d430fed4d558db8d64247f3ab6832950dd63aafd";
+      rev = "023c815e73e193dafe406940912ffb6d0321874d";
       fetchSubmodules = false;
       sha256 = "sha256-Nne0xwUitm883K59ds2OXDWafsrIp2MGXKUbztcf0uM=";
     };
-    date = "2024-11-20";
+    date = "2024-12-06";
   };
   nu_plugin_file = {
     pname = "nu_plugin_file";
@@ -176,13 +176,13 @@
   };
   nu_plugin_skim = {
     pname = "nu_plugin_skim";
-    version = "v0.9.1";
+    version = "v0.10.0";
     src = fetchFromGitHub {
       owner = "idanarye";
       repo = "nu_plugin_skim";
-      rev = "v0.9.1";
+      rev = "v0.10.0";
       fetchSubmodules = false;
-      sha256 = "sha256-cPM4Z1o2ED8Q5u9AcnwBv+SOvuE2C4NO9xC7PfX+ntk=";
+      sha256 = "sha256-ZqAlOzD1aU4vwcBuVKBskGFTDFA2RKI7gK6apBy+sxc=";
     };
   };
   nvim-devdocs = {
@@ -223,15 +223,15 @@
   };
   one-small-step-for-vimkind-nvim = {
     pname = "one-small-step-for-vimkind-nvim";
-    version = "dae43850114f1cd1715297e28c630522d5346b31";
+    version = "7f47c3297eeed1364be3c6ad915b1df2beb2b2f4";
     src = fetchFromGitHub {
       owner = "jbyuki";
       repo = "one-small-step-for-vimkind";
-      rev = "dae43850114f1cd1715297e28c630522d5346b31";
+      rev = "7f47c3297eeed1364be3c6ad915b1df2beb2b2f4";
       fetchSubmodules = false;
-      sha256 = "sha256-tM3ro2aZsVx3qY3AK+1fYIwBhCLsOQLbFyWhaaFUutA=";
+      sha256 = "sha256-KC6vWmW3mS9vsgoZAgrCRtqBt5KyvfBwfKYsrMeebic=";
     };
-    date = "2024-11-17";
+    date = "2024-12-04";
   };
   portal-nvim = {
     pname = "portal-nvim";
@@ -377,18 +377,6 @@
     };
     date = "2024-10-14";
   };
-  tree-sitter-nu = {
-    pname = "tree-sitter-nu";
-    version = "ef943c6f2f7bfa061aad7db7bcaca63a002f354c";
-    src = fetchFromGitHub {
-      owner = "LhKipp";
-      repo = "tree-sitter-nu";
-      rev = "ef943c6f2f7bfa061aad7db7bcaca63a002f354c";
-      fetchSubmodules = false;
-      sha256 = "sha256-U7IHAXo3yQgbLv7pC1/dOa/cXte+ToMc8QsDEiCMSRg=";
-    };
-    date = "2023-09-30";
-  };
   vim-doge = {
     pname = "vim-doge";
     version = "188351964c8b2540a69c1d2648b3c6e7877a016f";
@@ -403,14 +391,14 @@
   };
   yazi-nvim = {
     pname = "yazi-nvim";
-    version = "5bc361c54f158ae399708e6d146667a164944d8f";
+    version = "d09f94e79fc0a28f7242ff94af17ca96d8a41878";
     src = fetchFromGitHub {
       owner = "mikavilpas";
       repo = "yazi.nvim";
-      rev = "5bc361c54f158ae399708e6d146667a164944d8f";
+      rev = "d09f94e79fc0a28f7242ff94af17ca96d8a41878";
       fetchSubmodules = false;
-      sha256 = "sha256-v6rnBNsXSRggKkdZNycXN0k5YR5NtcFuAdm6N0YxdtM=";
+      sha256 = "sha256-7Mc7ZCqR7eFvZ4qsehQ6A4nZDtfwBX9PZANrUAhd7uE=";
     };
-    date = "2024-11-20";
+    date = "2024-12-02";
   };
 }

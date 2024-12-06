@@ -34,7 +34,7 @@
           };
         };
       extraGrammars = {
-        tree-sitter-nu = genGrammar "nu";
+        # tree-sitter-nu = genGrammar "nu";
         tree-sitter-bash = genGrammar "bash";
         # tree-sitter-markdown = genGrammar "markdown";
         tree-sitter-python = genGrammar "python";
@@ -108,12 +108,14 @@
       } // ((import ./desktop) pkgs);
 
       overlayAttrs = {
-        inherit (config.packages)
+        inherit (extraGrammars)
           tree-sitter-nu
           tree-sitter-bash
-          tree-sitter-markdown
+          # tree-sitter-markdown
           tree-sitter-python
           tree-sitter-yuck
+          ;
+        inherit (config.packages)
           tree-sitter-full
           tree-sitter-grammars
           tree-sitter-parsers

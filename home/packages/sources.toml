@@ -105,18 +105,13 @@ fetch.github = "rebelot/terminal.nvim"
 src.git = "https://github.com/kkoomen/vim-doge"
 fetch.github = "kkoomen/vim-doge"
 
-# Nushell
-[tree-sitter-nu]
-src.git = "https://github.com/LhKipp/tree-sitter-nu"
-fetch.github = "LhKipp/tree-sitter-nu"
-
 ## Nushell Plugins
 # ToDo:
 # - https://codeberg.org/Taywee/nu-plugin-bexpand
 [nu_plugin_explore]
 src.git = "https://github.com/amtoine/nu_plugin_explore"
 # src.git = "https://github.com/kraftnix/nu_plugin_explore"
-src.branch = "bump-0_100_0"
+# src.branch = "bump-0_100_0"
 fetch.github = "amtoine/nu_plugin_explore"
 # fetch.github = "kraftnix/nu_plugin_explore"
 
