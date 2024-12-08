@@ -282,7 +282,7 @@ return h.mapNixPlugin {
           nixd = {
             nixpkgs = {
               -- expr = "import <nixpkgs> { }",
-              expr = 'import (builtins.getFlake "/home/' .. user .. '/config").inputs.nixpkgs { }',
+              expr = 'import (builtins.getFlake "git+file:///home/' .. user .. '/config").inputs.nixpkgs { }',
             },
             formatting = {
               command = { "nix fmt" },

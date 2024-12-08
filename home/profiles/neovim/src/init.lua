@@ -19,7 +19,7 @@ local lazypath = nixplugdir .. 'lazy.nvim'
 local utilspath = confdir .. 'lua/utils'
 vim.opt.rtp:prepend(utilspath)
 vim.opt.rtp:prepend(lazypath)
-vim.opt.rtp:prepend(confdir .. 'parser')
+vim.opt.rtp:prepend(confdir..'parsers')
 -- vim.opt.rtp:prepend(confdir .. 'lua/helper.lua')
 
 -- color

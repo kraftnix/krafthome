@@ -39,24 +39,25 @@ return h.mapNixPlugin {
     },
     config = function ()
 
-      vim.opt.rtp:prepend(nixplugdir .. "nvim-treesitter-parsers")
+      vim.opt.rtp:prepend(nixplugdir .. "nvim-treesitter")
+      vim.opt.rtp:prepend("/home/"..user.."/.config/nvim/parsers")
 
       ---@diagnostic disable-next-line: missing-fields
       require('nvim-treesitter.configs').setup {
         -- cannot be used when using nixpkgs nvim-treesitter
         -- Add languages to be installed here that you want installed for treesitter
-        -- ensure_installed = { 'c', 'cpp', 'go', 'lua', 'python', 'rust', 'tsx', 'typescript', 'vimdoc', 'vim' },
+        -- ensure_installed = { 'c', 'cpp', 'go', 'lua', 'python', 'rust', 'tsx', 'typescript', 'vimdoc', 'vim', 'nix' },
 
         -- Autoinstall languages that are not installed. Defaults to false (but you can change for yourself!)
         auto_install = false,
 
         -- parser_install_dir = nixplugdir .. "nvim-treesitter-parsers",
-        parser_install_dir = "/home/"..user.."/.config/nvim/parser",
+        parser_install_dir = "/home/"..user.."/.config/nvim/parsers",
 
-        highlight = { enable = true },
+        highlight = { enable = true, },
         rainbow = { enable = true, },
         autotag = { enable = true, },
-        indent = { enable = false, }, -- behaviours weirdly on nix
+        indent = { enable = true, }, -- behaviours weirdly on nix
         incremental_selection = {
           enable = true,
           keymaps = {

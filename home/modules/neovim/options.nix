@@ -74,11 +74,9 @@ let
     map (
       pkg:
       let
+        name = pkg.pname or pkg.name;
         pluginName =
-          if (hasAttr pkg.pname config.pluginNameRemaps) then
-            config.pluginNameRemaps.${pkg.pname}
-          else
-            pkg.pname;
+          if (hasAttr name config.pluginNameRemaps) then config.pluginNameRemaps.${name} else name;
       in
       nameValuePair "${config.targetDir}/nix-plugins/${pluginName}" {
         source = pkg;

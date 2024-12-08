@@ -15,7 +15,12 @@ args@{
       ++ self.auto-import.nixos.all
       ++ self.externalModules
       ++ [
-        { stylix.image = ../home/modules/themes/wallpaper.jpg; }
+        (
+          { pkgs, lib, ... }:
+          {
+            stylix.image = lib.mkDefault self.packages.${pkgs.system}.stylix-default-wallpaper;
+          }
+        )
         inputs.home.nixosModules.home-manager
         inputs.provision.inputs.disko.nixosModules.disko
         self.nixosModules.home-manager-integration
@@ -34,7 +39,6 @@ args@{
       ];
     overlays = [
       self.overlays.default
-      inputs.provision.overlays.nix-curl
       # (final: prev: {
       #   # inherit (self.channels.${final.system}.stable.pkgs) logseq;
       #  })

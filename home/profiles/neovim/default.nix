@@ -23,7 +23,17 @@ let
         tree-sitter = pkgs.tree-sitter-full;
       }
     )).withAllGrammars;
+  allTreesitter = pkgs.vimPlugins.nvim-treesitter.overrideAttrs ({
+    tree-sitter-grammars = pkgs.tree-sitter.builtGrammars // {
+      tree-sitter-nu = pkgs.tree-sitter-nu;
+    };
+  });
 in
+# .withPlugins (lib.attrValues);
+# // {
+#   nu = (pkgs.neovimUtils.grammarToPlugin pkgs.tree-sitter-grammars.tree-sitter-nu).overrideAttrs { installQueries = true; };
+#   tree-sitter-nu = (pkgs.neovimUtils.grammarToPlugin pkgs.tree-sitter-grammars.tree-sitter-nu).overrideAttrs { installQueries = true; };
+# }
 # fullNvimTreesitter = pkgs.channels.stable.vimPlugins.nvim-treesitter;
 # fullNvimTreesitter = pkgs.vimPlugins.nvim-treesitter;
 {
@@ -198,9 +208,12 @@ in
       playground
 
       # fullNvimTreesitter
-      pkgs.nvim-treesitter-full
+      # pkgs.nvim-treesitter-full
       # nvim-treesitter.withAllGrammars
+      pkgs.allNvimTreesitter
+
       # nvim-treesitter-parsers.nu
+      # ((pkgs.neovimUtils.grammarToPlugin pkgs.tree-sitter-grammars.tree-sitter-nu).overrideAttrs { installQueries = true; })
 
       # "nvim-treesitter" = nvim-treesitter.withAllGrammars;
       # workaround required for using nvim-treesitter with `lazy.nvim`
@@ -226,7 +239,16 @@ in
       # ".config/nvim/autoload/airline-${colorName}.vim".source = base16.getTemplate "vim-airline-themes";
       # ".config/nvim/parser/nu.so".source = "${pkgs.tree-sitter-full.builtGrammars.tree-sitter-nu}/parser";
 
-      "nvim/parser".source = pkgs.tree-sitter-parsers;
+      "nvim/parsers".source = pkgs.symlinkJoin {
+        name = "nvim-nix-treesitter-parsers";
+        paths = pkgs.allNvimTreesitter.dependencies;
+        # paths = allTreesitter.withAllGrammars.dependencies;
+      };
+      # "nvim/parsers".source = pkgs.symlinkJoin {
+      #   name = "nvim-nix-treesitter-parsers";
+      #   paths = pkgs.vimPlugins.nvim-treesitter.withAllGrammars.dependencies;
+      # };
+
       # "nvim/parser".source = pkgs.vimPlugins.nvim-treesitter-parsers;
     }
   ];

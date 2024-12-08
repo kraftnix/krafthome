@@ -34,10 +34,11 @@
           };
         };
       extraGrammars = {
-        # tree-sitter-nu = genGrammar "nu";
+        tree-sitter-nu = genGrammar "nu";
         tree-sitter-bash = genGrammar "bash";
         # tree-sitter-markdown = genGrammar "markdown";
         tree-sitter-python = genGrammar "python";
+        tree-sitter-javascript = genGrammar "javascript";
         tree-sitter-yuck = genGrammar "yuck";
       };
       inherit (pkgs.tree-sitter) buildGrammar;
@@ -45,6 +46,7 @@
       nvimGrammars = rec {
         nu = genGrammar' "nu";
         bash = genGrammar' "bash";
+        javascript = genGrammar' "javascript";
         markdown = genGrammar' "markdown";
         markdown-inline = markdown // {
           language = "markdown_inline";
@@ -53,12 +55,29 @@
         python = genGrammar' "python";
         yuck = genGrammar' "yuck";
       };
+      allTreesitter =
+        removeAttrs
+          (
+            pkgs.tree-sitter.builtGrammars
+            // {
+              tree-sitter-nu = nvimGrammars.nu;
+              # tree-sitter-javascript = nvimGrammars.javascript;
+            }
+          )
+          [
+            "tree-sitter-nix"
+          ];
     in
     {
       packagesGroups.tree-sitter-grammars =
         pkgs.tree-sitter.passthru.builtGrammars
         // (lib.mapAttrs (_: pkgs.tree-sitter.passthru.buildGrammar) extraGrammars);
       packages = {
+        stylix-default-wallpaper =
+          pkgs.runCommand "wallpaper.jpg" { WALLPAPER = ../home/modules/themes/wallpaper.jpg; }
+            ''
+              cp $WALLPAPER $out
+            '';
         wezterm-upstream = inputs'.wezterm.packages.default;
         hl = pkgs.callPackage (import ./hl/hl.nix) { };
         # inherit (extraGrammars) tree-sitter-nu tree-sitter-bash tree-sitter-markdown tree-sitter-python tree-sitter-yuck;
@@ -70,6 +89,10 @@
         tree-sitter-parsers = pkgs.symlinkJoin {
           name = "treesitter-parsers";
           paths = self'.packages.tree-sitter-full.withPlugins (p: builtins.attrValues p);
+        };
+        allNvimTreesitter = pkgs.vimPlugins.nvim-treesitter.overrideAttrs {
+          tree-sitter-grammars = allTreesitter;
+          passthru.dependencies = map pkgs.neovimUtils.grammarToPlugin (lib.attrValues allTreesitter);
         };
         nvim-treesitter-full =
           (pkgs.vimPlugins.nvim-treesitter.overrideAttrs (
@@ -108,18 +131,22 @@
       } // ((import ./desktop) pkgs);
 
       overlayAttrs = {
+        inherit allTreesitter;
         inherit (extraGrammars)
           tree-sitter-nu
           tree-sitter-bash
           # tree-sitter-markdown
           tree-sitter-python
+          tree-sitter-javascript
           tree-sitter-yuck
           ;
         inherit (config.packages)
-          tree-sitter-full
-          tree-sitter-grammars
-          tree-sitter-parsers
-          nvim-treesitter-full
+          # tree-sitter-full
+          # tree-sitter-grammars
+          # tree-sitter-parsers
+          # nvim-treesitter-full
+          # allTreesitter
+          allNvimTreesitter
           wezterm-upstream
           get-default-ssh
           skr
@@ -129,6 +156,7 @@
           libbluray-full
           mpv-bluray
           firefox-priv-defaults-wayland
+          stylix-default-wallpaper
           ;
       };
     };

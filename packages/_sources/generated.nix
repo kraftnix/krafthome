@@ -18,6 +18,18 @@
     };
     date = "2024-11-11";
   };
+  tree-sitter-javascript = {
+    pname = "tree-sitter-javascript";
+    version = "108b2d4d17a04356a340aea809e4dd5b801eb40d";
+    src = fetchFromGitHub {
+      owner = "tree-sitter";
+      repo = "tree-sitter-javascript";
+      rev = "108b2d4d17a04356a340aea809e4dd5b801eb40d";
+      fetchSubmodules = false;
+      sha256 = "sha256-0x6DbmRTlxUP4vbWVsLoj+k1YOk2Dr+LAPClFsWi7r8=";
+    };
+    date = "2024-11-11";
+  };
   tree-sitter-markdown = {
     pname = "tree-sitter-markdown";
     version = "c89a30ce556a5ea5552e816e5dc2f2c0de96237d";

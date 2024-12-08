@@ -58,6 +58,7 @@
   outputs =
     inputs@{ flake-parts, ... }:
     flake-parts.lib.mkFlake { inherit inputs; } {
+      debug = true;
       imports = [
         ./home
         ./tests

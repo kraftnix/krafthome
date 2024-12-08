@@ -107,14 +107,9 @@ in
     };
     images = {
       wallpaper = mkOption {
-        default = ./wallpaper.jpg;
+        default = localFlake.self.packages.${pkgs.system}.stylix-default-wallpaper;
         description = "path to default wallpaper";
-        type =
-          with types;
-          oneOf [
-            pathInStore
-            str
-          ];
+        type = with types; package;
       };
       screensaver = mkOption {
         default = cfg.images.wallpaper;
@@ -177,16 +172,12 @@ in
       set $gnome-schema org.gnome.desktop.interface
 
       exec_always {
-          ${
-            optionalString (
-              cfg.gtk.theme != null
-            ) "gsettings set $gnome-schema gtk-theme '${cfg.gtk.theme.name}'"
-          }
-          ${
-            optionalString (
-              cfg.gtk.icon != null
-            ) "gsettings set $gnome-schema icon-theme '${cfg.gtk.icon.name}'"
-          }
+          ${optionalString (
+            cfg.gtk.theme != null
+          ) "gsettings set $gnome-schema gtk-theme '${cfg.gtk.theme.name}'"}
+          ${optionalString (
+            cfg.gtk.icon != null
+          ) "gsettings set $gnome-schema icon-theme '${cfg.gtk.icon.name}'"}
           #gsettings set $gnome-schema cursor-theme 'Your cursor Theme'
           gsettings set $gnome-schema font-name '${config.stylix.fonts.monospace.name}'
       }
