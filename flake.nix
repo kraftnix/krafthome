@@ -12,11 +12,11 @@
   inputs.extra-lib.url = "github:kraftnix/extra-lib";
   inputs.extra-lib.inputs.nixlib.follows = "nixpkgs";
 
+  inputs.kraftnvim.url = "github:kraftnix/kraftnvim";
+  inputs.kraftnvim.inputs.nixpkgs.follows = "nixpkgs";
+
   # Extra
   inputs = {
-    haumea.url = "github:nix-community/haumea/v0.2.2";
-    haumea.inputs.nixpkgs.follows = "nixpkgs";
-
     nur.url = "github:nix-community/NUR";
 
     # nix-index-database.url = "github:Mic92/nix-index-database";
