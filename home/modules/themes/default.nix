@@ -128,7 +128,7 @@ in
   config = mkIf cfg.enable {
     khome.themes.hosts.defaultColour = colours.cyan;
     khome.themes.hosts.currHostColour =
-      if cfg.hosts.colours ? cfg.hosts.currHostname then
+      if builtins.hasAttr cfg.hosts.currHostname cfg.hosts.colours then
         cfg.hosts.colours.${cfg.hosts.currHostname}
       else
         cfg.hosts.defaultColour;
