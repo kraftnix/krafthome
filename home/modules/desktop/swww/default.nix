@@ -74,7 +74,8 @@ in
 
   config = mkIf cfg.enable {
     programs.hyprland = {
-      binds."$mainMod${optionalString cfg.enableShift " SHIFT"}".${cfg.hyprlandKey} = "exec, ${singleRandom}";
+      binds."$mainMod${optionalString cfg.enableShift " SHIFT"}".${cfg.hyprlandKey} =
+        "exec, ${singleRandom}";
       execOnce = mkIf (!cfg.systemdIntegration) {
         "swww-init" = startAndRandom;
         "swww-randomise" = randomiseCommand;

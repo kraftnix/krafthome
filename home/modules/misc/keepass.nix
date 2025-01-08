@@ -78,6 +78,7 @@ in
       ];
       keybindings."$mod+p" = lib.mkOverride 250 (toggleApp "12-keepass");
     };
-    programs.waybar.settings.mainbar."sway/workspaces".format-icons."12-keepass" = lib.mkIf swayMain "🔐";
+    programs.waybar.settings.mainbar."sway/workspaces".format-icons."12-keepass" =
+      lib.mkIf swayMain "🔐";
   };
 }

@@ -36,7 +36,7 @@ in
   };
 
   config = mkIf cfg.enable {
-    hardware.pulseaudio.enable = cfg.pulse.enable;
-    environment.systemPackages = with pkgs; cfg.corePackages;
+    services.pulseaudio.enable = cfg.pulse.enable;
+    environment.systemPackages = cfg.corePackages;
   };
 }

@@ -48,8 +48,8 @@ in
 
     programs.hyprland.execOnce.swaync = "swaync";
     programs.hyprland.binds = mkIf (cfg.modKeybind != "") {
-      "$mainMod${optionalString cfg.modIncludeShift " SHIFT"}"."${cfg.modKeybind
-      }" = "exec, swaync-client -t";
+      "$mainMod${optionalString cfg.modIncludeShift " SHIFT"}"."${cfg.modKeybind}" =
+        "exec, swaync-client -t";
     };
 
     wayland.windowManager.sway.config = {
@@ -61,8 +61,7 @@ in
       ];
       keybindings = mkIf (cfg.modKeybind != "") {
         "$mod+${optionalString cfg.modIncludeShift "+"}${cfg.modKeybind}" =
-          lib.mkOverride 250
-            "exec swaync-client -t";
+          lib.mkOverride 250 "exec swaync-client -t";
       };
     };
   };

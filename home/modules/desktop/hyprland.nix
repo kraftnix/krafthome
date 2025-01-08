@@ -70,26 +70,22 @@ let
 
   mapGroup = group: groupCfg: ''
     ${group} {
-      ${
-        concatStringsSep "\n" (
-          mapAttrsToList (
-            field: vals:
-            if builtins.typeOf vals == "set" then
-              ''
-                ${field} {
-                          ${
-                            concatStringsSep "\n" (
-                              mapAttrsToList (
-                                n: c: if builtins.typeOf c == "set" then mapGroup n c else "${n} = ${toString c}"
-                              ) vals
-                            )
-                          }
-                        }''
-            else
-              "${field} = ${mapVal vals}"
-          ) groupCfg
-        )
-      }
+      ${concatStringsSep "\n" (
+        mapAttrsToList (
+          field: vals:
+          if builtins.typeOf vals == "set" then
+            ''
+              ${field} {
+                        ${concatStringsSep "\n" (
+                          mapAttrsToList (
+                            n: c: if builtins.typeOf c == "set" then mapGroup n c else "${n} = ${toString c}"
+                          ) vals
+                        )}
+                      }''
+          else
+            "${field} = ${mapVal vals}"
+        ) groupCfg
+      )}
     }
   '';
 

@@ -84,7 +84,8 @@ in
         "browser.newtabpage.activity-stream.default.sites" = "";
 
         ### geo settings
-        "geo.provider.network.url" = "https://location.services.mozilla.com/v1/geolocate?key=%MOZILLA_API_KEY%";
+        "geo.provider.network.url" =
+          "https://location.services.mozilla.com/v1/geolocate?key=%MOZILLA_API_KEY%";
         "geo.provider.network.logging.enabled" = true;
         "geo.provider.use_gpsd" = false;
         "browser.region.network.url" = "";
