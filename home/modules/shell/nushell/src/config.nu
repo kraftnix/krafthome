@@ -1,6 +1,6 @@
 # returns true if provided env var exists and true-like
 #   i.e. "true", 1, "y"
-def testBoolikeVar [ envName : string ] -> bool {
+def testBoolikeVar [ envName : string ]: any -> bool {
   if ($env | get -i $envName) == null {
     false
   } else {
