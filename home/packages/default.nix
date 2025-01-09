@@ -9,38 +9,6 @@ let
     mapAttrs
     ;
 
-  allVimPlugins =
-    nixpkgs: sources:
-    (import ./vim-plugin.nix nixpkgs sources [
-      # "nvim-nu"
-      "nvim-telescope-hop"
-      "nvim-guess-indent"
-      "neozoom-nvim"
-      "sessions-nvim"
-      "fm-nvim"
-      "yazi-nvim"
-      "portal-nvim"
-      "magma-nvim"
-      "telescope-tabs"
-      "vim-doge"
-      "commander-nvim"
-      "one-small-step-for-vimkind-nvim"
-      "telescope-all-recent"
-      "telescope-menufacture"
-      "telescope-env"
-      "telescope-undo"
-      "telescope-changes"
-      "telescope-luasnip"
-      "telescope-lazy-nvim"
-      "telescope-live-grep-args-nvim"
-      "cmp-nixpkgs"
-      "easypick-nvim"
-      "terminal-nvim"
-      "browser-bookmarks-nvim"
-      "middleclass-nvim"
-      "nvim-devdocs"
-    ]);
-
   importNuPlugin =
     prev: sources: name: cargoHash:
     prev.callPackage (import ./nu_plugins/${name}.nix sources.${name} cargoHash) { };
@@ -58,8 +26,6 @@ let
     };
   getVimSources = prev: prev.callPackage (import ./_sources/generated.nix) { };
 
-  vimPlugins = final: prev: allVimPlugins prev (getVimSources final);
-
   renamePlugins = lib.mapAttrs' (
     name: plugin: lib.nameValuePair (lib.replaceStrings [ "nu_plugin_" ] [ "" ] name) plugin
   );
@@ -68,10 +34,6 @@ let
 in
 {
   flake.overlays = {
-    vimPlugins = final: prev: {
-      vimPluginsSources = getVimSources prev;
-      vimPlugins = prev.vimPlugins // (vimPlugins final prev);
-    };
     nushellPlugins = final: prev: {
       nushellPlugins = prev.nushellPlugins // (nushellPlugins prev);
     };
@@ -81,7 +43,6 @@ in
     { pkgs, ... }:
     {
       packagesGroups = {
-        vimPlugins = vimPlugins pkgs pkgs;
         nushellPlugins = nushellPlugins pkgs;
       };
     };

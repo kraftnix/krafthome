@@ -32,6 +32,7 @@ in
     package = mkOption {
       type = types.package;
       description = "final package used for firefox";
+      default = pkgs.firefox-wayland;
     };
     forceWayland = mkEnableOption "force wayland chromium flags";
     profiles = mkOption {
@@ -94,6 +95,34 @@ in
                 description = "final extensions for firefox profile";
                 default = [ ];
               };
+              search = {
+                enable = mkEnableOption "enable search engine integration" // {
+                  default = true;
+                };
+                force = mkEnableOption "whether to force engines" // {
+                  default = true;
+                };
+                default = mkOption {
+                  description = "default search engine";
+                  default = "DuckDuckGo";
+                  type = types.str;
+                };
+                privateDefault = mkOption {
+                  description = "default search engine in private window";
+                  default = config.search.default;
+                  type = types.str;
+                };
+                engines = mkOption {
+                  description = "extra engines";
+                  type = types.attrsOf types.raw;
+                  default = {
+
+                  };
+                };
+              };
+              autoEnableExtensions = mkEnableOption "automatically enable extensions" // {
+                default = true;
+              };
               finalExtensions = mkOption {
                 type = with types; listOf package;
                 readOnly = true;
@@ -127,18 +156,28 @@ in
   };
 
   config = mkIf cfg.enable {
-    khome.browsers.firefox.package = mkDefault (
-      pkgs.wrapFirefox pkgs.firefox-unwrapped {
-        extraPolicies = cfg.policies;
-      }
-    );
     programs.firefox = {
       enable = true;
       package = cfg.package;
+      policies = cfg.policies;
       profiles = builtins.mapAttrs (name: pcfg: {
         inherit (pcfg) id;
         extensions = pcfg.finalExtensions;
-        settings = pcfg.finalSettings;
+        search = mkIf pcfg.search.enable {
+          enable = true;
+          inherit (pcfg.search)
+            force
+            default
+            privateDefault
+            engines
+            ;
+        };
+        settings = mkMerge [
+          pcfg.finalSettings
+          (mkIf pcfg.autoEnableExtensions {
+            "extensions.autoDisableScopes" = 0;
+          })
+        ];
       }) cfg.profiles;
     };
     home.sessionVariables = mkIf cfg.forceWayland {

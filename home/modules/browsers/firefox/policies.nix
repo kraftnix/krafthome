@@ -32,12 +32,56 @@ in
         DisableTelemetry = mkEnableTrueOption "disable telemetry";
         DisableFirefoxAccounts = mkEnableTrueOption "disable firefox accounts integration (unused feature)";
         DontCheckDefaultBrowser = mkEnableTrueOption "dont check for default browser (annoyance)";
+        Homepage.StartPage = mkOption {
+          description = "Home Startpage";
+          type = types.str;
+          default = "previous-session";
+        };
+        OverrideFirstRunPage = mkOption {
+          description = "First Run Page override";
+          type = types.str;
+          default = "";
+        };
+        FirefoxSuggest = mkOption {
+          description = "Disable annoying suggestions";
+          type = types.raw;
+          default = {
+            WebSuggestions = false;
+            SponsoredSuggestions = false;
+            ImproveSuggest = false;
+          };
+        };
         FirefoxHome = mkOption {
           description = "Firefox Home options";
           type = types.raw;
           default = {
+            Search = true;
+            TopSites = false;
+            SponsoredTopSites = false;
+            Highlights = false;
             Pocket = false;
+            SponsoredPocket = false;
             Snippets = false;
+          };
+        };
+        ExtensionSettings = mkOption {
+          description = "Attempt disable stupid search engines";
+          type = types.attrsOf types.raw;
+          default = {
+            "amazon@search.mozilla.org".installation_mode = "blocked";
+            "bing@search.mozilla.org".installation_mode = "blocked";
+            "ebay@search.mozilla.org".installation_mode = "blocked";
+            "ecosia@search.mozilla.org".installation_mode = "blocked";
+            "google@search.mozilla.org".installation_mode = "blocked";
+          };
+        };
+        EnableTrackingProtection = mkOption {
+          description = "Enable tracking protection";
+          type = types.raw;
+          default = {
+            Value = true;
+            Cryptomining = true;
+            Fingerprinting = true;
           };
         };
         UserMessaging = mkOption {
@@ -45,6 +89,7 @@ in
           type = types.raw;
           default = {
             ExtensionRecommendations = false;
+            UrlbarInterventions = false;
             SkipOnboarding = true;
           };
         };
@@ -52,6 +97,7 @@ in
           description = "Search Engines options";
           type = types.raw;
           default = {
+            Default = "DuckDuckGo";
             Remove = [
               "Google"
               "Amazon.com"

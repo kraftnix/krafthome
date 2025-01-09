@@ -41,7 +41,7 @@
     },
     "tree-sitter-markdown": {
         "cargoLocks": null,
-        "date": "2024-12-01",
+        "date": "2024-12-10",
         "extract": null,
         "name": "tree-sitter-markdown",
         "passthru": null,
@@ -53,15 +53,15 @@
             "name": null,
             "owner": "tree-sitter-grammars",
             "repo": "tree-sitter-markdown",
-            "rev": "c89a30ce556a5ea5552e816e5dc2f2c0de96237d",
-            "sha256": "sha256-v1M6CBOjBwtxkO2k1hksQS4ZkdFNcoXmu1nc7X8OKG0=",
+            "rev": "192407ab5a24bfc24f13332979b5e7967518754a",
+            "sha256": "sha256-R5y1kMVXzzl/pX6FUcLc1n6Z8eG+npMRwdJMoWtHs/U=",
             "type": "github"
         },
-        "version": "c89a30ce556a5ea5552e816e5dc2f2c0de96237d"
+        "version": "192407ab5a24bfc24f13332979b5e7967518754a"
     },
     "tree-sitter-nu": {
         "cargoLocks": null,
-        "date": "2024-12-06",
+        "date": "2024-12-29",
         "extract": null,
         "name": "tree-sitter-nu",
         "passthru": null,
@@ -73,15 +73,15 @@
             "name": null,
             "owner": "nushell",
             "repo": "tree-sitter-nu",
-            "rev": "a94fdf1df5deba1aa1a3fff23e1276333b5ab666",
-            "sha256": "sha256-5hZRTL7lKDHiwtxn+xhQpsLTrXZoFGc2wjCPtjZApjk=",
+            "rev": "9822fc63a62ff87939c88ead9f381f951f092dee",
+            "sha256": "sha256-fcwWrM1KpK1V+TeGqe/iMICOIv7/lA1WZW/8jJXL7WA=",
             "type": "github"
         },
-        "version": "a94fdf1df5deba1aa1a3fff23e1276333b5ab666"
+        "version": "9822fc63a62ff87939c88ead9f381f951f092dee"
     },
     "tree-sitter-python": {
         "cargoLocks": null,
-        "date": "2024-12-04",
+        "date": "2025-01-07",
         "extract": null,
         "name": "tree-sitter-python",
         "passthru": null,
@@ -93,11 +93,11 @@
             "name": null,
             "owner": "tree-sitter",
             "repo": "tree-sitter-python",
-            "rev": "1ee3e775477f913ae3a46cde7a6a512deb06052c",
-            "sha256": "sha256-DojFqb5YJsqF95Hb2fjjeyNpwaexyJ8KkdxJWSYx7aY=",
+            "rev": "409b5d671eb0ea4972eeacaaca24bbec1acf79b1",
+            "sha256": "sha256-IIAL2qteFPBCPmDK1N2EdDgpI4CwfMuuVL8t5tYueLU=",
             "type": "github"
         },
-        "version": "1ee3e775477f913ae3a46cde7a6a512deb06052c"
+        "version": "409b5d671eb0ea4972eeacaaca24bbec1acf79b1"
     },
     "tree-sitter-yuck": {
         "cargoLocks": null,

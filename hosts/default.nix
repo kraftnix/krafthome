@@ -25,7 +25,6 @@ args@{
         inputs.provision.inputs.disko.nixosModules.disko
         self.nixosModules.home-manager-integration
         self.nixosModules.khomeOverlays
-        # inputs.nixos-hardware.nixosModules.common-amd-gpu
         # inputs.nix-index-database.nixosModules.nix-index
         {
           home-manager.sharedModules =
@@ -39,10 +38,7 @@ args@{
       ];
     overlays = [
       self.overlays.default
-      # (final: prev: {
-      #   # inherit (self.channels.${final.system}.stable.pkgs) logseq;
-      #  })
-      inputs.nur.overlay
+      inputs.nur.overlays.default
     ] ++ self.overlaysLists.core;
     specialArgs = {
       inherit self;

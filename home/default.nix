@@ -44,7 +44,6 @@ args@{
   flake.overlaysLists = {
     core = with self.overlays; [
       anyrun
-      vimPlugins
       nushellPlugins
       misc-fixes
       wezterm-upstream
