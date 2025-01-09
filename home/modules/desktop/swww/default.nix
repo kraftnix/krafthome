@@ -19,8 +19,14 @@ let
   cfg = config.khome.desktop.swww;
   wallpaperDirs = concatStringsSep " " cfg.wallpaperDirs;
   singleRandom = "swww-randomise -i 0 ${wallpaperDirs}";
-  startAndRandom = "swww-daemon init && swww-randomise -i 0 ${wallpaperDirs}";
-  # startAndRandom = "systemctl --user start && swww-randomise -i 0 ${wallpaperDirs}";
+  startAndRandom =
+    if
+      cfg.systemdIntegration
+    # then "systemctl --user start swww && ${singleRandom}"
+    then
+      "systemctl --user start swww && systemctl --user start swww-rotate"
+    else
+      "swww-daemon init && ${singleRandom}";
   randomiseCommand = "swww-randomise -i ${toString cfg.interval} -f ${toString cfg.fps} ${
     optionalString (cfg.transitionType != null) cfg.transitionType
   } -s ${toString cfg.step} ${wallpaperDirs}";
@@ -33,12 +39,12 @@ in
     step = mkOption {
       default = 2;
       type = types.int;
-      description = "corresponds to SWWW_TRANSITION_FPS";
+      description = "corresponds to SWWW_TRANSITION_STEP";
     };
     fps = mkOption {
       default = 60;
       type = types.int;
-      description = "corresponds to SWWW_TRANSITION_STEP";
+      description = "corresponds to SWWW_TRANSITION_FPS";
     };
     interval = mkOption {
       default = 60;
@@ -95,40 +101,44 @@ in
     home.packages = [ pkgs.swww ];
 
     systemd.user.services.swww = mkIf cfg.systemdIntegration {
+      Install.WantedBy = [ "graphical-session.target" ];
       Unit = {
+        ConditionEnvironment = "WAYLAND_DISPLAY";
         Description = "SWWW Wallpaper Daemon";
         After = [ "graphical-session-pre.target" ];
         PartOf = [ "graphical-session.target" ];
       };
-
       Service = {
         Type = "simple";
         RemainAfterExit = true;
         ExecStart = "${pkgs.swww}/bin/swww-daemon";
       };
-
-      Install.WantedBy = [ "graphical-session.target" ];
     };
 
     systemd.user.services.swww-rotate = mkIf cfg.systemdIntegration {
+      Install.WantedBy = [ "graphical-session.target" ];
       Unit = {
+        ConditionEnvironment = "WAYLAND_DISPLAY";
         Description = "SWWW Wallpaper Rotate Service";
         After = [ "swww.service" ];
         PartOf = [ "graphical-session.target" ];
       };
       Service = {
-        Environment = [
-          "PATH=${
-            lib.makeBinPath [
-              pkgs.fd
-              pkgs.swww
-            ]
-          }"
-        ] ++ (optional (cfg.transitionType != null) "SWWW_TRANSITION_TYPE=${cfg.transitionType}");
+        Environment =
+          [
+            "PATH=${
+              lib.makeBinPath [
+                pkgs.fd
+                pkgs.swww
+              ]
+            }"
+          ]
+          ++ (optional (cfg.fps != null) "SWWW_TRANSITION_FPS=${cfg.fps}")
+          ++ (optional (cfg.step != null) "SWWW_TRANSITION_STEP=${cfg.step}")
+          ++ (optional (cfg.transitionType != null) "SWWW_TRANSITION_TYPE=${cfg.transitionType}");
         Restart = "on-failure";
         ExecStart = "${randomisePackage}/bin/${randomiseCommand}";
       };
-      Install.WantedBy = [ "graphical-session.target" ];
     };
   };
 }
