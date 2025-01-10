@@ -138,15 +138,15 @@ in
         })
         (mkIf cfg.media.enable {
           # start/stop/next/prev via playerctl
-          "XF86AudioPlay" = cfg.media.pausePlayCommand;
-          "XF86AudioNext" = cfg.media.nextCommand;
-          "XF86AudioPrev" = cfg.media.prevCommand;
+          "XF86AudioPlay" = "exec ${cfg.media.pausePlayCommand}";
+          "XF86AudioNext" = "exec ${cfg.media.nextCommand}";
+          "XF86AudioPrev" = "exec ${cfg.media.prevCommand}";
         })
         (mkIf cfg.volume.enable {
           # Set volume via pulse audio controls
-          "XF86AudioRaiseVolume" = cfg.volume.raise;
-          "XF86AudioLowerVolume" = cfg.volume.lower;
-          "XF86AudioMute" = cfg.volume.mute;
+          "XF86AudioRaiseVolume" = "exec ${cfg.volume.raise}";
+          "XF86AudioLowerVolume" = "exec ${cfg.volume.lower}";
+          "XF86AudioMute" = "exec ${cfg.volume.mute}";
         })
         # bind brightnessctl to function keys
         cfg.keybindings
