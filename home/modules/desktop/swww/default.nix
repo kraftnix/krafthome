@@ -20,11 +20,9 @@ let
   wallpaperDirs = concatStringsSep " " cfg.wallpaperDirs;
   singleRandom = "swww-randomise -i 0 ${wallpaperDirs}";
   startAndRandom =
-    if
-      cfg.systemdIntegration
-    # then "systemctl --user start swww && ${singleRandom}"
-    then
-      "systemctl --user start swww && systemctl --user start swww-rotate"
+    if cfg.systemdIntegration then
+      # "systemctl --user start swww && ${singleRandom}"
+      "systemctl --user start swww && systemd --user start swww-rotate"
     else
       "swww-daemon init && ${singleRandom}";
   randomiseCommand = "swww-randomise -i ${toString cfg.interval} -f ${toString cfg.fps} ${
@@ -82,18 +80,19 @@ in
     programs.hyprland = {
       binds."$mainMod${optionalString cfg.enableShift " SHIFT"}".${cfg.hyprlandKey} =
         "exec, ${singleRandom}";
-      execOnce = mkIf (!cfg.systemdIntegration) {
+      execOnce = {
         "swww-init" = startAndRandom;
-        "swww-randomise" = randomiseCommand;
+        "swww-randomise" = mkIf (!cfg.systemdIntegration) randomiseCommand;
       };
     };
 
     wayland.windowManager.sway.config = {
       keybindings."${cfg.swayKey}" = lib.mkOverride 250 "exec ${singleRandom}";
-      startup = mkIf (!cfg.systemdIntegration) (mkAfter [
-        { command = startAndRandom; }
-        { command = randomiseCommand; }
-      ]);
+      startup =
+        (mkAfter [
+          { command = startAndRandom; }
+        ])
+        ++ (optional (!cfg.systemdIntegration) { command = randomiseCommand; });
     };
 
     provision.scripts.scripts.swww-randomise.file = ./swww-randomise.nu;
