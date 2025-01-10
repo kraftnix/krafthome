@@ -88,11 +88,9 @@ in
 
     wayland.windowManager.sway.config = {
       keybindings."${cfg.swayKey}" = lib.mkOverride 250 "exec ${singleRandom}";
-      startup =
-        (mkAfter [
-          { command = startAndRandom; }
-        ])
-        ++ (optional (!cfg.systemdIntegration) { command = randomiseCommand; });
+      startup = [
+        { command = startAndRandom; }
+      ] ++ (optional (!cfg.systemdIntegration) { command = randomiseCommand; });
     };
 
     provision.scripts.scripts.swww-randomise.file = ./swww-randomise.nu;
@@ -132,8 +130,8 @@ in
               ]
             }"
           ]
-          ++ (optional (cfg.fps != null) "SWWW_TRANSITION_FPS=${cfg.fps}")
-          ++ (optional (cfg.step != null) "SWWW_TRANSITION_STEP=${cfg.step}")
+          ++ (optional (cfg.fps != null) "SWWW_TRANSITION_FPS=${toString cfg.fps}")
+          ++ (optional (cfg.step != null) "SWWW_TRANSITION_STEP=${toString cfg.step}")
           ++ (optional (cfg.transitionType != null) "SWWW_TRANSITION_TYPE=${cfg.transitionType}");
         Restart = "on-failure";
         ExecStart = "${randomisePackage}/bin/${randomiseCommand}";

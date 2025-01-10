@@ -31,6 +31,11 @@
         modKeybind = "b";
       };
       khome.desktop.wm.legacyTheme.enable = true;
+      khome.desktop.swww = {
+        enable = true;
+        systemdIntegration = true;
+        wallpaperDirs = [ "${../home/modules/themes}" ];
+      };
       khome.desktop.wm.sway = {
         enable = true;
         full = true;
