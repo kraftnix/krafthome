@@ -8,8 +8,10 @@ args@{ self, ... }:
 let
   inherit (lib)
     concatStringsSep
+    mapAttrs
     mapAttrsToList
     mkBefore
+    mkDefault
     mkIf
     mkMerge
     mkOption
@@ -118,10 +120,10 @@ in
       config = mkMerge [
         (mkIf cfg.enableDefaults wcfg.sharedConfig)
         {
+          keybindings = mapAttrs (_: mkDefault) cfg.keybindings;
           inherit (cfg)
             bars
             startup
-            keybindings
             input
             ;
         }
