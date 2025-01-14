@@ -11,10 +11,16 @@ let
     literalExpression
     mkIf
     mkOption
+    optional
     types
     ;
 
   cfg = config.programs.eww-hyprland;
+  wcfg = config.wayland.windowManager;
+  wmPackages =
+    [ ]
+    ++ (optional wcfg.hyprland.enable wcfg.hyprland.package)
+    ++ (optional wcfg.sway.enable wcfg.sway.package);
 
   reload_script = pkgs.writeShellScript "reload_eww" ''
     windows=$(eww windows | rg '\*' | tr -d '*')
@@ -119,7 +125,7 @@ in
         PartOf = [ "graphical-session.target" ];
       };
       Service = {
-        Environment = "PATH=/run/wrappers/bin:${lib.makeBinPath cfg.extraPackages}";
+        Environment = "PATH=/run/wrappers/bin:${lib.makeBinPath (cfg.extraPackages ++ wmPackages)}";
         ExecStart = "${cfg.package}/bin/eww daemon --no-daemonize";
         Restart = "on-failure";
         Type = "simple";
