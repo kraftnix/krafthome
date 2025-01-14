@@ -7,6 +7,8 @@ args@{ self, ... }:
 }:
 let
   inherit (lib)
+    mapAttrs
+    mkDefault
     mkIf
     mkMerge
     mkOption
@@ -128,7 +130,7 @@ in
       workspaceAutoBackAndForth = cfg.backAndForth.enable;
       keybindings = mkMerge [
         (mkIf cfg.backAndForth.enable {
-          ${cfg.backAndForth.key} = "workspace back_and_forth";
+          ${cfg.backAndForth.key} = mkDefault "workspace back_and_forth";
         })
         (mkIf cfg.brightness.enable {
           # bind brightnessctl to function keys
@@ -149,7 +151,7 @@ in
           "XF86AudioMute" = "exec ${cfg.volume.mute}";
         })
         # bind brightnessctl to function keys
-        cfg.keybindings
+        (mapAttrs (_: mkDefault) cfg.keybindings)
       ];
       gaps = mkIf cfg.gaps.enable {
         inner = 14;
