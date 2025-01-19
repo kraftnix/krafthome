@@ -35,7 +35,7 @@ in
         desktopName = "${name}: firefox";
         # TODO: check if forcing env is still required
         # need to force wayland here for extra profiles? they don't see to take in above home.sessionVariabes
-        exec = "${optionalString cfg.forceWayland "env MOZ_ENABLE_WAYLAND=1 XDG_SESSION_TYPE=wayland "}${config.programs.firefox.package}/bin/firefox --name firefox-${name} -P ${name} %U";
+        exec = "${optionalString cfg.forceWayland "env MOZ_ENABLE_WAYLAND=1 XDG_SESSION_TYPE=wayland "}${config.programs.firefox.finalPackage}/bin/firefox --name firefox-${name} -P ${name} %U";
         icon = "firefox";
         genericName = "Web Browser";
         categories = [
