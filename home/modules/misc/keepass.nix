@@ -51,7 +51,7 @@ in
       package = cfg.package;
       firejail = mkMerge [
         {
-          enable = mkDefault cfg.firejail.enable;
+          enable = lib.mkOverride 900 cfg.firejail.enable;
           desktop = "${cfg.package}/share/applications/org.keepassxc.KeePassXC.desktop";
           protocol = mkIf cfg.firejail.enableYubikey [ "netlink,unix" ];
           ignore = mkIf cfg.firejail.enableYubikey [ "private-dev" ];

@@ -15,7 +15,7 @@ in
       "dev-laptop"
     ] (name: self.nixosConfigurations.${name}.config.system.build.toplevel))
     // self.packagesGroups.${system}.nushellPlugins
-    // self.packagesGroups.${system}.vimPlugins
+  # // self.packagesGroups.${system}.vimPlugins
   # // self.packagesGroups.${system}.tree-sitter-grammars
   ;
 

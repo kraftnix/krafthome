@@ -33,25 +33,17 @@ in
     enable = opts.enable "enable sway config";
     enableDefaults = opts.enableTrue "enable default shared config";
     startup = mkOption {
-      default = [
-        {
-          command = "systemctl --user daemon-reload";
-          always = true;
-        }
-        {
-          command = "dbus-update-activation-environment --systemd DISPLAY WAYLAND_DISPLAY SWAYSOCK XDG_CURRENT_DESKTOP";
-          always = true;
-        }
-      ];
       description = "startup commands";
+      default = [ ];
       type = with types; listOf raw;
     };
     keybindings = mkOption {
-      type = with types; attrsOf str;
-      default = { };
       description = "sway specific keybindings";
+      default = { };
+      type = with types; attrsOf str;
     };
     extraPackages = mkOption {
+      description = "extra packages required by sway";
       default = with pkgs; [
         swayidle # autolock
         wdisplays # display management
@@ -62,26 +54,17 @@ in
         flameshot
         fuzzel # rofi-like
       ];
-      description = "extra packages required by sway";
       type = with types; listOf package;
     };
     sessionVariables = mkOption {
+      description = "session variables for sway";
       default = { };
-      apply = recursiveUpdate {
-        MOZ_ENABLE_WAYLAND = 1;
-        # set this in tuigreet to not clash
-        # XDG_CURRENT_DESKTOP = "sway";
-        XDG_SESSION_TYPE = "wayland";
-        SDL_VIDEODRIVER = "wayland";
-        NIXOS_OZONE_WL = "1"; # sets all electron apps to use Wayland/Ozone
-      };
       type =
         with types;
         attrsOf (oneOf [
           str
           int
         ]);
-      description = "session variables for sway";
     };
     enableSystemd = opts.enableTrue "enable system integration";
     enableSwaymsg = opts.enableTrue "enable swaynag integration";
@@ -99,36 +82,60 @@ in
     };
   };
 
-  config = mkIf cfg.enable {
-    home.packages = cfg.extraPackages;
-    home.sessionVariables = cfg.sessionVariables;
-    xdg.configFile."sway/env".text = concatStringsSep "\n" (
-      mapAttrsToList (env: val: "${env}=${toString val}") config.home.sessionVariables
-    );
+  config = mkMerge [
+    {
+      khome.desktop.wm.sway = {
+        startup = [
+          {
+            command = "systemctl --user daemon-reload";
+            always = true;
+          }
+          {
+            command = "dbus-update-activation-environment --systemd DISPLAY WAYLAND_DISPLAY SWAYSOCK XDG_CURRENT_DESKTOP";
+            always = true;
+          }
+        ];
+        sessionVariables = {
+          MOZ_ENABLE_WAYLAND = 1;
+          # set this in tuigreet to not clash
+          # XDG_CURRENT_DESKTOP = "sway";
+          XDG_SESSION_TYPE = "wayland";
+          SDL_VIDEODRIVER = "wayland";
+          NIXOS_OZONE_WL = "1"; # sets all electron apps to use Wayland/Ozone
+        };
+      };
+    }
+    (mkIf cfg.enable {
+      home.packages = cfg.extraPackages;
+      home.sessionVariables = cfg.sessionVariables;
+      xdg.configFile."sway/env".text = concatStringsSep "\n" (
+        mapAttrsToList (env: val: "${env}=${toString val}") config.home.sessionVariables
+      );
 
-    stylix.targets.sway.enable = true;
-    wayland.windowManager.sway = {
-      enable = true;
-      checkConfig = false; # for now, breaks with colorscheme variables
-      systemd.enable = cfg.enableSystemd;
-      swaynag.enable = cfg.enableSwaymsg;
-      extraConfig = mkIf cfg.enableDefaults wcfg.sharedExtraConfig;
-      extraConfigEarly = mkBefore ''
-        set $mod ${config.wayland.windowManager.sway.config.modifier}
-      '';
-      wrapperFeatures.gtk = mkIf cfg.enableGtk true;
-      config = mkMerge [
-        (mkIf cfg.enableDefaults wcfg.sharedConfig)
-        {
-          keybindings = mapAttrs (_: mkDefault) cfg.keybindings;
-          inherit (cfg)
-            bars
-            startup
-            input
-            ;
-        }
-      ];
-    };
-    # xsession.windowManager.i3 = { inherit config extraConfig; };
-  };
+      stylix.targets.sway.enable = true;
+      wayland.windowManager.sway = {
+        enable = true;
+        checkConfig = false; # for now, breaks with colorscheme variables
+        systemd.enable = cfg.enableSystemd;
+        swaynag.enable = cfg.enableSwaymsg;
+        extraConfig = mkIf cfg.enableDefaults wcfg.sharedExtraConfig;
+        extraConfigEarly = mkBefore ''
+          set $mod ${config.wayland.windowManager.sway.config.modifier}
+        '';
+        wrapperFeatures.gtk = mkIf cfg.enableGtk true;
+        config = mkMerge [
+          (mkIf cfg.enableDefaults wcfg.sharedConfig)
+          {
+            keybindings = mapAttrs (_: mkDefault) cfg.keybindings;
+            inherit (cfg)
+              bars
+              startup
+              input
+              ;
+          }
+        ];
+      };
+      # xsession.windowManager.i3 = { inherit config extraConfig; };
+    })
+  ];
 }

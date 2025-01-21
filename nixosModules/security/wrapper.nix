@@ -54,6 +54,7 @@ in
           {
             config._module.args.pkgs = pkgs;
             config._module.args.name = mkForce config.name;
+            config.enable = mkDefault false;
             config.executable = mkDefault config.executablePath;
             config.profile = mkDefault "${pkgs.firejail}/etc/firejail/${config.executable}.profile";
           }
@@ -78,6 +79,7 @@ in
             config.command = mkDefault (
               [
                 (
+                  # TODO: test if firejail + elewrap work together
                   if config.firejail.enable then
                     "${config.firejail.binary}/bin/${config.executable}"
                   else
