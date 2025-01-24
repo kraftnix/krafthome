@@ -26,7 +26,7 @@ let
     else
       "swww-daemon init && ${singleRandom}";
   randomiseCommand = "swww-randomise -i ${toString cfg.interval} -f ${toString cfg.fps} ${
-    optionalString (cfg.transitionType != null) cfg.transitionType
+    optionalString (cfg.transitionType != null) "-t ${cfg.transitionType}"
   } -s ${toString cfg.step} ${wallpaperDirs}";
   randomisePackage = config.provision.scripts.scripts.swww-randomise.package;
 in
