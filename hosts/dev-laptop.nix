@@ -26,6 +26,14 @@
     {
       imports = [ hmProfiles.neovim ];
       khome.misc.keepass.firejail.enable = true;
+      programs.walker = {
+        enable = true;
+        runAsService = true;
+        settings = {
+          theme = "custom";
+          terminal = "wezterm";
+        };
+      };
       khome.desktop.anyrun = {
         enable = true;
         modKeybind = "b";
