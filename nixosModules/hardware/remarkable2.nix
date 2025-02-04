@@ -13,7 +13,7 @@ let
 in
 {
   options.khome.hardware.remarkable2 = {
-    enable = mkEnableOption "enable remarkable 2 udev rules";
+    enable = mkEnableOption "enable remarkable 2 udev rules, required for recovery from softbricking";
   };
 
   config = mkIf cfg.enable {

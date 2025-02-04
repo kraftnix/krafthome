@@ -28,6 +28,12 @@ in
     enableYazi = mkEnableOption "enable zsh" // {
       default = true;
     }; # TODO: change to `khome.shell.yazi.enable` default
+    manpageSearcher = lib.mkOption {
+      type = lib.types.bool;
+      default = true;
+      description = "add manpage searcher to ctrl-H, from: <https://github.com/junegunn/fzf/wiki/Examples#fzf-man-pages-widget-for-zsh>";
+    };
+
   };
 
   config = mkIf cfg.enable {
@@ -79,17 +85,43 @@ in
 
           export SSH_AUTH_SOCK="/home/$USER/.ssh/auth_sock"
 
-           ${optionalString cfg.enableYazi ''
-             # yazi
-             function yy() {
-               local tmp="$(mktemp -t "yazi-cwd.XXXXXX")"
-               yazi "$@" --cwd-file="$tmp"
-               if cwd="$(cat -- "$tmp")" && [ -n "$cwd" ] && [ "$cwd" != "$PWD" ]; then
-                 cd -- "$cwd"
-               fi
-               rm -f -- "$tmp"
-             }
-           ''}
+          ${optionalString cfg.enableYazi ''
+            # yazi
+            function yy() {
+              local tmp="$(mktemp -t "yazi-cwd.XXXXXX")"
+              yazi "$@" --cwd-file="$tmp"
+              if cwd="$(cat -- "$tmp")" && [ -n "$cwd" ] && [ "$cwd" != "$PWD" ]; then
+                cd -- "$cwd"
+              fi
+              rm -f -- "$tmp"
+            }
+          ''}
+
+          ${lib.optionalString cfg.manpageSearcher ''
+            # from: https://github.com/junegunn/fzf/wiki/Examples#fzf-man-pages-widget-for-zsh
+            fzf-man-widget() {
+              manpage="echo {} | sed 's/\([[:alnum:][:punct:]]*\) (\([[:alnum:]]*\)).*/\2 \1/'"
+              batman="$\{manpage} | xargs -r man | col -bx | bat --language=man --plain --color always --theme=\"Monokai Extended\""
+               man -k . | sort \
+               | awk -v cyan=$(tput setaf 6) -v blue=$(tput setaf 4) -v res=$(tput sgr0) -v bld=$(tput bold) '{ $1=cyan bld $1; $2=res blue $2; } 1' \
+               | fzf  \
+                  -q "$1" \
+                  --ansi \
+                  --tiebreak=begin \
+                  --prompt=' Man > '  \
+                  --preview-window '50%,rounded,<50(up,85%,border-bottom)' \
+                  --preview "$\{batman}" \
+                  --bind "enter:execute($\{manpage} | xargs -r man)" \
+                  --bind "alt-c:+change-preview(cht.sh {1})+change-prompt(ﯽ Cheat > )" \
+                  --bind "alt-m:+change-preview($\{batman})+change-prompt( Man > )" \
+                  --bind "alt-t:+change-preview(tldr --color=always {1})+change-prompt(ﳁ TLDR > )"
+              zle reset-prompt
+            }
+            bindkey '^h' fzf-man-widget
+            zle -N fzf-man-widget
+          ''}
+
+
         '';
       autocd = true;
       dotDir = ".config/zsh";

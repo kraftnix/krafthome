@@ -7,6 +7,7 @@ args:
 }:
 let
   inherit (lib)
+    mkDefault
     mkEnableOption
     mkOption
     optionals
@@ -42,6 +43,7 @@ in
           difftastic # awesome diff tool
           zenith # best top alternative
           tre-command # tree alternative
+          tlrc # rust tldr
 
           # tui
           ranger # tui file browser
@@ -69,6 +71,7 @@ in
       };
     };
     misc.enable = mkEnableOption "misc cli tools";
+    man.enable = mkEnableOption "enable manpage generation";
     proxychains.enable = mkEnableOption "enable proxychains";
     xplr.enable = mkEnableOption "enable xplr";
     nix-tools.enable = mkEnableOption "add all nix helper tools";
@@ -111,5 +114,9 @@ in
         nix-output-monitor # nom, pretty build printing
       ]);
     programs.direnv.enable = cfg.direnv.enable;
+    programs.man.enable = mkDefault cfg.man.enable;
+    programs.man.generateCaches = mkDefault cfg.man.enable;
+    manual.manpages.enable = mkDefault cfg.man.enable;
+    manual.json.enable = mkDefault cfg.man.enable;
   };
 }
