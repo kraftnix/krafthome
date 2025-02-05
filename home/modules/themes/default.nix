@@ -139,6 +139,7 @@ in
       base16Scheme = cfg.stylix.base16.scheme;
       targets.wezterm.enable = false;
       targets.gtk.enable = cfg.gtk.enable;
+      targets.qt.platform = lib.mkOverride 900 "qtct"; # can't use mkDefault for some reason
       opacity = {
         terminal = mkDefault cfg.opacity;
         applications = mkDefault cfg.opacity;
@@ -158,15 +159,15 @@ in
       }
       // mkIf cfg.qt.enable {
         QT_QPA_PLATFORM = "wayland";
-        QT_PLATFORM_THEME = cfg.qt.name;
+        # QT_PLATFORMTHEME = cfg.qt.name;
         QT_WAYLAND_DISABLE_WINDOWDECORATION = "1";
       };
 
-    # QT theming
-    qt = mkIf cfg.qt.enable {
-      inherit (cfg.qt) enable;
-      platformTheme = mkIf (cfg.qt.platformTheme != null) cfg.qt.platformTheme;
-    };
+    # # QT theming
+    # qt = mkIf ((!cfg.stylix.enable) && cfg.qt.enable) {
+    #   inherit (cfg.qt) enable;
+    #   platformTheme = mkIf (cfg.qt.platformTheme != null) cfg.qt.platformTheme;
+    # };
 
     lib.gSettings = mkIf cfg.gtk.enable ''
       set $gnome-schema org.gnome.desktop.interface

@@ -36,6 +36,7 @@ in
       fzf.enable = true;
       git.enable = true;
       misc.enable = true;
+      man.enable = true;
       nix-index.enable = true;
       nix-index.enableComma = true;
       nix-tools.enable = true;
