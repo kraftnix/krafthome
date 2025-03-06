@@ -86,10 +86,6 @@
             inherit (extraGrammars) tree-sitter-nu;
           };
         };
-        tree-sitter-parsers = pkgs.symlinkJoin {
-          name = "treesitter-parsers";
-          paths = self'.packages.tree-sitter-full.withPlugins (p: builtins.attrValues p);
-        };
         allNvimTreesitter = pkgs.vimPlugins.nvim-treesitter.overrideAttrs {
           tree-sitter-grammars = allTreesitter;
           passthru.dependencies = map pkgs.neovimUtils.grammarToPlugin (lib.attrValues allTreesitter);

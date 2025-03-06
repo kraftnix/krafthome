@@ -65,6 +65,7 @@ let
                 config.home.stateVersion = "23.11";
                 config.home.username = "devuser";
                 config.home.homeDirectory = "/home/devuser";
+                config.stylix.image = ./home/modules/themes/wallpaper.jpg;
               }
             )
           ];
