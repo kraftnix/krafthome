@@ -86,6 +86,7 @@ in
       ++ (optionals cfg.xplr.enable [ xplr ])
       ++ (optionals cfg.proxychains.enable [ proxychains ])
       ++ (optionals cfg.misc.enable [
+        sd # rust sed-like replacement
         rustscan # rust-based fast nmap alternative
         tea # cli gitea
         glow # cli markdown viewer
