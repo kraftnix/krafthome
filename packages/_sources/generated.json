@@ -1,7 +1,7 @@
 {
     "tree-sitter-bash": {
         "cargoLocks": null,
-        "date": "2024-11-11",
+        "date": "2025-01-31",
         "extract": null,
         "name": "tree-sitter-bash",
         "passthru": null,
@@ -13,15 +13,16 @@
             "name": null,
             "owner": "tree-sitter",
             "repo": "tree-sitter-bash",
-            "rev": "49c31006d8307dcb12bc5770f35b6d5b9e2be68e",
-            "sha256": "sha256-JW+30zIyq8Xc7NG9V+YoFqC+57BjZXIbAvWPD2lqvIE=",
+            "rev": "0c46d792d54c536be5ff7eb18eb95c70fccdb232",
+            "sha256": "sha256-ODWgFpCLLPgzNYXFhfAVvDXPr5bW8/49ezsaS9MOWMk=",
+            "sparseCheckout": [],
             "type": "github"
         },
-        "version": "49c31006d8307dcb12bc5770f35b6d5b9e2be68e"
+        "version": "0c46d792d54c536be5ff7eb18eb95c70fccdb232"
     },
     "tree-sitter-javascript": {
         "cargoLocks": null,
-        "date": "2024-11-11",
+        "date": "2025-01-30",
         "extract": null,
         "name": "tree-sitter-javascript",
         "passthru": null,
@@ -33,11 +34,12 @@
             "name": null,
             "owner": "tree-sitter",
             "repo": "tree-sitter-javascript",
-            "rev": "108b2d4d17a04356a340aea809e4dd5b801eb40d",
-            "sha256": "sha256-0x6DbmRTlxUP4vbWVsLoj+k1YOk2Dr+LAPClFsWi7r8=",
+            "rev": "6fbef40512dcd9f0a61ce03a4c9ae7597b36ab5c",
+            "sha256": "sha256-X9DDCBF+gQYL0syfqgKVFvzoy2tnBl+veaYi7bUuRms=",
+            "sparseCheckout": [],
             "type": "github"
         },
-        "version": "108b2d4d17a04356a340aea809e4dd5b801eb40d"
+        "version": "6fbef40512dcd9f0a61ce03a4c9ae7597b36ab5c"
     },
     "tree-sitter-markdown": {
         "cargoLocks": null,
@@ -55,13 +57,14 @@
             "repo": "tree-sitter-markdown",
             "rev": "192407ab5a24bfc24f13332979b5e7967518754a",
             "sha256": "sha256-R5y1kMVXzzl/pX6FUcLc1n6Z8eG+npMRwdJMoWtHs/U=",
+            "sparseCheckout": [],
             "type": "github"
         },
         "version": "192407ab5a24bfc24f13332979b5e7967518754a"
     },
     "tree-sitter-nu": {
         "cargoLocks": null,
-        "date": "2024-12-29",
+        "date": "2025-03-11",
         "extract": null,
         "name": "tree-sitter-nu",
         "passthru": null,
@@ -73,15 +76,16 @@
             "name": null,
             "owner": "nushell",
             "repo": "tree-sitter-nu",
-            "rev": "9822fc63a62ff87939c88ead9f381f951f092dee",
-            "sha256": "sha256-fcwWrM1KpK1V+TeGqe/iMICOIv7/lA1WZW/8jJXL7WA=",
+            "rev": "c10340b5bb3789f69182acf8f34c3d4fc24d2fe1",
+            "sha256": "sha256-EyaFrO9NE2Ivo8YTXZ6nmC31PB7WFbFdz7AMRw0ooHo=",
+            "sparseCheckout": [],
             "type": "github"
         },
-        "version": "9822fc63a62ff87939c88ead9f381f951f092dee"
+        "version": "c10340b5bb3789f69182acf8f34c3d4fc24d2fe1"
     },
     "tree-sitter-python": {
         "cargoLocks": null,
-        "date": "2025-01-07",
+        "date": "2025-01-30",
         "extract": null,
         "name": "tree-sitter-python",
         "passthru": null,
@@ -93,11 +97,12 @@
             "name": null,
             "owner": "tree-sitter",
             "repo": "tree-sitter-python",
-            "rev": "409b5d671eb0ea4972eeacaaca24bbec1acf79b1",
-            "sha256": "sha256-IIAL2qteFPBCPmDK1N2EdDgpI4CwfMuuVL8t5tYueLU=",
+            "rev": "710796b8b877a970297106e5bbc8e2afa47f86ec",
+            "sha256": "sha256-t9etfZcrliF7f9hfiomh2U9P+3ufAm8iSK1y9rOhP7s=",
+            "sparseCheckout": [],
             "type": "github"
         },
-        "version": "409b5d671eb0ea4972eeacaaca24bbec1acf79b1"
+        "version": "710796b8b877a970297106e5bbc8e2afa47f86ec"
     },
     "tree-sitter-yuck": {
         "cargoLocks": null,
@@ -115,6 +120,7 @@
             "repo": "tree-sitter-yuck",
             "rev": "e877f6ade4b77d5ef8787075141053631ba12318",
             "sha256": "sha256-l8c1/7q8S78jGyl+VAVVgs8wq58PrrjycyJfWXsCgAI=",
+            "sparseCheckout": [],
             "type": "github"
         },
         "version": "e877f6ade4b77d5ef8787075141053631ba12318"

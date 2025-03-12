@@ -32,61 +32,61 @@
   };
   nu_plugin_explore = {
     pname = "nu_plugin_explore";
-    version = "023c815e73e193dafe406940912ffb6d0321874d";
+    version = "18d87a1664d4192797a61647bbac7346508d9723";
     src = fetchFromGitHub {
       owner = "amtoine";
       repo = "nu_plugin_explore";
-      rev = "023c815e73e193dafe406940912ffb6d0321874d";
+      rev = "18d87a1664d4192797a61647bbac7346508d9723";
       fetchSubmodules = false;
-      sha256 = "sha256-Nne0xwUitm883K59ds2OXDWafsrIp2MGXKUbztcf0uM=";
+      sha256 = "sha256-9XaKwKi2mxnGEscogKUnW9ByEAqwq/LK4fKrRjB+ozM=";
     };
-    date = "2024-12-06";
+    date = "2025-02-08";
   };
   nu_plugin_file = {
     pname = "nu_plugin_file";
-    version = "f9023b8cf3e5ac455023929ced504ecd2a9b5592";
+    version = "eeb7d1ca95b9162fd990031d492e57381620a8ca";
     src = fetchFromGitHub {
       owner = "fdncred";
       repo = "nu_plugin_file";
-      rev = "f9023b8cf3e5ac455023929ced504ecd2a9b5592";
+      rev = "eeb7d1ca95b9162fd990031d492e57381620a8ca";
       fetchSubmodules = false;
-      sha256 = "sha256-ML0ZKsF+fEj5KU0ZLNsWDLyXT+iRvW9OtJ7hZ9ZuXHE=";
+      sha256 = "sha256-cMDkhNPIfkJb01fBSt2fCCdg/acdzak66qMRp0zuJzc=";
     };
-    date = "2024-12-25";
+    date = "2025-02-10";
   };
   nu_plugin_port_list = {
     pname = "nu_plugin_port_list";
-    version = "db81c56738aecef3414a285bc2cacb1921a7f81d";
+    version = "f6fa5e59407d05317e7155dc9ca512ed17d12485";
     src = fetchFromGitHub {
       owner = "FMotalleb";
       repo = "nu_plugin_port_list";
-      rev = "db81c56738aecef3414a285bc2cacb1921a7f81d";
+      rev = "f6fa5e59407d05317e7155dc9ca512ed17d12485";
       fetchSubmodules = false;
-      sha256 = "sha256-AdODXvou8QrCUm/J6iatNAp+kIe9uVcCdHOOf1KLog0=";
+      sha256 = "sha256-eGkUaS2MZQmowCkPB3Gow6f/MJ42b90lUpCEUeTxXfA=";
     };
-    date = "2024-12-23";
+    date = "2025-02-10";
   };
   nu_plugin_prometheus = {
     pname = "nu_plugin_prometheus";
-    version = "cee302c94cb23143eb54ee7d423ad61989bab149";
+    version = "5b33c7e132412efd3d731e1e204c9e55516f7aad";
     src = fetchFromGitHub {
       owner = "drbrain";
       repo = "nu_plugin_prometheus";
-      rev = "cee302c94cb23143eb54ee7d423ad61989bab149";
+      rev = "5b33c7e132412efd3d731e1e204c9e55516f7aad";
       fetchSubmodules = false;
-      sha256 = "sha256-YLeHh4GYfetGkWqYqCjkgZmAwLhac+/8ZAdApykOyf4=";
+      sha256 = "sha256-WTJru1Eqrn8kBb2Jsgo5bQdF3LRghFzVSkMBuNGvMZI=";
     };
-    date = "2024-11-22";
+    date = "2025-02-16";
   };
   nu_plugin_skim = {
     pname = "nu_plugin_skim";
-    version = "v0.11.1";
+    version = "v0.12.0";
     src = fetchFromGitHub {
       owner = "idanarye";
       repo = "nu_plugin_skim";
-      rev = "v0.11.1";
+      rev = "v0.12.0";
       fetchSubmodules = false;
-      sha256 = "sha256-z+NT5WjwBn5yrdQNuERswZgsfM4OJPKssWPyClIi0Fk=";
+      sha256 = "sha256-TFKybgV2sJqDcTR+F1Kwm03XW0+tt9fLilhSQpX4jSg=";
     };
   };
 }

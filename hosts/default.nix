@@ -57,10 +57,11 @@ args@{
     {
       channels = {
         nixpkgs.config.permittedInsecurePackages = [
-          "electron-28.3.3"
+          # "electron-28.3.3"
+        ];
+        stable.config.permittedInsecurePackages = [
           "electron-27.3.11"
         ];
-        stable = { };
       };
     };
 }

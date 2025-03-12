@@ -1,4 +1,5 @@
 localFlake@{
+  lib,
   self,
   inputs,
   ...
@@ -36,6 +37,23 @@ localFlake@{
     };
 
   # flake.profiles = self.lib.importDirToAttrs ./profiles;
+  flake.nixd.options.nixos = self.nixosConfigurations.dev-laptop.options;
+  flake.nixd.options.home-manager = self.homeConfigurations.dev-user.options;
+  # for LSP / nixd
+  flake.homeConfigurations.dev-user = inputs.home.lib.homeManagerConfiguration {
+    pkgs = self.nixosConfigurations.dev-laptop.pkgs;
+    inherit (self.nixosConfigurations.dev-laptop.config.home-manager) extraSpecialArgs;
+    # modules = (builtins.attrValues self.auto-import.homeManager.modules') ++ [
+    modules = [
+      inputs.stylix.homeManagerModules.stylix
+      {
+        options.meta.doc = lib.mkOption { default = { }; };
+        config.home.stateVersion = "23.11";
+        config.home.username = "dev-user";
+        config.home.homeDirectory = "/home/dev-user";
+      }
+    ];
+  };
 
   ## Imports
   flake.auto-import.enable = true;

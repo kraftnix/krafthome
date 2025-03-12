@@ -34,8 +34,8 @@ args@{
       vimPlugins = prev.vimPlugins // {
         nvim-spectre = self.channels.${final.system}.stable.pkgs.vimPlugins.nvim-spectre;
       };
-      # jellyfin-mpv-shim fixes: https://github.com/NixOS/nixpkgs/pull/353833
-      inherit (final.channels.stable.pkgs) jellyfin-mpv-shim;
+      # logseq removed from unstable: https://github.com/NixOS/nixpkgs/issues/389011
+      inherit (final.channels.stable.pkgs) logseq;
     };
     wezterm-upstream = final: prev: {
       wezterm-upstream = inputs.wezterm.packages.${final.system}.default;

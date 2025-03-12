@@ -24,7 +24,8 @@ let
   pname = "tmux-thumbs-rust";
   tmuxThumbsRust = pkgs.rustPlatform.buildRustPackage {
     inherit src pname version;
-    cargoHash = "sha256-buLZ5xZqH7KaT/XmuyswiAUNdof8fUqn0okx3INbB+0=";
+    cargoHash = "sha256-xvfjWS1QZWrlwytFyWVtjOyB3EPT9leodVLt72yyM4E=";
+    useFetchCargoVendor = true;
   };
   tmux-thumbs = pkgs.tmuxPlugins.mkTmuxPlugin {
     inherit version src;
@@ -257,7 +258,8 @@ lib.mkIf cfg.enable {
         ### THEME
         set-option -g status-position bottom
         set -g default-terminal "tmux-256color"
-        set -ga terminal-overrides ",xterm-256color:Tc"
+        set -as terminal-features ",xterm*:RGB"
+        set -as terminal-features ",wezterm:RGB"
 
         # sizes / posiiton
         set -g status-interval 1
