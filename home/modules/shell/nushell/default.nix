@@ -91,6 +91,9 @@ in
     enableAtuin = mkEnableOption "atuin integration" // {
       default = config.programs.atuin.enable;
     };
+    enablePayrespects = mkEnableOption "pay-respects integration" // {
+      default = false;
+    };
 
     removeShellAliases = mkOption {
       default = [
@@ -172,6 +175,7 @@ in
     home.sessionVariables = {
       NUSHELL_ENABLE_ATUIN = toString cfg.enableAtuin;
       NUSHELL_ENABLE_STARSHIP = toString cfg.enableStarship;
+      NUSHELL_ENABLE_PAYRESPECTS = toString cfg.enablePayrespects;
       NUSHELL_ENABLE_ALIASES = toString true;
     };
     # I handle the integration myself
@@ -223,6 +227,7 @@ in
       {
         "nushell/atuin.nu".source = ./src/atuin.nu;
         "nushell/carapace.nu".source = ./src/carapace.nu;
+        "nushell/pay-respects.nu".source = ./src/pay-respects.nu;
         "nushell/keybindings.nu".source = ./src/keybindings.nu;
         "nushell/menus.nu".source = ./src/menus.nu;
         "nushell/starship.nu".source = ./src/starship.nu;

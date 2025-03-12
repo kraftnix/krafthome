@@ -11,6 +11,7 @@ def testBoolikeVar [ envName : string ]: any -> bool {
 
 let enableAtuin = (testBoolikeVar NUSHELL_ENABLE_ATUIN)
 let enableStarship = (testBoolikeVar NUSHELL_ENABLE_STARSHIP)
+let enablePayrespects = (testBoolikeVar NUSHELL_ENABLE_PAYRESPECTS)
 
 source ~/.config/nushell/theme.nu
 
@@ -122,6 +123,9 @@ $env.config.completions.external = {
   completer: $external_completer
 }
 
+if $enablePayrespects {
+  source ~/.config/nushell/pay-respects.nu
+}
 if $enableAtuin {
   source ~/.config/nushell/atuin.nu
 }
