@@ -139,7 +139,7 @@ in
         ]);
       default = with pkgs.nushellPlugins; [
         polars
-        net
+        # net
         query
         gstat
         formats

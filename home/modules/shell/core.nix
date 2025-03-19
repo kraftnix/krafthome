@@ -44,6 +44,8 @@ in
           zenith # best top alternative
           tre-command # tree alternative
           tlrc # rust tldr
+          television # like telescope, but for terminal
+          hwatch # better watch
 
           # tui
           ranger # tui file browser
