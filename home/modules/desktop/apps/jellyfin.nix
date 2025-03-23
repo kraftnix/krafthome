@@ -6,19 +6,26 @@
   ...
 }:
 let
-  inherit (lib) mkIf mkMerge optional;
-  opts = self.inputs.extra-lib.lib.options;
+  inherit (lib)
+    mapAttrs
+    mkDefault
+    mkIf
+    mkOption
+    mkMerge
+    optional
+    ;
+  inherit (self.inputs.extra-lib.lib) options mkDefaults;
   mcfg = config.khome.desktop.apps.media;
   jcfg = mcfg.jellyfin;
 
   # -  home.file."${config.xdg.configHome}/mpv-jellyfin-shim/conf.json".text =
   # -    builtins.toJSON {}
-  conf = self.inputs.extra-lib.lib.mkDefaults {
+  defaultConfig = {
     always_transcode = false;
     audio_output = "hdmi";
     auto_play = true;
     check_updates = false;
-    client_uuid = "d2519fca-22ff-402e-a2e9-6454b710393c";
+    # client_uuid = "d2519fca-ffff-9999-aaaa-6454b710393c";
     connect_retry_mins = 0;
     direct_paths = false;
     discord_presence = false;
@@ -64,7 +71,7 @@ let
     mpv_log_level = "info";
     notify_updates = false;
     playback_timeout = 30;
-    player_name = "kallen";
+    # player_name = "myhost";
     pre_media_cmd = null;
     remote_direct_paths = false;
     remote_kbps = 10000;
@@ -108,21 +115,38 @@ in
 {
   options.khome.desktop.apps.media.jellyfin = {
     mpvShim = {
-      enable = opts.enable "enable jellyfin-mpv-shim";
-      enableConfig = opts.enable "enable setting config via nix";
-      config = opts.raw { } "set jellyfin-mpv-shim config";
+      enable = options.enable "enable jellyfin-mpv-shim";
+      enableConfig = options.enable "enable setting config via nix";
+      config = mkOption {
+        description = "set jellyfin-mpv-shim config at `~/.config/jellyfin-mpv-shim/conf.json`";
+        default = { };
+        type = (pkgs.formats.json { }).type;
+      };
+      uuid = options.string "" "sets `client_uuid` (optional)";
+      # TODO: auto set this to host's `networking.hostName` if available
+      name = options.string "" "sets `player_name` (optional)";
+      external.enable = options.enable "use a host / user's mpv shim instead of jellyfin-mpv-shim bundled mpv, sets `mpv_ext`";
+      external.path = options.string "~/.nix-profile/bin/jellyfin-mpv-shim" "path of external mpv binary, sets `mpv_ext_path` (optional)";
     };
-    mediaPlayer = opts.enable "add jellyfin-media-player";
+    mediaPlayer.enable = options.enable "add jellyfin-media-player";
   };
 
   config = mkMerge [
     (mkIf mcfg.enable {
-      khome.desktop.apps.media.jellyfin.mpvShim.config = conf;
+      khome.desktop.apps.media.jellyfin.mpvShim.config = mkMerge [
+        (mkDefaults defaultConfig)
+        {
+          client_uuid = mkIf (jcfg.mpvShim.uuid != "") jcfg.mpvShim.uuid;
+          player_name = mkIf (jcfg.mpvShim.name != "") jcfg.mpvShim.name;
+          mpv_ext = jcfg.mpvShim.external.enable;
+          mpv_ext_path = mkIf (jcfg.mpvShim.external.path != "") jcfg.mpvShim.external.path;
+        }
+      ];
       home.packages =
         [ ]
         ++ (optional jcfg.mpvShim.enable pkgs.jellyfin-mpv-shim)
-        ++ (optional jcfg.mediaPlayer pkgs.jellyfin-media-player);
-      xdg.configFile = mkIf jcfg.mpvShim.enable {
+        ++ (optional jcfg.mediaPlayer.enable pkgs.jellyfin-media-player);
+      xdg.configFile = mkIf jcfg.mpvShim.enableConfig {
         "mpv-jellyfin-shim/conf.json".text = builtins.toJSON jcfg.mpvShim.config;
       };
     })

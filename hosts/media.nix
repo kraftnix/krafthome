@@ -38,7 +38,14 @@
         enable = true;
         jellyfin = {
           mpvShim.enable = true;
-          mediaPlayer = true;
+          mpvShim.enableConfig = true;
+          mpvShim.external.enable = true;
+          mpvShim.config = {
+            lang_filter = "und,eng,jpn,mis,mul,zxx";
+            lang_filter_sub = true;
+            lang_filter_audio = true;
+          };
+          mediaPlayer.enable = true;
         };
       };
     };
