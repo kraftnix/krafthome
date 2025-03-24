@@ -55,7 +55,7 @@ in
       policies = cfg.policies;
       profiles = builtins.mapAttrs (name: pcfg: {
         inherit (pcfg) id;
-        extensions = pcfg.finalExtensions;
+        extensions.packages = pcfg.finalExtensions;
         search = mkIf pcfg.search.enable {
           enable = true;
           inherit (pcfg.search)
