@@ -40,6 +40,8 @@ in
       default = { };
       type = types.attrsOf (
         types.submoduleWith {
+          specialArgs.pkgs = pkgs;
+          specialArgs.toplevel = cfg;
           modules = [ ./profile.nix ];
         }
       );

@@ -1,12 +1,11 @@
-args:
 {
   config,
   lib,
   pkgs,
+  toplevel,
   ...
 }:
 let
-  cfg = config.khome.browsers.firefox;
   inherit (lib)
     flatten
     mkDefault
@@ -99,7 +98,7 @@ in
           [
             config.extensions
           ]
-          ++ (map (profile: cfg.presets.extensions.${profile}) config.presets.extensions)
+          ++ (map (profile: toplevel.presets.extensions.${profile}) config.presets.extensions)
         )
       );
     };
@@ -158,13 +157,13 @@ in
       })
       (
         mkIf (config.proxyServer != null) (
-          lib.mapAttrs (_: lib.mkDefault) (cfg.proxies.${config.proxyServer}.__opts)
+          lib.mapAttrs (_: lib.mkDefault) (toplevel.proxies.${config.proxyServer}.__opts)
         )
         // (lib.optionalAttrs (config.proxyExceptions != [ ]) {
           "network.proxy.no_proxies_on" = builtins.concatStringsSep "," config.proxyExceptions;
         })
       )
     ]
-    ++ (map (profile: cfg.presets.settings.${profile}) config.presets.settings)
+    ++ (map (profile: toplevel.presets.settings.${profile}) config.presets.settings)
   );
 }
