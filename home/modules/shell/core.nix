@@ -28,6 +28,7 @@ in
       description = "default editor";
     };
     direnv.enable = mkEnableOption "enable direnv";
+    pay-respects.enable = mkEnableOption "enable [pay-respects](https://github.com/iffse/pay-respects) command suggestions";
     core-tools = {
       enable = mkEnableOption "enable direnv";
       packages = mkOption {
@@ -119,6 +120,7 @@ in
     programs.direnv.enable = cfg.direnv.enable;
     programs.man.enable = mkDefault cfg.man.enable;
     programs.man.generateCaches = mkDefault cfg.man.enable;
+    programs.pay-respects.enable = mkDefault cfg.pay-respects.enable;
     manual.manpages.enable = mkDefault cfg.man.enable;
     manual.json.enable = mkDefault cfg.man.enable;
   };

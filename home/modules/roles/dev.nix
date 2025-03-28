@@ -40,6 +40,7 @@ in
       nix-index.enable = true;
       nix-index.enableComma = true;
       nix-tools.enable = true;
+      pay-respects.enable = true;
       proxychains.enable = true;
       ssh-rebind.enable = true;
       starship.enable = true;

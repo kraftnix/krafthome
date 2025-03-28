@@ -86,13 +86,13 @@ in
     enable = mkEnableOption "nushell-unstable (0.60+)";
 
     enableStarship = mkEnableOption "starship integration" // {
-      default = config.programs.starship.enable;
+      default = with config.programs.starship; enable && enableNushellIntegration;
     };
     enableAtuin = mkEnableOption "atuin integration" // {
-      default = config.programs.atuin.enable;
+      default = with config.programs.atuin; enable && enableNushellIntegration;
     };
     enablePayrespects = mkEnableOption "pay-respects integration" // {
-      default = false;
+      default = with config.programs.pay-respects; enable && enableNushellIntegration;
     };
 
     removeShellAliases = mkOption {
