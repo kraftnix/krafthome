@@ -30,11 +30,11 @@ in
       };
       SearchEngines = {
         Remove = [
-          "Google"
-          "Amazon.com"
-          "Bing"
-          "eBay"
-          "Wikipedia"
+          "google"
+          "amazon"
+          "bing"
+          "ebay"
+          "wikipedia"
         ];
       };
     };

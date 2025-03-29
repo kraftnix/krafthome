@@ -49,6 +49,7 @@ in
   };
 
   config = mkIf cfg.enable {
+    stylix.targets.firefox.enable = false; # for now, prevents warning
     programs.firefox = {
       enable = true;
       package = cfg.package;

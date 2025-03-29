@@ -97,12 +97,12 @@ in
           description = "Search Engines options";
           type = types.raw;
           default = {
-            Default = "DuckDuckGo";
+            Default = "ddg";
             Remove = [
-              "Google"
-              "Amazon.com"
-              "Bing"
-              "eBay"
+              "google"
+              "amazon"
+              "bing"
+              "ebay"
             ];
           };
         };

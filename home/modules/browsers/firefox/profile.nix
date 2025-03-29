@@ -63,7 +63,7 @@ in
       };
       default = mkOption {
         description = "default search engine";
-        default = "DuckDuckGo";
+        default = "ddg";
         type = types.str;
       };
       order = mkOption {
@@ -80,8 +80,8 @@ in
         description = "set search engines in `programs.firefox.profiles.<name>.search.engines`";
         default = { };
         example = {
-          Bing.metaData.hidden = true;
-          Google.metaData.hidden = true;
+          bing.metaData.hidden = true;
+          google.metaData.hidden = true;
         };
         type = (pkgs.formats.json { }).type;
       };
@@ -117,10 +117,10 @@ in
   };
 
   config.search.engines = {
-    Bing = mkDefault {
+    bing = mkDefault {
       metaData.hidden = true;
     };
-    Google = mkDefault {
+    google = mkDefault {
       metaData.hidden = true;
     };
     "Nix Packages" = {
@@ -144,7 +144,7 @@ in
     };
     "NixOS Wiki" = {
       urls = [ { template = "https://wiki.nixos.org/w/index.php?search={searchTerms}"; } ];
-      iconUpdateURL = "https://wiki.nixos.org/nixos.png";
+      icon = "https://wiki.nixos.org/nixos.png";
       updateInterval = 24 * 60 * 60 * 1000;
       definedAliases = [ "@nw" ];
     };
