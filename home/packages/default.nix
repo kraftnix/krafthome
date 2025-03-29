@@ -19,13 +19,13 @@ let
   nuPlugins =
     prev: sources:
     mapAttrs (importNuPlugin prev sources) {
-      nu_plugin_explore = "sha256-oxMqJmQMc7Ns/Nt7vjZFx6vs0mmh3hOIv8BtopZ2s6Y=";
+      nu_plugin_explore = "sha256-YqmU+j1dcw9YN0p3h+s4hJpt1O6z6EYrSj8lApQX93o=";
       # nu_plugin_dialog = "sha256-nbSbQ1DEBlT5ZqYgj+1Z4LU4t1833chPWxKMmCe4yAI="; # failed to load manifest
       nu_plugin_dbus = "sha256-7pD5LA1ytO7VqFnHwgf7vW9eS3olnZBgdsj+rmcHkbU=";
       nu_plugin_file = "sha256-s2Sw8NDVJZoZsnNeGGCXb64WFb3ivO9TxBYFcjLVOZI=";
       nu_plugin_port_list = "sha256-LicKxycLeBcD8NBwLvMttAS3rNkpaiealMmGZZ6d/HQ=";
       nu_plugin_prometheus = "sha256-LwVGBm+2j9bxa1Np5l77BgET+CytG10GDeUvbx+tGAU=";
-      nu_plugin_skim = "sha256-5KwosdiWc7K+35d06lvFHaPP52d7ru7tjMG+X9H5oCQ=";
+      nu_plugin_skim = "sha256-CvBBBDi8AkSfCIcUyUH4e5DX5tija1KqE9z05lndNE4=";
     };
   getSources = prev: prev.callPackage (import ./_sources/generated.nix) { };
   yaziPluginsSources =
