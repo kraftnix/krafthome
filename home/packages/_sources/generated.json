@@ -1,4 +1,67 @@
 {
+    "bookmarks.yazi": {
+        "cargoLocks": null,
+        "date": "2025-01-23",
+        "extract": null,
+        "name": "bookmarks.yazi",
+        "passthru": null,
+        "pinned": false,
+        "src": {
+            "deepClone": false,
+            "fetchSubmodules": false,
+            "leaveDotGit": false,
+            "name": null,
+            "owner": "DreamMaoMao",
+            "repo": "bookmarks.yazi",
+            "rev": "83580203c014ad48834af51ee6a11767511a25a6",
+            "sha256": "sha256-TfOdLAs7ljLl5WmCsmP4o6JCQqUtvSdZgn+O9QKjTV4=",
+            "sparseCheckout": [],
+            "type": "github"
+        },
+        "version": "83580203c014ad48834af51ee6a11767511a25a6"
+    },
+    "fg.yazi": {
+        "cargoLocks": null,
+        "date": "2025-02-28",
+        "extract": null,
+        "name": "fg.yazi",
+        "passthru": null,
+        "pinned": false,
+        "src": {
+            "deepClone": false,
+            "fetchSubmodules": false,
+            "leaveDotGit": false,
+            "name": null,
+            "owner": "DreamMaoMao",
+            "repo": "fg.yazi",
+            "rev": "652d02a1413d2440d264667608102eb158ed0e68",
+            "sha256": "sha256-/GApLVDpGcH2drwSNluEvoQdnjgE8AsPHdci/9eg7Lg=",
+            "sparseCheckout": [],
+            "type": "github"
+        },
+        "version": "652d02a1413d2440d264667608102eb158ed0e68"
+    },
+    "glow.yazi": {
+        "cargoLocks": null,
+        "date": "2025-02-23",
+        "extract": null,
+        "name": "glow.yazi",
+        "passthru": null,
+        "pinned": false,
+        "src": {
+            "deepClone": false,
+            "fetchSubmodules": false,
+            "leaveDotGit": false,
+            "name": null,
+            "owner": "Reledia",
+            "repo": "glow.yazi",
+            "rev": "c76bf4fb612079480d305fe6fe570bddfe4f99d3",
+            "sha256": "sha256-DPud1Mfagl2z490f5L69ZPnZmVCa0ROXtFeDbEegBBU=",
+            "sparseCheckout": [],
+            "type": "github"
+        },
+        "version": "c76bf4fb612079480d305fe6fe570bddfe4f99d3"
+    },
     "nu_plugin_dbus": {
         "cargoLocks": null,
         "date": "2025-01-08",
@@ -43,7 +106,7 @@
     },
     "nu_plugin_explore": {
         "cargoLocks": null,
-        "date": "2025-02-08",
+        "date": "2025-03-24",
         "extract": null,
         "name": "nu_plugin_explore",
         "passthru": null,
@@ -55,12 +118,12 @@
             "name": null,
             "owner": "amtoine",
             "repo": "nu_plugin_explore",
-            "rev": "18d87a1664d4192797a61647bbac7346508d9723",
-            "sha256": "sha256-9XaKwKi2mxnGEscogKUnW9ByEAqwq/LK4fKrRjB+ozM=",
+            "rev": "fa5ab698463489bfc782077915f636661712a217",
+            "sha256": "sha256-ziHjjNdLDgyrXOgFcQC34zjKX4dT7SvfS5xOrr+VeMc=",
             "sparseCheckout": [],
             "type": "github"
         },
-        "version": "18d87a1664d4192797a61647bbac7346508d9723"
+        "version": "fa5ab698463489bfc782077915f636661712a217"
     },
     "nu_plugin_file": {
         "cargoLocks": null,
@@ -127,7 +190,7 @@
     },
     "nu_plugin_skim": {
         "cargoLocks": null,
-        "date": null,
+        "date": "2025-03-21",
         "extract": null,
         "name": "nu_plugin_skim",
         "passthru": null,
@@ -139,11 +202,32 @@
             "name": null,
             "owner": "idanarye",
             "repo": "nu_plugin_skim",
-            "rev": "v0.12.0",
-            "sha256": "sha256-TFKybgV2sJqDcTR+F1Kwm03XW0+tt9fLilhSQpX4jSg=",
+            "rev": "f0b2313b4337ec726c94887c9bc24d53ac04b9b5",
+            "sha256": "sha256-cVD/al5KF4y7oV3OwtfhWEytCD+IVmWdSlGub1w6UYk=",
             "sparseCheckout": [],
             "type": "github"
         },
-        "version": "v0.12.0"
+        "version": "f0b2313b4337ec726c94887c9bc24d53ac04b9b5"
+    },
+    "officialPluginsSource": {
+        "cargoLocks": null,
+        "date": "2025-03-19",
+        "extract": null,
+        "name": "officialPluginsSource",
+        "passthru": null,
+        "pinned": false,
+        "src": {
+            "deepClone": false,
+            "fetchSubmodules": false,
+            "leaveDotGit": false,
+            "name": null,
+            "owner": "yazi-rs",
+            "repo": "plugins",
+            "rev": "273019910c1111a388dd20e057606016f4bd0d17",
+            "sha256": "sha256-80mR86UWgD11XuzpVNn56fmGRkvj0af2cFaZkU8M31I=",
+            "sparseCheckout": [],
+            "type": "github"
+        },
+        "version": "273019910c1111a388dd20e057606016f4bd0d17"
     }
 }

@@ -108,7 +108,7 @@ in
         pkgs.yubikey-manager
       ]
       ++ (optionals cfg.graphical [
-        pkgs.yubikey-manager-qt
+        pkgs.yubikey-personalization-gui
       ]);
 
     # enforce access to yubikey

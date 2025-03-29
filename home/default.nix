@@ -45,6 +45,7 @@ args@{
     core = with self.overlays; [
       anyrun
       nushellPlugins
+      yaziPlugins
       misc-fixes
       wezterm-upstream
       inputs.elewrap.overlays.default

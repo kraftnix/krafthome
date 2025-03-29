@@ -32,15 +32,15 @@
   };
   tree-sitter-markdown = {
     pname = "tree-sitter-markdown";
-    version = "192407ab5a24bfc24f13332979b5e7967518754a";
+    version = "413285231ce8fa8b11e7074bbe265b48aa7277f9";
     src = fetchFromGitHub {
       owner = "tree-sitter-grammars";
       repo = "tree-sitter-markdown";
-      rev = "192407ab5a24bfc24f13332979b5e7967518754a";
+      rev = "413285231ce8fa8b11e7074bbe265b48aa7277f9";
       fetchSubmodules = false;
-      sha256 = "sha256-R5y1kMVXzzl/pX6FUcLc1n6Z8eG+npMRwdJMoWtHs/U=";
+      sha256 = "sha256-Oe2iL5b1Cyv+dK0nQYFNLCCOCe+93nojxt6ukH2lEmU=";
     };
-    date = "2024-12-10";
+    date = "2025-03-21";
   };
   tree-sitter-nu = {
     pname = "tree-sitter-nu";

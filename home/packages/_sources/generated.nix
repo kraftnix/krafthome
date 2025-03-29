@@ -6,6 +6,42 @@
   dockerTools,
 }:
 {
+  "bookmarks.yazi" = {
+    pname = "bookmarks.yazi";
+    version = "83580203c014ad48834af51ee6a11767511a25a6";
+    src = fetchFromGitHub {
+      owner = "DreamMaoMao";
+      repo = "bookmarks.yazi";
+      rev = "83580203c014ad48834af51ee6a11767511a25a6";
+      fetchSubmodules = false;
+      sha256 = "sha256-TfOdLAs7ljLl5WmCsmP4o6JCQqUtvSdZgn+O9QKjTV4=";
+    };
+    date = "2025-01-23";
+  };
+  "fg.yazi" = {
+    pname = "fg.yazi";
+    version = "652d02a1413d2440d264667608102eb158ed0e68";
+    src = fetchFromGitHub {
+      owner = "DreamMaoMao";
+      repo = "fg.yazi";
+      rev = "652d02a1413d2440d264667608102eb158ed0e68";
+      fetchSubmodules = false;
+      sha256 = "sha256-/GApLVDpGcH2drwSNluEvoQdnjgE8AsPHdci/9eg7Lg=";
+    };
+    date = "2025-02-28";
+  };
+  "glow.yazi" = {
+    pname = "glow.yazi";
+    version = "c76bf4fb612079480d305fe6fe570bddfe4f99d3";
+    src = fetchFromGitHub {
+      owner = "Reledia";
+      repo = "glow.yazi";
+      rev = "c76bf4fb612079480d305fe6fe570bddfe4f99d3";
+      fetchSubmodules = false;
+      sha256 = "sha256-DPud1Mfagl2z490f5L69ZPnZmVCa0ROXtFeDbEegBBU=";
+    };
+    date = "2025-02-23";
+  };
   nu_plugin_dbus = {
     pname = "nu_plugin_dbus";
     version = "ea17d3c5fbb74a06b143ef1b929f15bbf7e505a0";
@@ -32,15 +68,15 @@
   };
   nu_plugin_explore = {
     pname = "nu_plugin_explore";
-    version = "18d87a1664d4192797a61647bbac7346508d9723";
+    version = "fa5ab698463489bfc782077915f636661712a217";
     src = fetchFromGitHub {
       owner = "amtoine";
       repo = "nu_plugin_explore";
-      rev = "18d87a1664d4192797a61647bbac7346508d9723";
+      rev = "fa5ab698463489bfc782077915f636661712a217";
       fetchSubmodules = false;
-      sha256 = "sha256-9XaKwKi2mxnGEscogKUnW9ByEAqwq/LK4fKrRjB+ozM=";
+      sha256 = "sha256-ziHjjNdLDgyrXOgFcQC34zjKX4dT7SvfS5xOrr+VeMc=";
     };
-    date = "2025-02-08";
+    date = "2025-03-24";
   };
   nu_plugin_file = {
     pname = "nu_plugin_file";
@@ -80,13 +116,26 @@
   };
   nu_plugin_skim = {
     pname = "nu_plugin_skim";
-    version = "v0.12.0";
+    version = "f0b2313b4337ec726c94887c9bc24d53ac04b9b5";
     src = fetchFromGitHub {
       owner = "idanarye";
       repo = "nu_plugin_skim";
-      rev = "v0.12.0";
+      rev = "f0b2313b4337ec726c94887c9bc24d53ac04b9b5";
       fetchSubmodules = false;
-      sha256 = "sha256-TFKybgV2sJqDcTR+F1Kwm03XW0+tt9fLilhSQpX4jSg=";
+      sha256 = "sha256-cVD/al5KF4y7oV3OwtfhWEytCD+IVmWdSlGub1w6UYk=";
     };
+    date = "2025-03-21";
+  };
+  officialPluginsSource = {
+    pname = "officialPluginsSource";
+    version = "273019910c1111a388dd20e057606016f4bd0d17";
+    src = fetchFromGitHub {
+      owner = "yazi-rs";
+      repo = "plugins";
+      rev = "273019910c1111a388dd20e057606016f4bd0d17";
+      fetchSubmodules = false;
+      sha256 = "sha256-80mR86UWgD11XuzpVNn56fmGRkvj0af2cFaZkU8M31I=";
+    };
+    date = "2025-03-19";
   };
 }

@@ -26,12 +26,6 @@ let
       inherit default description;
       type = types.str;
     };
-  officialPlugins = fetchFromGitHub {
-    owner = "yazi-rs";
-    repo = "plugins";
-    rev = "a882e3828cdeee243ede2bff0524cbe7e27104cf";
-    hash = "sha256-+amnL025nNHcP/gXY57FYUhUXNlPRqbQHS4EkOL/INs=";
-  };
 in
 {
   options.khome.shell.yazi = {
@@ -93,43 +87,25 @@ in
         initLua = ./init.lua;
         plugins = mkMerge [
           {
-            smart-enter = ./smart-enter;
+            # smart-enter = ./smart-enter;
             parent-arrow = ./parent-arrow;
-            chmod = "${officialPlugins}/chmod.yazi";
-            max-preview = "${officialPlugins}/max-preview.yazi";
-            hide-preview = "${officialPlugins}/hide-preview.yazi";
+            smart-enter = pkgs.yaziPlugins.smart-enter;
+            chmod = pkgs.yaziPlugins.chmod;
+            max-preview = pkgs.yaziPlugins.max-preview;
+            hide-preview = pkgs.yaziPlugins.hide-preview;
+            mount = pkgs.yaziPlugins.mount;
           }
           (mkIf plugs.mime.enable {
-            mime = fetchFromGitHub {
-              owner = "DreamMaoMao";
-              repo = "mime.yazi";
-              rev = "8e866b9c281d745ebb5e712fd238fdf103ec2361";
-              hash = "sha256-RGev5ecsBrzJHlooWw24FWZMjpwUshPMGRUc4UIh5mg=";
-            };
+            mime-ext = pkgs.yaziPlugins.mime-ext;
           })
           (mkIf plugs.fg.enable {
-            fg = fetchFromGitHub {
-              owner = "DreamMaoMao";
-              repo = "fg.yazi";
-              rev = "f7d41ae71249515763d9ee04ddf4bdc3b0b42f55";
-              hash = "sha256-6LpnyXB7mri6aVEfnv6aG2mWlzpvaD8SiMqwUS+jJr0=";
-            };
+            fg = pkgs.yaziPlugins.fg;
           })
           (mkIf plugs.glow.enable {
-            glow = fetchFromGitHub {
-              owner = "Reledia";
-              repo = "glow.yazi";
-              rev = "536185a4e60ac0adc11d238881e78678fdf084ff";
-              hash = "sha256-NcMbYjek99XgWFlebU+8jv338Vk1hm5+oW5gwH+3ZbI=";
-            };
+            glow = pkgs.yaziPlugins.glow;
           })
           (mkIf plugs.bookmarks.enable {
-            bookmarks-persistence = fetchFromGitHub {
-              owner = "DreamMaoMao";
-              repo = "bookmarks-persistence.yazi";
-              rev = "362fe529bbf97f9aded3820d8a1ac7f07af58fb9";
-              hash = "sha256-x/ImAaRqQx7ZrJHxgilL0oiXNxSwni/8+jRTLiqVSfI=";
-            };
+            bookmarks = pkgs.yaziPlugins.bookmarks;
           })
         ];
         flavors = mkIf (cfg.theme.src != null) {

@@ -29,6 +29,23 @@ src.git = "https://github.com/drbrain/nu_plugin_prometheus"
 fetch.github = "drbrain/nu_plugin_prometheus"
 
 [nu_plugin_skim]
-# src.git = "https://github.com/idanarye/nu_plugin_skim"
-src.github = "idanarye/nu_plugin_skim"
+src.git = "https://github.com/idanarye/nu_plugin_skim"
+# src.github = "idanarye/nu_plugin_skim"
 fetch.github = "idanarye/nu_plugin_skim"
+
+## Yazi Plugins
+["officialPluginsSource"]
+src.git = "https://github.com/yazi-rs/plugins"
+fetch.github = "yazi-rs/plugins"
+
+["bookmarks.yazi"]
+src.git = "https://github.com/DreamMaoMao/bookmarks.yazi"
+fetch.github = "DreamMaoMao/bookmarks.yazi"
+
+["fg.yazi"]
+src.git = "https://github.com/DreamMaoMao/fg.yazi"
+fetch.github = "DreamMaoMao/fg.yazi"
+
+["glow.yazi"]
+src.git = "https://github.com/Reledia/glow.yazi"
+fetch.github = "Reledia/glow.yazi"
