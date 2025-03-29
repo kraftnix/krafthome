@@ -92,7 +92,7 @@ in
       default = with config.programs.atuin; enable && enableNushellIntegration;
     };
     enablePayrespects = mkEnableOption "pay-respects integration" // {
-      default = with config.programs.pay-respects; enable && enableNushellIntegration;
+      default = with config.programs.pay-respects; enable;
     };
 
     removeShellAliases = mkOption {
@@ -181,6 +181,7 @@ in
     # I handle the integration myself
     programs.atuin.enableNushellIntegration = false;
     programs.starship.enableNushellIntegration = false;
+    programs.pay-respects.enableNushellIntegration = false;
     programs.nushell = {
       enable = true;
       configFile.text = configNuText;
