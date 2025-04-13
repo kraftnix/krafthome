@@ -194,9 +194,9 @@ in
       environmentVariables = mkMerge [
         (mapAttrs (_: v: if (typeOf v) == "int" then toString v else "${v}") config.home.sessionVariables)
       ];
-      shellAliases =
+      shellAliases = (
         otherShellAliases
-        // {
+        // mapAttrs (_: mkOverride 90) ({
           fport = "ss -tlpn";
           git-parent = "echo 'noop, use zsh instead'";
           gpu = "git pull upstream (git branch --show-current)";
@@ -211,9 +211,12 @@ in
           # home-manager
           hms = "home-manager switch --flake $'.#($env.USER)@($env.HOST)' switch";
           hmsb = "home-manager switch --flake $'.#($env.USER)@($env.HOST)' switch -b bak";
+        })
+        // {
           explore = mkIf (any (p: p.pname == "nushell_plugin_explore") cfg.plugins) "nu_plugin_explore";
         }
-        // cfg.shellAliases;
+        // cfg.shellAliases
+      );
     };
     xdg.configFile = mkMerge [
       # Symlink scripts + plugins into nushell default locations

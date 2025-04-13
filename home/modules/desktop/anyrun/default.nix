@@ -15,7 +15,6 @@ let
     optionalString
     types
     ;
-  anyrunPkgs = inputs.anyrun.packages.${pkgs.system};
   cfg = config.khome.desktop.anyrun;
 in
 {
@@ -28,21 +27,21 @@ in
     };
     modIncludeShift = mkEnableOption "add shift to generated keybind";
     plugins = mkOption {
-      default = with anyrunPkgs; [
-        applications
-        dictionary
-        kidex
-        randr
-        rink
-        shell
-        stdin
-        symbols
+      default = [
+        "applications"
+        "dictionary"
+        "kidex"
+        "randr"
+        "rink"
+        "shell"
+        "stdin"
+        "symbols"
         # translate # only google translate
-        websearch
+        "websearch"
         # inputs.cryptorun.packages.${pkgs.system}.default
       ];
       description = "plugins to use";
-      type = types.listOf types.package;
+      type = with types; nullOr (listOf (either package str));
     };
     cssFile = mkOption {
       default = ./anyrun.css;

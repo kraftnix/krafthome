@@ -35,10 +35,6 @@
       flake-utils.follows = "provision/flake-utils";
     };
 
-    anyrun.url = "github:Kirottu/anyrun";
-    anyrun.inputs.nixpkgs.follows = "nixpkgs";
-    anyrun.inputs.flake-parts.follows = "flake-parts";
-
     # stylix.url = "github:danth/stylix";
     stylix.url = "git+https://gitea.home.lan/kraftnix/stylix?ref=fix-options-eval";
     stylix.inputs.nixpkgs.follows = "nixpkgs";
