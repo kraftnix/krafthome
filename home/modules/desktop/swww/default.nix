@@ -22,7 +22,7 @@ let
   startAndRandom =
     if cfg.systemdIntegration then
       # "systemctl --user start swww && ${singleRandom}"
-      "systemctl --user start swww && systemd --user start swww-rotate"
+      "systemctl --user start swww && systemctl --user start swww-rotate"
     else
       "swww-daemon init && ${singleRandom}";
   randomiseCommand = "swww-randomise -i ${toString cfg.interval} -f ${toString cfg.fps} ${
