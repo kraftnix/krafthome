@@ -58,9 +58,6 @@ in
             settings.aliases = [ "nvim" ];
           }
         );
-        # categoryDefinitions.merge = { pkgs, settings, categories, name, ... }@packageDef: { }
-        #
-        # };
       }
       cfg.settings
     ];
