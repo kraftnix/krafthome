@@ -67,7 +67,7 @@ let
   removeShellAliases = filterAttrs (name: _: !(elem name cfg.removeShellAliases));
 
   # import home shell aliases
-  otherShellAliases = mapAttrs (_: mkOverride 900) (removeShellAliases config.home.shellAliases);
+  otherShellAliases = mapAttrs (_: mkOverride 900) config.home.shellAliases;
 
   getScriptsFromDir =
     dir:
@@ -194,7 +194,7 @@ in
       environmentVariables = mkMerge [
         (mapAttrs (_: v: if (typeOf v) == "int" then toString v else "${v}") config.home.sessionVariables)
       ];
-      shellAliases = (
+      shellAliases = removeShellAliases (
         otherShellAliases
         // mapAttrs (_: mkOverride 90) ({
           fport = "ss -tlpn";

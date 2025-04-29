@@ -47,7 +47,7 @@ in
       lsd # ls alternative
       ripgrep # grep alternative
       bottom # top alternative (old)
-      btop # top alternative
+      btop-rocm # top alternative
       broot # file explorer
       xplr # file explorer
       jc # json output for many unix cli commands
