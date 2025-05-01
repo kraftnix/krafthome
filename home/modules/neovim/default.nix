@@ -65,7 +65,7 @@ in
     # somewhat required for nvim-scissors needing a writable snippets dir to be nice to user
     xdg.configFile."nvim_static" = {
       recursive = true;
-      source = config.kraftnvim.luaPath;
+      source = config.kraftnvim.out.packages.kraftnvim.luaPath;
       onChange = ''
         rm -rf ${config.xdg.configHome}/nvim
         cp -r ${config.xdg.configHome}/nvim_static ${config.xdg.configHome}/nvim
