@@ -70,7 +70,7 @@ in
         enableSshSupport = true;
         enableExtraSocket = true;
         enableScDaemon = true;
-        inherit (cfg) pinentryPackage;
+        pinentry.package = cfg.pinentryPackage;
       }
       // (optionalAttrs (cfg.sshKeys != [ ]) {
         inherit (cfg) sshKeys;

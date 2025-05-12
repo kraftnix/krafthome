@@ -4,7 +4,7 @@
   ...
 }:
 lib.mkIf config.khome.shell.zsh.enable {
-  programs.zsh.initExtra = lib.mkBefore ''
+  programs.zsh.initContent = lib.mkBefore ''
     _prompt_executing=""
     function __prompt_precmd() {
         local ret="$?"

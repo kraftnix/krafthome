@@ -56,6 +56,34 @@ in
       default = true;
     };
     plugins = {
+      open-with-cmd.enable =
+        mkEnableOption "enable open-with-cmd.yazi plugin (run a cmd with a file path)"
+        // {
+          default = true;
+        };
+      wl-clipboard.enable = mkEnableOption "enable wl-clipboard.yazi plugin (smart clipboard)" // {
+        default = true;
+      };
+      what-size.enable =
+        mkEnableOption "enable what-size.yazi plugin (calls du on current directory)"
+        // {
+          default = true;
+        };
+      rsync.enable =
+        mkEnableOption "enable rsync.yazi plugin (use rsync to copy files to remote servers)"
+        // {
+          default = true;
+        };
+      time-travel.enable =
+        mkEnableOption "enable time-travel.yazi plugin (browse backwards/forewards in zfs/btrfs snapshots)"
+        // {
+          default = true;
+        };
+      mediainfo.enable =
+        mkEnableOption "enable mediainfo.yazi plugin (show media info for many media files)"
+        // {
+          default = true;
+        };
       fg.enable = mkEnableOption "enable fg.yazi plugin (fuzzy find files)" // {
         default = true;
       };
@@ -79,6 +107,10 @@ in
   };
 
   config = mkIf cfg.enable {
+    home.packages =
+      [ ]
+      ++ (optional plugs.mediainfo.enable pkgs.mediainfo)
+      ++ (optional plugs.wl-clipboard.enable pkgs.clipboard-jh);
     programs.yazi = mkMerge [
       cfg.__ups
       {
@@ -91,8 +123,7 @@ in
             parent-arrow = ./parent-arrow;
             smart-enter = pkgs.yaziPlugins.smart-enter;
             chmod = pkgs.yaziPlugins.chmod;
-            max-preview = pkgs.yaziPlugins.max-preview;
-            hide-preview = pkgs.yaziPlugins.hide-preview;
+            toggle-pane = pkgs.yaziPlugins.toggle-pane;
             mount = pkgs.yaziPlugins.mount;
           }
           (mkIf plugs.mime.enable {
@@ -106,6 +137,24 @@ in
           })
           (mkIf plugs.bookmarks.enable {
             bookmarks = pkgs.yaziPlugins.bookmarks;
+          })
+          (mkIf plugs.open-with-cmd.enable {
+            open-with-cmd = pkgs.yaziPlugins.open-with-cmd;
+          })
+          (mkIf plugs.wl-clipboard.enable {
+            wl-clipboard = pkgs.yaziPlugins.wl-clipboard;
+          })
+          (mkIf plugs.mediainfo.enable {
+            mediainfo = pkgs.yaziPlugins.mediainfo;
+          })
+          (mkIf plugs.time-travel.enable {
+            time-travel = pkgs.yaziPlugins.time-travel;
+          })
+          (mkIf plugs.rsync.enable {
+            rsync = pkgs.yaziPlugins.rsync;
+          })
+          (mkIf plugs.what-size.enable {
+            what-size = pkgs.yaziPlugins.what-size;
           })
         ];
         flavors = mkIf (cfg.theme.src != null) {
@@ -202,7 +251,7 @@ in
               "M"
               "m"
             ];
-            run = "plugin --sync hide-preview";
+            run = "plugin toggle-pane min-preview";
           }
           {
             desc = "Maximize or restore preview";
@@ -210,7 +259,7 @@ in
               "M"
               "M"
             ];
-            run = "plugin --sync max-preview";
+            run = "plugin toggle-pane max-preview";
           }
           {
             desc = "Chmod on selected files";
@@ -236,6 +285,58 @@ in
                 "f"
               ];
               run = "plugin fg --args='fzf'";
+            }
+          ])
+          (optionals plugs.wl-clipboard.enable [
+            {
+              desc = "Copy to clipboard";
+              run = "plugin wl-clipboard";
+              on = [ "<C-y>" ];
+            }
+          ])
+          (optionals plugs.open-with-cmd.enable [
+            {
+              desc = "Open with command in the terminal";
+              run = "plugin open-with-cmd --args=block";
+              on = [ "o" ];
+            }
+            {
+              desc = "Open with command";
+              run = "plugin open-with-cmd";
+              on = [ "O" ];
+            }
+          ])
+          (optionals plugs.rsync.enable [
+            {
+              desc = "Copy files using rsync";
+              run = "plugin rsync";
+              on = [ "R" ];
+            }
+          ])
+          (optionals plugs.time-travel.enable [
+            {
+              desc = "Exit browsing snapshots";
+              run = "plugin time-travel --args=exit";
+              on = [
+                "z"
+                "e"
+              ];
+            }
+            {
+              desc = "Go to next snapshot";
+              run = "plugin time-travel --args=next";
+              on = [
+                "z"
+                "l"
+              ];
+            }
+            {
+              desc = "Go to previous snapshot";
+              run = "plugin time-travel --args=prev";
+              on = [
+                "z"
+                "h"
+              ];
             }
           ])
           (optionals plugs.bookmarks.enable [
@@ -288,11 +389,33 @@ in
             # sort_translit = true;
           };
           plugin = {
+            prepend_preloaders = flatten [
+              (optionals cfg.plugins.mediainfo.enable [
+                {
+                  mime = "{audio,video,image}/*";
+                  run = "mediainfo";
+                }
+                {
+                  mime = "application/subrip";
+                  run = "mediainfo";
+                }
+              ])
+            ];
             prepend_previewers = flatten [
               (optional cfg.plugins.glow.enable {
                 mime = "*.md";
                 run = "glow";
               })
+              (optionals cfg.plugins.mediainfo.enable [
+                {
+                  mime = "{audio,video,image}/*";
+                  run = "mediainfo";
+                }
+                {
+                  mime = "application/subrip";
+                  run = "mediainfo";
+                }
+              ])
             ];
           };
           opener = {

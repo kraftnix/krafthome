@@ -46,6 +46,14 @@ fetch.github = "DreamMaoMao/bookmarks.yazi"
 src.git = "https://github.com/DreamMaoMao/fg.yazi"
 fetch.github = "DreamMaoMao/fg.yazi"
 
-["glow.yazi"]
-src.git = "https://github.com/Reledia/glow.yazi"
-fetch.github = "Reledia/glow.yazi"
+["what-size.yazi"]
+src.git = "https://github.com/pirafrank/what-size.yazi"
+fetch.github = "pirafrank/what-size.yazi"
+
+["wl-clipboard.yazi"]
+src.git = "https://github.com/grappas/wl-clipboard.yazi"
+fetch.github = "grappas/wl-clipboard.yazi"
+
+["open-with-cmd.yazi"]
+src.git = "https://github.com/Ape/open-with-cmd.yazi"
+fetch.github = "Ape/open-with-cmd.yazi"

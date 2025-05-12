@@ -8,39 +8,27 @@
 {
   "bookmarks.yazi" = {
     pname = "bookmarks.yazi";
-    version = "83580203c014ad48834af51ee6a11767511a25a6";
+    version = "fa65ba2ec762c37096a5787bd9305b62827f2753";
     src = fetchFromGitHub {
       owner = "DreamMaoMao";
       repo = "bookmarks.yazi";
-      rev = "83580203c014ad48834af51ee6a11767511a25a6";
+      rev = "fa65ba2ec762c37096a5787bd9305b62827f2753";
       fetchSubmodules = false;
-      sha256 = "sha256-TfOdLAs7ljLl5WmCsmP4o6JCQqUtvSdZgn+O9QKjTV4=";
+      sha256 = "sha256-0bJw2bs1o3G2LpCwUV2HPYbNtyuI6IaoA42yl26YF8s=";
     };
-    date = "2025-01-23";
+    date = "2025-04-22";
   };
   "fg.yazi" = {
     pname = "fg.yazi";
-    version = "652d02a1413d2440d264667608102eb158ed0e68";
+    version = "46a5c16f62f415f691319f984b9548249b0edc96";
     src = fetchFromGitHub {
       owner = "DreamMaoMao";
       repo = "fg.yazi";
-      rev = "652d02a1413d2440d264667608102eb158ed0e68";
+      rev = "46a5c16f62f415f691319f984b9548249b0edc96";
       fetchSubmodules = false;
-      sha256 = "sha256-/GApLVDpGcH2drwSNluEvoQdnjgE8AsPHdci/9eg7Lg=";
+      sha256 = "sha256-B6Feg8icshHQYv04Ee/Bo9PPaiDPRyt1HwpirI/yXj8=";
     };
-    date = "2025-02-28";
-  };
-  "glow.yazi" = {
-    pname = "glow.yazi";
-    version = "c76bf4fb612079480d305fe6fe570bddfe4f99d3";
-    src = fetchFromGitHub {
-      owner = "Reledia";
-      repo = "glow.yazi";
-      rev = "c76bf4fb612079480d305fe6fe570bddfe4f99d3";
-      fetchSubmodules = false;
-      sha256 = "sha256-DPud1Mfagl2z490f5L69ZPnZmVCa0ROXtFeDbEegBBU=";
-    };
-    date = "2025-02-23";
+    date = "2025-04-22";
   };
   nu_plugin_dbus = {
     pname = "nu_plugin_dbus";
@@ -80,15 +68,15 @@
   };
   nu_plugin_file = {
     pname = "nu_plugin_file";
-    version = "eeb7d1ca95b9162fd990031d492e57381620a8ca";
+    version = "1ee255ddb2a773c1f683acf43c4cf3a9e195a7c5";
     src = fetchFromGitHub {
       owner = "fdncred";
       repo = "nu_plugin_file";
-      rev = "eeb7d1ca95b9162fd990031d492e57381620a8ca";
+      rev = "1ee255ddb2a773c1f683acf43c4cf3a9e195a7c5";
       fetchSubmodules = false;
-      sha256 = "sha256-cMDkhNPIfkJb01fBSt2fCCdg/acdzak66qMRp0zuJzc=";
+      sha256 = "sha256-ORx8BlIi7peozUBsF7N1Kq+a1c8mxp+ReloltHBtYXc=";
     };
-    date = "2025-02-10";
+    date = "2025-04-30";
   };
   nu_plugin_port_list = {
     pname = "nu_plugin_port_list";
@@ -104,38 +92,74 @@
   };
   nu_plugin_prometheus = {
     pname = "nu_plugin_prometheus";
-    version = "5b33c7e132412efd3d731e1e204c9e55516f7aad";
+    version = "4a006851e56ceb474b93fc3f2d1980304065fce4";
     src = fetchFromGitHub {
       owner = "drbrain";
       repo = "nu_plugin_prometheus";
-      rev = "5b33c7e132412efd3d731e1e204c9e55516f7aad";
+      rev = "4a006851e56ceb474b93fc3f2d1980304065fce4";
       fetchSubmodules = false;
-      sha256 = "sha256-WTJru1Eqrn8kBb2Jsgo5bQdF3LRghFzVSkMBuNGvMZI=";
+      sha256 = "sha256-bcAzfSaSvxOvlyJAmaxLHaPbGxhvVShawZ8mGTEABAY=";
     };
-    date = "2025-02-16";
+    date = "2025-05-06";
   };
   nu_plugin_skim = {
     pname = "nu_plugin_skim";
-    version = "f0b2313b4337ec726c94887c9bc24d53ac04b9b5";
+    version = "ebcdaac9f54158a26ef08f4271b8cc80626b097d";
     src = fetchFromGitHub {
       owner = "idanarye";
       repo = "nu_plugin_skim";
-      rev = "f0b2313b4337ec726c94887c9bc24d53ac04b9b5";
+      rev = "ebcdaac9f54158a26ef08f4271b8cc80626b097d";
       fetchSubmodules = false;
-      sha256 = "sha256-cVD/al5KF4y7oV3OwtfhWEytCD+IVmWdSlGub1w6UYk=";
+      sha256 = "sha256-bH+llby34lqnxZXdtTEBPiw50tvvY72h+YkRRdiXXTc=";
     };
-    date = "2025-03-21";
+    date = "2025-04-30";
   };
   officialPluginsSource = {
     pname = "officialPluginsSource";
-    version = "273019910c1111a388dd20e057606016f4bd0d17";
+    version = "55bf6996ada3df4cbad331ce3be0c1090769fc7c";
     src = fetchFromGitHub {
       owner = "yazi-rs";
       repo = "plugins";
-      rev = "273019910c1111a388dd20e057606016f4bd0d17";
+      rev = "55bf6996ada3df4cbad331ce3be0c1090769fc7c";
       fetchSubmodules = false;
-      sha256 = "sha256-80mR86UWgD11XuzpVNn56fmGRkvj0af2cFaZkU8M31I=";
+      sha256 = "sha256-v/C+ZBrF1ghDt1SXpZcDELmHMVAqfr44iWxzUWynyRk=";
     };
-    date = "2025-03-19";
+    date = "2025-05-11";
+  };
+  "open-with-cmd.yazi" = {
+    pname = "open-with-cmd.yazi";
+    version = "433cf301c36882c31032d3280ab0c94825fc5e9f";
+    src = fetchFromGitHub {
+      owner = "Ape";
+      repo = "open-with-cmd.yazi";
+      rev = "433cf301c36882c31032d3280ab0c94825fc5e9f";
+      fetchSubmodules = false;
+      sha256 = "sha256-QazKfNEPFdkHwMrH4D+VMwj8fGXM8KHDdSvm1tik3dQ=";
+    };
+    date = "2025-02-09";
+  };
+  "what-size.yazi" = {
+    pname = "what-size.yazi";
+    version = "f1c6b691363e602d0ddbee29384017d08b608f64";
+    src = fetchFromGitHub {
+      owner = "pirafrank";
+      repo = "what-size.yazi";
+      rev = "f1c6b691363e602d0ddbee29384017d08b608f64";
+      fetchSubmodules = false;
+      sha256 = "sha256-M1phqmo318/VYkLWiqjEWuHlnQ+hfz5H+k8G0zsmclg=";
+    };
+    date = "2025-04-07";
+  };
+  "wl-clipboard.yazi" = {
+    pname = "wl-clipboard.yazi";
+    version = "c4edc4f6adf088521f11d0acf2b70610c31924f0";
+    src = fetchFromGitHub {
+      owner = "grappas";
+      repo = "wl-clipboard.yazi";
+      rev = "c4edc4f6adf088521f11d0acf2b70610c31924f0";
+      fetchSubmodules = false;
+      sha256 = "sha256-jlZgN93HjfK+7H27Ifk7fs0jJaIdnOyY1wKxHz1wX2c=";
+    };
+    date = "2025-01-05";
   };
 }

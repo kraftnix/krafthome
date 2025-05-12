@@ -7,6 +7,8 @@ args:
 }:
 let
   inherit (lib)
+    mapAttrs
+    mkDefault
     mkEnableOption
     mkIf
     mkMerge
@@ -38,36 +40,36 @@ in
     height = mkIntOption 300 "notification window height";
     width = mkIntOption 600 "notification window width";
     defaultTimeout = mkIntOption 500 "time until screen lock (seconds), default 5mins";
-    extraConfig = mkOption {
-      default = { };
-      type = types.raw;
+    extraSettings = mkOption {
       description = "extra configuration to add to `services.mako`";
+      default = { };
+      type = (pkgs.formats.ini { }).lib.types.atom;
     };
   };
 
   config = mkIf cfg.enable {
-    services.mako = mkMerge [
-      {
+    services.mako.enable = true;
+    services.mako.settings = mkMerge [
+      (mapAttrs (_: mkDefault) {
         inherit (cfg)
           height
           width
-          defaultTimeout
-          backgroundColor
-          borderColor
-          progressColor
-          textColor
           ;
-        enable = true;
+        default-timeout = cfg.defaultTimeout;
+        background-color = cfg.backgroundColor;
+        text-color = cfg.textColor;
+        progress-color = cfg.progressColor;
+        border-color = cfg.borderColor;
         anchor = "top-center";
         sort = "-time";
-        maxVisible = 5;
+        max-visible = 5;
 
         # look
-        borderSize = 5;
-        borderRadius = 3;
+        border-size = 5;
+        border-radius = 3;
         font = cfg.fontSizeStr;
-      }
-      cfg.extraConfig
+      })
+      cfg.extraSettings
     ];
   };
 }

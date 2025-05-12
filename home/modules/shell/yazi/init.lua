@@ -1,15 +1,11 @@
-function Status:name()
-	local h = cx.active.current.hovered
-	if not h then
-		return ui.Span("")
+Status:children_add(function(self)
+	local h = self._current.hovered
+	if h and h.link_to then
+		return " -> " .. tostring(h.link_to)
+	else
+		return ""
 	end
-
-	local linked = ""
-	if h.link_to ~= nil then
-		linked = " -> " .. tostring(h.link_to)
-	end
-	return ui.Span(" " .. h.name .. linked)
-end
+end, 3300, Status.LEFT)
 
 function Header:host()
 	if ya.target_family() ~= "unix" then

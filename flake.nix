@@ -36,7 +36,7 @@
     };
 
     # stylix.url = "github:danth/stylix";
-    stylix.url = "git+https://gitea.home.lan/kraftnix/stylix?ref=fix-options-eval";
+    stylix.url = "github:kraftnix/stylix/fix-options-eval";
     stylix.inputs.nixpkgs.follows = "nixpkgs";
     stylix.inputs.home-manager.follows = "home";
 

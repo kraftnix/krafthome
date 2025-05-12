@@ -99,6 +99,7 @@ in
             siteBase = "/projects/krafthome/";
           };
           defaults.substitution.gitRepoUrl = lib.mkForce "https://github.com/kraftnix/krafthome";
+          defaults.substitution.gitRepoFilePath = lib.mkForce "https://github.com/kraftnix/krafthome/tree/master";
         }
       ];
     };

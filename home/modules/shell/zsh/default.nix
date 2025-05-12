@@ -61,7 +61,7 @@ in
 
     programs.zsh = {
       enable = true;
-      initExtra =
+      initContent =
         keyBindings
         + fzf-tab-conf
         + ''
