@@ -11,7 +11,7 @@ localFlake@{
     ./flakeModules/vim-plugins.nix
     ./lib
     (import ./site.nix localFlake)
-    inputs.provision.flakeModules.provision-shells
+    inputs.provision.auto-import.flake.modules.provision.shells
   ];
 
   ## Devshells

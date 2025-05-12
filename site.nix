@@ -52,7 +52,7 @@ let
         pkgs = localFlake.self.nixosConfigurations.dev-laptop.pkgs;
         inherit (localFlake.self.nixosConfigurations.dev-laptop.config.home-manager) extraSpecialArgs;
         modules =
-          localFlake.self.auto-import.homeManager.__all
+          localFlake.self.auto-import.homeManager.all
           ++ localFlake.self.externalHomeModules
           ++ [
             localFlake.inputs.provision.homeManagerModules.provision-scripts
