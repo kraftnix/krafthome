@@ -35,8 +35,7 @@
       flake-utils.follows = "provision/flake-utils";
     };
 
-    # stylix.url = "github:danth/stylix";
-    stylix.url = "github:kraftnix/stylix/fix-options-eval";
+    stylix.url = "github:danth/stylix";
     stylix.inputs.nixpkgs.follows = "nixpkgs";
     stylix.inputs.home-manager.follows = "home";
 
