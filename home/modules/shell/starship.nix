@@ -50,8 +50,8 @@ in
         shell.disabled = false;
         time = {
           disabled = false;
-          format = "$date [ $time ]($style)";
-          time_format = "📅 {%D} ⏱  [%T]";
+          format = "$date [$time]($style)";
+          time_format = "<%Y-%m-%d> 📅 <%T> ⏰";
         };
         cmd_duration = {
           min_time = 500;
@@ -70,10 +70,10 @@ in
 
         nix_shell = {
           heuristic = true;
-          impure_msg = "[impure](bold red)";
+          impure_msg = "[impure](yellow)";
           pure_msg = "[pure](bold green)";
           unknown_msg = "[unknown](bold yellow)";
-          format = "▶ [|](bold blue)❄ [$state( \($name\))](bold blue)[|](bold blue) ";
+          format = "▶ [|](bold blue)[❄  $state( ($name))](bold blue)[|](bold blue) ";
           # impure_msg = "[impure shell](bold red)";
           # pure_msg = "[pure shell](bold green)";
           # unknown_msg = "[unknown shell](bold yellow)";
