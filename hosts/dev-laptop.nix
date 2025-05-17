@@ -5,6 +5,7 @@
     enable = true;
     nixTrustedUsers = [ "test" ];
   };
+  khome.shell.ssh-symlink.enable = true;
   provision.virt.qemu.guestAgent = true;
   provision.fs = {
     bcachefs.enable = true; # enable extra tools etc.

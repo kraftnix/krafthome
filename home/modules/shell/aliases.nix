@@ -33,8 +33,8 @@ in
       r = "ranger";
       zen = "zenith --db $XDG_DATA_HOME/zenith.db";
 
-      skr = "export SSH_AUTH_SOCK=/run/user/$UID/gnupg/S.gpg-agent.ssh";
-      skk = ''export SSH_AUTH_SOCK=$(nu -c "ls (ls /tmp/ | where name =~ "ssh-" | sort-by modified -r | get name | get 0) | get name.0")'';
+      # skr = "export SSH_AUTH_SOCK=/run/user/$UID/gnupg/S.gpg-agent.ssh";
+      # skk = ''export SSH_AUTH_SOCK=$(nu -c "ls (ls /tmp/ | where name =~ "ssh-" | sort-by modified -r | get name | get 0) | get name.0")'';
 
       # X11
       disable_caps = "setxkbmap -option caps:escape";
@@ -58,6 +58,9 @@ in
 
       # mullvad connected
       mymull = "curl https://am.i.mullvad.net/connected";
+
+      # nix
+      nr = "nix repl -f.";
 
       # sudo
       s = "sudo -E";

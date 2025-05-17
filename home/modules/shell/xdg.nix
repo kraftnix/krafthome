@@ -11,7 +11,7 @@ let
     mkIf
     ;
   cfg = config.khome.shell.xdg;
-  homeDir = "/home/${config.home.username}";
+  homeDir = "~";
   xdgBase = "${homeDir}/xdg";
   sv = config.home.sessionVariables;
 in
@@ -70,8 +70,8 @@ in
     xdg = {
       enable = true;
       cacheHome = "${xdgBase}/.cache";
-      configHome = "${homeDir}/.config";
-      dataHome = "${homeDir}/.local/share";
+      configHome = "~/.config";
+      dataHome = "~/.local/share";
       # mime.enable = true;
       # mimeApps = {};
       userDirs = {

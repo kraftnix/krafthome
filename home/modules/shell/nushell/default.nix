@@ -12,17 +12,18 @@ let
     elem
     filterAttrs
     flatten
+    flip
     getExe
     hasSuffix
     literalExpression
     mapAttrs
     mapAttrsToList
+    mkDefault
     mkEnableOption
     mkIf
     mkMerge
     mkOption
     mkOverride
-    optionalAttrs
     optionalString
     types
     typeOf
@@ -64,7 +65,7 @@ let
   '';
 
   # mainly to prevent clashes between non-nu aliases imported and nu functions
-  removeShellAliases = filterAttrs (name: _: !(elem name cfg.removeShellAliases));
+  removeShellAliases = flip removeAttrs cfg.removeShellAliases;
 
   # import home shell aliases
   otherShellAliases = mapAttrs (_: mkOverride 900) config.home.shellAliases;
@@ -178,6 +179,30 @@ in
       NUSHELL_ENABLE_PAYRESPECTS = toString cfg.enablePayrespects;
       NUSHELL_ENABLE_ALIASES = toString true;
     };
+    khome.nushell.shellAliases = mapAttrs (_: mkDefault) (
+      removeShellAliases (
+        config.home.shellAliases
+        // {
+          fport = "ss -tlpn";
+          git-parent = "echo 'noop, use zsh instead'";
+          gpu = "git pull upstream (git branch --show-current)";
+          gppu = "git push -u origin (git branch --show-current)";
+          otp = "echo 'noop, use zsh instead'";
+          # ske = ''nu -c '$env.SSH_AUTH_SOCK = ($"/home/($env.USER)/.ssh/auth_sock" | path expand)' '';
+          # skk = ''nu -c '$env.SSH_AUTH_SOCK = (ls /tmp/ | where name =~ "ssh-" | sort-by modified -r | get name | get 0) | get name.0' '';
+          # skr = "nu -c '$env.SSH_AUTH_SOCK=$\"/run/user/(id -u $env.USER)/gnupg/S.gpg-agent.ssh\"'";
+          ssh-fpscan = "sh -c 'ssh-keyscan localhost | ssh-keygen -lf -'";
+          zen = "zenith --db $env.XDG_DATA_HOME/zenith.db";
+
+          # home-manager
+          hms = "home-manager switch --flake $'.#($env.USER)@($env.HOST)' switch";
+          hmsb = "home-manager switch --flake $'.#($env.USER)@($env.HOST)' switch -b bak";
+        }
+        // (lib.optionalAttrs (any (p: p.pname == "nushell_plugin_explore") cfg.plugins) {
+          explore = "nu_plugin_explore";
+        })
+      )
+    );
     # I handle the integration myself
     programs.atuin.enableNushellIntegration = false;
     programs.starship.enableNushellIntegration = false;
@@ -194,29 +219,7 @@ in
       environmentVariables = mkMerge [
         (mapAttrs (_: v: if (typeOf v) == "int" then toString v else "${v}") config.home.sessionVariables)
       ];
-      shellAliases = removeShellAliases (
-        otherShellAliases
-        // mapAttrs (_: mkOverride 90) ({
-          fport = "ss -tlpn";
-          git-parent = "echo 'noop, use zsh instead'";
-          gpu = "git pull upstream (git branch --show-current)";
-          gppu = "git push -u origin (git branch --show-current)";
-          otp = "echo 'noop, use zsh instead'";
-          ske = ''nu -c '$env.SSH_AUTH_SOCK = ($"/home/($env.USER)/.ssh/auth_sock" | path expand)' '';
-          skk = ''nu -c '$env.SSH_AUTH_SOCK = (ls /tmp/ | where name =~ "ssh-" | sort-by modified -r | get name | get 0) | get name.0' '';
-          skr = "nu -c '$env.SSH_AUTH_SOCK=$\"/run/user/(id -u $env.USER)/gnupg/S.gpg-agent.ssh\"'";
-          ssh-fpscan = "sh -c 'ssh-keyscan localhost | ssh-keygen -lf -'";
-          zen = "zenith --db $env.XDG_DATA_HOME/zenith.db";
-
-          # home-manager
-          hms = "home-manager switch --flake $'.#($env.USER)@($env.HOST)' switch";
-          hmsb = "home-manager switch --flake $'.#($env.USER)@($env.HOST)' switch -b bak";
-        })
-        // {
-          explore = mkIf (any (p: p.pname == "nushell_plugin_explore") cfg.plugins) "nu_plugin_explore";
-        }
-        // cfg.shellAliases
-      );
+      shellAliases = lib.mkForce cfg.shellAliases;
     };
     xdg.configFile = mkMerge [
       # Symlink scripts + plugins into nushell default locations

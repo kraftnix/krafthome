@@ -116,6 +116,7 @@ in
         nix-tree # Interactively browse a Nix store paths dependencies
         nvd # Nix/NixOS package version diff tool
         nix-output-monitor # nom, pretty build printing
+        args.self.packages.${pkgs.system}.nix-find
       ]);
     programs.direnv.enable = cfg.direnv.enable;
     programs.man.enable = mkDefault cfg.man.enable;

@@ -113,6 +113,12 @@
           export SSH_AUTH_SOCK=$(get-recent-ssh)
         '';
 
+        nix-find = pkgs.writeScriptBin "nix-find" ''
+          #!/usr/bin/env nu
+
+          ${builtins.readFile ./nix-find.nu}
+        '';
+
         # neovim-bundle = (
         #   (inputs'.nixpkgs.legacyPackages.extend
         #     (final: prev: {
