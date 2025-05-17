@@ -42,6 +42,8 @@ in
   };
 
   config = mkIf cfg.enable {
+    # Don't like the generated theme
+    stylix.targets.starship.enable = lib.mkForce false;
     programs.starship = {
       enable = true;
       settings = {
