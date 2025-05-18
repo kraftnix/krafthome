@@ -192,7 +192,7 @@ in
           # skk = ''nu -c '$env.SSH_AUTH_SOCK = (ls /tmp/ | where name =~ "ssh-" | sort-by modified -r | get name | get 0) | get name.0' '';
           # skr = "nu -c '$env.SSH_AUTH_SOCK=$\"/run/user/(id -u $env.USER)/gnupg/S.gpg-agent.ssh\"'";
           ssh-fpscan = "sh -c 'ssh-keyscan localhost | ssh-keygen -lf -'";
-          zen = "zenith --db $env.XDG_DATA_HOME/zenith.db";
+          zen = "zenith --db $'($env.XDG_DATA_HOME)/zenith.db'";
 
           # home-manager
           hms = "home-manager switch --flake $'.#($env.USER)@($env.HOST)' switch";
