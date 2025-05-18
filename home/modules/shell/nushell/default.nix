@@ -1,4 +1,4 @@
-args:
+{ inputs, ... }:
 {
   config,
   lib,
@@ -28,6 +28,7 @@ let
     types
     typeOf
     ;
+  inherit (inputs.home.lib) hm;
   cfg = config.khome.nushell;
   # # which plugins to use on start
   # let autostartPlugins = [ ${
@@ -97,47 +98,67 @@ in
     };
 
     removeShellAliases = mkOption {
+      description = "mainly to prevent clashes between non-nu aliases imported and nu functions";
       default = [
         "ls"
         "du"
       ];
-      description = "mainly to prevent clashes between non-nu aliases imported and nu functions";
       type = types.listOf types.str;
     };
 
     package = mkOption {
-      type = types.package;
+      description = "The package to use for nushell.";
       default = pkgs.nushell;
       defaultText = literalExpression "pkgs.nushell-unstable";
-      description = "The package to use for nushell.";
+      type = types.package;
     };
 
     scriptDirs = mkOption {
-      type = types.listOf types.path;
       description = "path to a directory containing nu scripts to import all from";
       default = [ ];
+      type = types.listOf types.path;
       apply = dirs: flatten (map getScriptsFromDir dirs);
     };
 
     scripts = mkOption {
-      type = types.listOf types.path;
-      default = [ ];
       description = "List of scripts to source and link into ~/.config/nushell/scripts";
+      default = [ ];
+      type = types.listOf types.path;
+    };
+
+    env = mkOption {
+      description = ''
+        Environment Variables to load into nushell with `load-env`.
+
+        These are populated with entries from `home.sessionVariables`,
+        but are overridable.
+
+        Same type as home-manager upstream {programs.nushell.environmentVariables}
+        Inline values can be set with `lib.hm.nushell.mkNushellInline`.
+      '';
+      default = { };
+      example = lib.literalExpression ''
+        {
+          FOO = "BAR";
+          LIST_VALUE = [ "foo" "bar" ];
+          PROMPT_COMMAND = lib.hm.nushell.mkNushellInline '''{|| "> "}''';
+          ENV_CONVERSIONS.PATH = {
+            from_string = lib.hm.nushell.mkNushellInline "{|s| $s | split row (char esep) }";
+            to_string = lib.hm.nushell.mkNushellInline "{|v| $v | str join (char esep) }";
+          };
+        }
+      '';
+      type = types.attrsOf hm.types.nushellValue;
     };
 
     autoStartPlugins = mkOption {
+      description = "plugins to `use` when nushell is started";
       default = [ "explore" ];
       type = with types; listOf str;
-      description = "plugins to `use` when nushell is started";
     };
 
     plugins = mkOption {
-      type =
-        with types;
-        listOf (oneOf [
-          path
-          package
-        ]);
+      description = "List of plugins to source and link into ~/.config/nushell/plugins";
       default = with pkgs.nushellPlugins; [
         polars
         # net
@@ -150,19 +171,24 @@ in
         # dialog
         # skim
       ];
-      description = "List of plugins to source and link into ~/.config/nushell/plugins";
+      type =
+        with types;
+        listOf (oneOf [
+          path
+          package
+        ]);
     };
 
     extraConfig = mkOption {
-      type = types.lines;
-      default = "";
       description = "Extra configuration to add to config.nu";
+      default = "";
+      type = types.lines;
     };
 
     shellAliases = mkOption {
-      type = with types; attrsOf str;
-      default = { };
       description = "Overrides for `home.shellAliases` + extra aliases";
+      default = { };
+      type = with types; attrsOf str;
     };
   };
 
@@ -179,6 +205,15 @@ in
       NUSHELL_ENABLE_PAYRESPECTS = toString cfg.enablePayrespects;
       NUSHELL_ENABLE_ALIASES = toString true;
     };
+    khome.nushell.env =
+      mapAttrs (_: v: if (typeOf v) == "int" then toString v else "${v}") config.home.sessionVariables
+      # home-manager upstream generates a non-functional ENV var for use with nushell here
+      // (lib.optionalAttrs (config.xdg.systemDirs.config != [ ]) {
+        XDG_CONFIG_DIRS = hm.nushell.mkNushellInline "[ ${lib.concatStringsSep ":" config.xdg.systemDirs.config} $env.XDG_CONFIG_DIRS ] | str join ':'";
+      })
+      // (lib.optionalAttrs config.programs.tmux.secureSocket {
+        TMUX_TMPDIR = hm.nushell.mkNushellInline "$env.XDG_RUNTIME_DIR | default '/run/user/(id -u)'";
+      });
     khome.nushell.shellAliases = mapAttrs (_: mkDefault) (
       removeShellAliases (
         config.home.shellAliases
@@ -216,9 +251,7 @@ in
       #   ${configNuText}
       # '';
       envFile.source = ./src/env.nu;
-      environmentVariables = mkMerge [
-        (mapAttrs (_: v: if (typeOf v) == "int" then toString v else "${v}") config.home.sessionVariables)
-      ];
+      environmentVariables = cfg.env;
       shellAliases = lib.mkForce cfg.shellAliases;
     };
     xdg.configFile = mkMerge [
