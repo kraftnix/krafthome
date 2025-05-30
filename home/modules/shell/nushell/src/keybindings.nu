@@ -26,16 +26,7 @@ let kb = [
     mode: [emacs, vi_normal, vi_insert]
     event: {
       send: executehostcommand
-      cmd: "
-        # this is always 0 :(
-        # let pos = (commandline get-cursor)
-        let pos = '4'
-        # let match = (glob '**/*' | str join (char nl) | fzf | decode utf-8 | str trim)
-        let match = (fd -H | str join (char nl) | fzf | decode utf-8 | str trim)
-        commandline edit $match
-        # commandline set-cursor ($match | str length)
-        commandline set-cursor (($pos | into int) + ($match | str length))
-      "
+      cmd: "commandline edit --insert (fd -H | str join (char nl) | fzf | decode utf-8 | str trim)"
     }
   }
 
