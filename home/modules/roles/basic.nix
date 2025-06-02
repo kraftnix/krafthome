@@ -19,6 +19,7 @@ in
       Enables basic role. Contains:
     '';
     graphical = opts.enable "include graphical programs";
+    laptop = opts.enable "add useful tooling for laptops";
   };
 
   config = mkIf cfg.enable {
@@ -72,6 +73,7 @@ in
         wezterm.simple = true;
         alacritty.enable = true;
       };
+      services.poweralertd.enable = cfg.laptop;
     };
   };
 }

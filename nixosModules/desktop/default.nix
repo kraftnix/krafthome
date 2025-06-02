@@ -24,6 +24,7 @@ in
     ./printing.nix
     ./sddm.nix
     ./sway.nix
+    ./wifi.nix
   ];
 
   options.khome.desktop = {

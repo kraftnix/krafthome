@@ -5,7 +5,6 @@
     enable = true;
     nixTrustedUsers = [ "test" ];
   };
-  khome.shell.ssh-symlink.enable = true;
   provision.virt.qemu.guestAgent = true;
   provision.fs = {
     bcachefs.enable = true; # enable extra tools etc.
@@ -35,6 +34,7 @@
           terminal = "wezterm";
         };
       };
+      khome.desktop.services.poweralertd.enable = true;
       khome.desktop.anyrun = {
         enable = true;
         modKeybind = "b";
@@ -58,10 +58,16 @@
       enable = true;
       tuigreet.enable = true;
       sway.enable = true;
+      wifi.enable = true;
     };
     users.dev-user.enable = true;
     users.dev-user.name = "myuser";
-    hardware.laptop.powersave = true;
+    hardware.laptop = {
+      battery-tools = true;
+      powersave = true;
+      headless = true;
+    };
+    shell.ssh-symlink.enable = true;
     shell.yubikey = {
       enable = true;
       graphical = true;

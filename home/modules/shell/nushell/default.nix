@@ -203,7 +203,6 @@ in
       NUSHELL_ENABLE_ATUIN = toString cfg.enableAtuin;
       NUSHELL_ENABLE_STARSHIP = toString cfg.enableStarship;
       NUSHELL_ENABLE_PAYRESPECTS = toString cfg.enablePayrespects;
-      NUSHELL_ENABLE_ALIASES = toString true;
     };
     khome.nushell.env =
       mapAttrs (_: v: if (typeOf v) == "int" then toString v else "${v}") config.home.sessionVariables
