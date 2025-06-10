@@ -15,6 +15,13 @@ let me = [
         selected_text: green_reverse
         description_text: yellow
     }
+    # # buffer is the full current buffer of the command
+    # source: { |buffer, position|
+    #   # echo $buffer | describe | default "" | str trim | append "\n" | save --append /home/kraftnix/nu_log.txt
+    #   echo $buffer | save --append /home/kraftnix/nu_log.txt
+    #   # echo $position | save --append /home/kraftnix/nu_log.txt
+    #   ^lnav -
+    # }
   }
 
   { # History Menu
