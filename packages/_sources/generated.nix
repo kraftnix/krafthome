@@ -8,15 +8,15 @@
 {
   tree-sitter-bash = {
     pname = "tree-sitter-bash";
-    version = "0c46d792d54c536be5ff7eb18eb95c70fccdb232";
+    version = "56b54c61fb48bce0c63e3dfa2240b5d274384763";
     src = fetchFromGitHub {
       owner = "tree-sitter";
       repo = "tree-sitter-bash";
-      rev = "0c46d792d54c536be5ff7eb18eb95c70fccdb232";
+      rev = "56b54c61fb48bce0c63e3dfa2240b5d274384763";
       fetchSubmodules = false;
-      sha256 = "sha256-ODWgFpCLLPgzNYXFhfAVvDXPr5bW8/49ezsaS9MOWMk=";
+      sha256 = "sha256-vRaN/mNfpR+hdv2HVS1bzaW0o+HGjizRFsk3iinICJE=";
     };
-    date = "2025-01-31";
+    date = "2025-06-04";
   };
   tree-sitter-javascript = {
     pname = "tree-sitter-javascript";
@@ -32,27 +32,27 @@
   };
   tree-sitter-markdown = {
     pname = "tree-sitter-markdown";
-    version = "071b3b70baad138aa28832cf02d16ca48f2e6f4d";
+    version = "7462bb66ac7e90312082269007fac2772fe5efd1";
     src = fetchFromGitHub {
       owner = "tree-sitter-grammars";
       repo = "tree-sitter-markdown";
-      rev = "071b3b70baad138aa28832cf02d16ca48f2e6f4d";
+      rev = "7462bb66ac7e90312082269007fac2772fe5efd1";
       fetchSubmodules = false;
-      sha256 = "sha256-TlQW0bn0Oo7bdGuUMf8LxW4QYlOl45VIkj2qIxWDoUM=";
+      sha256 = "sha256-TvGTKsna1NS31/Tp9gBpndG1hNCRCEErBq1DK3pQHkU=";
     };
-    date = "2025-05-08";
+    date = "2025-06-17";
   };
   tree-sitter-nu = {
     pname = "tree-sitter-nu";
-    version = "d5c71a10b4d1b02e38967b05f8de70e847448dd1";
+    version = "6544c4383643cf8608d50def2247a7af8314e148";
     src = fetchFromGitHub {
       owner = "nushell";
       repo = "tree-sitter-nu";
-      rev = "d5c71a10b4d1b02e38967b05f8de70e847448dd1";
+      rev = "6544c4383643cf8608d50def2247a7af8314e148";
       fetchSubmodules = false;
-      sha256 = "sha256-7Ny3wXa5iE6s7szqTkPqaXWL/NL5yA2MbhdQHylxwE0=";
+      sha256 = "sha256-+KsRkfx0WmcfYBP7zxXqL8kPm/HsBjuI56/v910kMFU=";
     };
-    date = "2025-03-29";
+    date = "2025-07-15";
   };
   tree-sitter-python = {
     pname = "tree-sitter-python";

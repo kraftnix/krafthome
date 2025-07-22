@@ -43,7 +43,7 @@ let
   #   }
   # }
   configNuText = ''
-    # load plugins
+    ## Load Plugins
     ${concatStringsSep "\n" (
       map (plugin: ''
         plugin add ${getExe plugin}
@@ -51,18 +51,29 @@ let
       '') cfg.plugins
     )}
 
-    # source provided scripts
+    ## Source provided scripts
     ${concatStringsSep "\n" (map (path: "source ${path}") cfg.scripts)}
-    # source provided scriptDirs
+
+    ## Source provided scriptDirs
     ${concatStringsSep "\n" (map (path: "source ${path}") cfg.scriptDirs)}
 
+    ## Static Configuration
     ${builtins.readFile ./src/config.nu}
 
     def smn [] {
       ^manix "" | grep '^# ' | sed 's/^# \(.*\) (.*/\1/;s/ (.*//;s/^# //' | fzf | xargs manix
     }
 
+    ## Extra Configuration
     ${cfg.extraConfig}
+
+    ## Shell Aliases
+    ${lib.concatLines (
+      lib.mapAttrsToList (k: v: "alias ${hm.nushell.toNushell { } k} = ${v}") cfg.shellAliases
+    )}
+
+    ## Nushell Extra Configuration
+    ${config.programs.nushell.extraConfig}
   '';
 
   # mainly to prevent clashes between non-nu aliases imported and nu functions

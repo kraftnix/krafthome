@@ -28,7 +28,7 @@ $current.completions = ($current.completions | default {} external)
 $current.completions.external = (
   $current.completions.external
   | default true enable
-  | default $carapace_completer completer
+  | default { $carapace_completer } completer
 )
 
 $env.config = $current

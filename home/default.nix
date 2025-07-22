@@ -16,7 +16,7 @@ args@{
   };
 
   flake.externalHomeModules = [
-    # inputs.stylix.homeManagerModules.stylix
+    inputs.stylix.homeModules.stylix
   ];
 
   flake.hmProfiles = inputs.provision.lib.nix.rakeLeaves ./profiles // {

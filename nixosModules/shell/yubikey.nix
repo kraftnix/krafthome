@@ -102,14 +102,13 @@ in
       ];
     };
 
-    environment.systemPackages =
-      [
-        pkgs.yubikey-touch-detector
-        pkgs.yubikey-manager
-      ]
-      ++ (optionals cfg.graphical [
-        pkgs.yubikey-personalization-gui
-      ]);
+    environment.systemPackages = [
+      pkgs.yubikey-touch-detector
+      pkgs.yubikey-manager
+    ]
+    ++ (optionals cfg.graphical [
+      pkgs.yubioath-flutter
+    ]);
 
     # enforce access to yubikey
     security.polkit.debug = cfg.polkit.enableLogging;

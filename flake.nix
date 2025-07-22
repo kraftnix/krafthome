@@ -4,7 +4,7 @@
   # Core
   inputs.nixpkgs.url = "github:nixos/nixpkgs/nixos-unstable";
   inputs.nixos.follows = "nixpkgs";
-  inputs.stable.url = "github:nixos/nixpkgs/release-24.11";
+  inputs.stable.url = "github:nixos/nixpkgs/release-25.05";
   inputs.home.url = "github:nix-community/home-manager";
   inputs.home.inputs.nixpkgs.follows = "nixpkgs";
   inputs.wezterm.url = "github:wez/wezterm?dir=nix";
@@ -35,9 +35,8 @@
       flake-utils.follows = "provision/flake-utils";
     };
 
-    stylix.url = "github:danth/stylix";
+    stylix.url = "github:nix-community/stylix";
     stylix.inputs.nixpkgs.follows = "nixpkgs";
-    stylix.inputs.home-manager.follows = "home";
 
     elewrap.url = "github:oddlama/elewrap";
     elewrap.inputs.nixpkgs.follows = "nixpkgs";

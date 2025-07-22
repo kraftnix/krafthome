@@ -30,14 +30,11 @@ in
       enable = true;
       defaultSession = "sway";
     };
-    services.xserver = {
+    services.displayManager.gdm = {
       enable = true;
-      displayManager.gdm = {
-        enable = true;
-        wayland = true;
-        # sessionPackages = [ config.programs.sway.package ];
-        settings = { };
-      };
+      wayland = true;
+      # sessionPackages = [ config.programs.sway.package ];
+      settings = { };
     };
   };
 }

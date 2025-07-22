@@ -9,6 +9,7 @@ let
   inherit (lib)
     mkDefault
     mkEnableOption
+    mkIf
     mkOption
     optionals
     types
@@ -28,6 +29,9 @@ in
       description = "default editor";
     };
     direnv.enable = mkEnableOption "enable direnv";
+    direnv.nix = mkEnableOption "enable nix-direnv" // {
+      default = true;
+    };
     pay-respects.enable = mkEnableOption "enable [pay-respects](https://github.com/iffse/pay-respects) command suggestions";
     core-tools = {
       enable = mkEnableOption "enable direnv";
@@ -118,7 +122,10 @@ in
         nix-output-monitor # nom, pretty build printing
         args.self.packages.${pkgs.system}.nix-find
       ]);
-    programs.direnv.enable = cfg.direnv.enable;
+    programs.direnv = mkIf cfg.direnv.enable {
+      enable = mkDefault true;
+      nix-direnv.enable = mkDefault true;
+    };
     programs.man.enable = mkDefault cfg.man.enable;
     programs.man.generateCaches = mkDefault cfg.man.enable;
     programs.pay-respects.enable = mkDefault cfg.pay-respects.enable;

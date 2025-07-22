@@ -53,8 +53,8 @@ in
       };
     };
 
-    services.displayManager.sessionPackages =
-      lib.mkIf config.services.xserver.displayManager.gdm.enable
-        [ config.programs.sway.package ];
+    services.displayManager.sessionPackages = lib.mkIf config.services.displayManager.gdm.enable [
+      config.programs.sway.package
+    ];
   };
 }

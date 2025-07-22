@@ -38,8 +38,10 @@ args@{
       ];
     overlays = [
       self.overlays.default
+      self.overlays.workarounds
       inputs.nur.overlays.default
-    ] ++ self.overlaysLists.core;
+    ]
+    ++ self.overlaysLists.core;
     specialArgs = {
       inherit self;
       inherit (self)

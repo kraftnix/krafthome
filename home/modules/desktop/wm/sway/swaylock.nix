@@ -6,7 +6,7 @@
   ...
 }:
 let
-  inherit (lib) mkIf mkOption;
+  inherit (lib) mkDefault mkIf mkOption;
   cfg = config.khome.desktop.wm.sway;
   opts = self.inputs.extra-lib.lib.options;
   inherit (self.lib.khome) toggleApp wrapSwayrLog;
@@ -28,7 +28,7 @@ in
         show-failed-attempts = true;
         daemonize = true;
         show-keyboard-layout = true;
-        image = "${cfg.swaylock.screensaver}";
+        image = mkDefault "${cfg.swaylock.screensaver}";
       };
     };
   };

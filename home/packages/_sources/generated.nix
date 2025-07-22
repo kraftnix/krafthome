@@ -20,15 +20,15 @@
   };
   "fg.yazi" = {
     pname = "fg.yazi";
-    version = "46a5c16f62f415f691319f984b9548249b0edc96";
+    version = "0c6ae0b52a0aa40bb468ca565c34ac413d1f93c1";
     src = fetchFromGitHub {
       owner = "DreamMaoMao";
       repo = "fg.yazi";
-      rev = "46a5c16f62f415f691319f984b9548249b0edc96";
+      rev = "0c6ae0b52a0aa40bb468ca565c34ac413d1f93c1";
       fetchSubmodules = false;
-      sha256 = "sha256-B6Feg8icshHQYv04Ee/Bo9PPaiDPRyt1HwpirI/yXj8=";
+      sha256 = "sha256-pFljxXAyUfu680+MhbLrI07RcukrPXgmIvtp3f6ZVvY=";
     };
-    date = "2025-04-22";
+    date = "2025-07-10";
   };
   nu_plugin_dbus = {
     pname = "nu_plugin_dbus";
@@ -68,15 +68,15 @@
   };
   nu_plugin_file = {
     pname = "nu_plugin_file";
-    version = "1ee255ddb2a773c1f683acf43c4cf3a9e195a7c5";
+    version = "ee1157c3f8f0e7b326bb0477f20d98b3d98759b9";
     src = fetchFromGitHub {
       owner = "fdncred";
       repo = "nu_plugin_file";
-      rev = "1ee255ddb2a773c1f683acf43c4cf3a9e195a7c5";
+      rev = "ee1157c3f8f0e7b326bb0477f20d98b3d98759b9";
       fetchSubmodules = false;
-      sha256 = "sha256-ORx8BlIi7peozUBsF7N1Kq+a1c8mxp+ReloltHBtYXc=";
+      sha256 = "sha256-n/E7CpRLZvg+NWI+n3VzE+qrTKrpBbFNfSsHZEqRNiU=";
     };
-    date = "2025-04-30";
+    date = "2025-06-17";
   };
   nu_plugin_port_list = {
     pname = "nu_plugin_port_list";
@@ -104,27 +104,27 @@
   };
   nu_plugin_skim = {
     pname = "nu_plugin_skim";
-    version = "ebcdaac9f54158a26ef08f4271b8cc80626b097d";
+    version = "613d520df8fc3a493cdc5284c68c4031263f0eea";
     src = fetchFromGitHub {
       owner = "idanarye";
       repo = "nu_plugin_skim";
-      rev = "ebcdaac9f54158a26ef08f4271b8cc80626b097d";
+      rev = "613d520df8fc3a493cdc5284c68c4031263f0eea";
       fetchSubmodules = false;
-      sha256 = "sha256-bH+llby34lqnxZXdtTEBPiw50tvvY72h+YkRRdiXXTc=";
+      sha256 = "sha256-8gO6pT40zBlFxPRapIO9qpMI9whutttqYgOPr91B9Ec=";
     };
-    date = "2025-04-30";
+    date = "2025-06-11";
   };
   officialPluginsSource = {
     pname = "officialPluginsSource";
-    version = "55bf6996ada3df4cbad331ce3be0c1090769fc7c";
+    version = "1ab21d43c7c6d326c1b9b06610ce7c8686257c43";
     src = fetchFromGitHub {
       owner = "yazi-rs";
       repo = "plugins";
-      rev = "55bf6996ada3df4cbad331ce3be0c1090769fc7c";
+      rev = "1ab21d43c7c6d326c1b9b06610ce7c8686257c43";
       fetchSubmodules = false;
-      sha256 = "sha256-v/C+ZBrF1ghDt1SXpZcDELmHMVAqfr44iWxzUWynyRk=";
+      sha256 = "sha256-4p+VXUr76kC/dyJZzzkCwNGEUV53YYZ3tYoFpsKboU0=";
     };
-    date = "2025-05-11";
+    date = "2025-07-20";
   };
   "open-with-cmd.yazi" = {
     pname = "open-with-cmd.yazi";
@@ -140,15 +140,15 @@
   };
   "what-size.yazi" = {
     pname = "what-size.yazi";
-    version = "f1c6b691363e602d0ddbee29384017d08b608f64";
+    version = "d8966568f2a80394bf1f9a1ace6708ddd4cc8154";
     src = fetchFromGitHub {
       owner = "pirafrank";
       repo = "what-size.yazi";
-      rev = "f1c6b691363e602d0ddbee29384017d08b608f64";
+      rev = "d8966568f2a80394bf1f9a1ace6708ddd4cc8154";
       fetchSubmodules = false;
-      sha256 = "sha256-M1phqmo318/VYkLWiqjEWuHlnQ+hfz5H+k8G0zsmclg=";
+      sha256 = "sha256-s2BifzWr/uewDI6Bowy7J+5LrID6I6OFEA5BrlOPNcM=";
     };
-    date = "2025-04-07";
+    date = "2025-06-19";
   };
   "wl-clipboard.yazi" = {
     pname = "wl-clipboard.yazi";
