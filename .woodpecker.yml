@@ -3,25 +3,49 @@ steps:
     image: bash
     commands:
       - set -e
-      - nix build .#devShells.x86_64-linux.default --show-trace
+      - nix develop --show-trace --accept-flake-config
+      # - nix-fast-build -f .#devShells.x86_64-linux.default --skip-cached --systems x86_64-linux --result-file /tmp/resultfile
+      # - echo "Results"
+      # - cat /tmp/resultfile
 
   - name: fast-build packages
     image: bash
     commands:
       - set -e
-      - nix-fast-build -f .#packages --no-nom
+      # BUG: CI is building aarch64 when it shouldn't
+      # - nix-fast-build -f .#packages --no-nom --skip-cached
+      # - nix-fast-build -f .#packages --no-nom --skip-cached --systems x86_64-linux --result-file /tmp/resultfile
+      # BUG: above workaround insufficient to stop eval failures: https://github.com/Mic92/nix-fast-build/issues/29
+      - nix-fast-build -f .#packages.x86_64-linux --no-nom --skip-cached --result-file /tmp/resultfile
+      - echo "Results"
+      - cat /tmp/resultfile
 
   - name: fast-build all hosts
     image: bash
     commands:
       - set -e
-      - nix-fast-build -f .#colmenaHive.toplevel --no-nom
+      # BUG: CI is building aarch64 when it shouldn't
+      # - nix-fast-build -f .#hosts.toplevels --no-nom --skip-cached
+      - nix-fast-build -f .#hosts.toplevels --no-nom --skip-cached --systems x86_64-linux --result-file /tmp/resultfile
+      - echo "Results"
+      - cat /tmp/resultfile
 
-  - name: nix flake check
+  - name: fast-build checks
     image: bash
     commands:
-      - nix flake check --show-trace
-    when:
-      - event: pull_request
-      - event: push
-        branch: master
+      # BUG: CI is building aarch64 when it shouldn't
+      # - nix-fast-build -f .#checks --no-nom --skip-cached
+      # - nix-fast-build -f .#checks --no-nom --skip-cached --systems x86_64-linux --result-file /tmp/resultfile
+      # BUG: above workaround insufficient to stop eval failures: https://github.com/Mic92/nix-fast-build/issues/29
+      - nix-fast-build -f .#checks.x86_64-linux --no-nom --skip-cached --result-file /tmp/resultfile
+      - echo "Results"
+      - cat /tmp/resultfile
+
+  # - name: nix flake check
+  #   image: bash
+  #   commands:
+  #     - nix flake check --show-trace
+  #   when:
+  #     - event: pull_request
+  #     - event: push
+  #       branch: master
