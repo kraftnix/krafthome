@@ -71,9 +71,6 @@ let
     ${lib.concatLines (
       lib.mapAttrsToList (k: v: "alias ${hm.nushell.toNushell { } k} = ${v}") cfg.shellAliases
     )}
-
-    ## Nushell Extra Configuration
-    ${config.programs.nushell.extraConfig}
   '';
 
   # mainly to prevent clashes between non-nu aliases imported and nu functions
