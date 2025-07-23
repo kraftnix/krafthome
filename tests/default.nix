@@ -41,7 +41,8 @@ in
             node = {
               inherit specialArgs;
             };
-          } // test;
+          }
+          // test;
           nodes.${host.config.networking.hostName} =
             {
               self,

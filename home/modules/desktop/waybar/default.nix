@@ -51,11 +51,10 @@ in
     programs.waybar = {
       enable = true;
       # systemd.enable = true;
-      style =
-        ''
-          @import "/home/${config.home.username}/${cfg.colorsRelPath}";
-        ''
-        + cfg.stylecss;
+      style = ''
+        @import "/home/${config.home.username}/${cfg.colorsRelPath}";
+      ''
+      + cfg.stylecss;
       settings.mainbar = mkMerge [
         {
           layer = "top";

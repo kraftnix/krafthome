@@ -147,7 +147,8 @@ in
         desktop = mkDefault cfg.opacity;
       };
       override = mkDefault cfg.override;
-    } // cfg.stylix.extra;
+    }
+    // cfg.stylix.extra;
 
     gtk.theme.package = mkIf (cfg.gtk.theme != null) cfg.gtk.theme;
     gtk.theme.name = mkIf (cfg.gtk.theme != null) cfg.gtk.theme.name;

@@ -130,7 +130,8 @@
         # ).neovimBuilder (import ../../home/vim/neovim-pkg.nix { });
 
         #)).neovimBuilder (import ../vim/neovim-pkg.nix { });
-      } // ((import ./desktop) pkgs);
+      }
+      // ((import ./desktop) pkgs);
 
       overlayAttrs = {
         inherit allTreesitter;

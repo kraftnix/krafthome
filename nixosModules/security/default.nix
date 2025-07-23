@@ -91,19 +91,18 @@ in
     };
   };
 
-  config =
-    {
-      programs.firejail.enable = mkDefault (enabledWrappers != { });
-      environment.systemPackages = mkIf cfg.addWrappers (
-        pipe enabledWrappers [
-          (filterAttrs (_: w: w.firejail.enable))
-          (mapAttrsToList (_: w: w.firejail.binary))
-          flatten
-        ]
-      );
-    }
-    // (optionalAttrs (options.security ? elewrap) {
-      security.elewrap =
-        filterElewrap enabledWrappers // (optionalAttrs cfg.collectHomeManager hmWrappers);
-    });
+  config = {
+    programs.firejail.enable = mkDefault (enabledWrappers != { });
+    environment.systemPackages = mkIf cfg.addWrappers (
+      pipe enabledWrappers [
+        (filterAttrs (_: w: w.firejail.enable))
+        (mapAttrsToList (_: w: w.firejail.binary))
+        flatten
+      ]
+    );
+  }
+  // (optionalAttrs (options.security ? elewrap) {
+    security.elewrap =
+      filterElewrap enabledWrappers // (optionalAttrs cfg.collectHomeManager hmWrappers);
+  });
 }

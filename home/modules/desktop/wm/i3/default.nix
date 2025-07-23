@@ -138,7 +138,8 @@ in
             "$mod+Print" = "exec flameshot gui";
             # hide/unhide i3status bar
             "$mod+m" = "bar mode toggle";
-          } // cfg.keybindings;
+          }
+          // cfg.keybindings;
         }
       ];
       extraConfig = mkMerge [

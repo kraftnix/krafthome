@@ -201,24 +201,22 @@ in
     home.packages = [ cfg.package ];
     xdg.configFile = mkMerge [
       {
-        "nushell/config.nu".text =
-          builtins.readFile ./baseConfig.nu
-          + ''
-            ${
-              # source provided scripts
-              concatStringsSep "\n" (map (path: "source ${path}") cfg.scripts)
-            }
+        "nushell/config.nu".text = builtins.readFile ./baseConfig.nu + ''
+          ${
+            # source provided scripts
+            concatStringsSep "\n" (map (path: "source ${path}") cfg.scripts)
+          }
 
-            $env.config = ${builtins.readFile (format.generate "config" cfg.settings)}
-            ${
-              # update theme if provided
-              optionalString (
-                cfg.theme != { }
-              ) "let $config = ($config | upsert theme ${builtins.toJSON cfg.theme})"
-            }
+          $env.config = ${builtins.readFile (format.generate "config" cfg.settings)}
+          ${
+            # update theme if provided
+            optionalString (
+              cfg.theme != { }
+            ) "let $config = ($config | upsert theme ${builtins.toJSON cfg.theme})"
+          }
 
-            ${cfg.extraConfig}
-          '';
+          ${cfg.extraConfig}
+        '';
         "nushell/env.nu".text = ''
           ${builtins.readFile ./baseEnv.nu}
           ${

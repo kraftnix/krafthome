@@ -94,7 +94,8 @@ in
           CopyMode = "EditPattern";
         };
       }
-    ] ++ shared;
+    ]
+    ++ shared;
     key_tables.copy_mode = shared ++ [
       {
         # Copy without leaving Copy Mode

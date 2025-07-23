@@ -81,7 +81,8 @@ in
       description = "firejail-wrapped binary";
       type = types.package;
     };
-  } // (mapAttrs mkListOption options);
+  }
+  // (mapAttrs mkListOption options);
   config.extraArgs = flatten [
     (mapAttrsToList (opt: _: map (v: "--${opt}=${v}") config.${opt}) options)
     (optional config.enableNotifications "--dbus-user.talk=org.freedesktop.Notifications")

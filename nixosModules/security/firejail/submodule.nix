@@ -22,7 +22,8 @@ let
 
   finalDescriptions = {
     enable = "firejail, a sandboxing tool for Linux";
-  } // descriptions;
+  }
+  // descriptions;
 
   wrappedBinContents =
     command: value:
