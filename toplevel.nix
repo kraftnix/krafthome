@@ -67,6 +67,7 @@ localFlake@{
     workarounds = final: prev: {
       inherit (localFlake.inputs.stable.legacyPackages.${final.system})
         isd
+        volumeicon
         ;
     };
   };
