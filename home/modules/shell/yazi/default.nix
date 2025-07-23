@@ -163,7 +163,7 @@ in
         theme = mkIf (cfg.theme.name != null) {
           flavor.use = cfg.theme.name;
         };
-        keymap.manager.prepend_keymap = flatten [
+        keymap.mgr.prepend_keymap = flatten [
           {
             desc = "Enter the child directory, or open the file";
             on = [ "l" ];
@@ -376,7 +376,7 @@ in
         ];
         settings = {
           log.enabled = true;
-          manager = {
+          mgr = {
             inherit (cfg)
               sort_by
               show_hidden

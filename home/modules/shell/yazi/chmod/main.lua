@@ -12,7 +12,7 @@ end)
 
 return {
 	entry = function()
-		ya.manager_emit("escape", { visual = true })
+		ya.emit("escape", { visual = true })
 
 		local urls = selected_or_hovered()
 		if #urls == 0 then
