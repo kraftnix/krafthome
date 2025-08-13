@@ -16,6 +16,7 @@ let
     mkMerge
     optional
     optionals
+    optionalString
     types
     ;
   cfg = config.khome.shell.yazi;
@@ -85,14 +86,43 @@ in
           default = true;
         };
       fg.enable = mkEnableOption "enable fg.yazi plugin (fuzzy find files)" // {
-        default = true;
+        # NOTE: error in usage
+        default = false;
       };
       glow.enable = mkEnableOption "enable glow.yazi plugin (preview md files)" // {
         default = true;
       };
+      ouch.enable = mkEnableOption "enable ouch.yazi plugin (preview archives)" // {
+        default = true;
+      };
+      zoxide.enable = mkEnableOption "enable zoxide.yazi plugin (zoxide integration + db)" // {
+        default = true;
+      };
+      gvfs.enable = mkEnableOption "enable gvfs.yazi plugin (manage gvfs and gio mounts)" // {
+        # NOTE: Error: Lua runtime failed
+        default = true;
+      };
+      relative-motions.enable =
+        mkEnableOption "enable relative-motions.yazi plugin (vim like relative-motions)"
+        // {
+          default = true;
+        };
       mime.enable = mkEnableOption "enable mime.yazi plugin (speedup preview of large files)" // {
         default = false;
       };
+      searchjump.enable =
+        mkEnableOption "A Yazi plugin whose behavior is consistent with flash.nvim in Neovim: from a search string it generates labels to jump to."
+        // {
+          default = false;
+        };
+      whoosh.enable = mkEnableOption "enable whoosh.yazi plugin (advanced bookmarks)" // {
+        default = false;
+      };
+      jump-to-char.enable =
+        mkEnableOption "enable jump-to-char.yazi plugin (Vim-like f<char>, jump to the next file whose name starts with <char>.)"
+        // {
+          default = true;
+        };
       bookmarks.enable =
         mkEnableOption "enable bookmarks-persistence.yazi plugin (persistent bookmarks)"
         // {
@@ -109,6 +139,7 @@ in
   config = mkIf cfg.enable {
     home.packages =
       [ ]
+      ++ (optional plugs.ouch.enable pkgs.ouch)
       ++ (optional plugs.mediainfo.enable pkgs.mediainfo)
       ++ (optional plugs.wl-clipboard.enable pkgs.clipboard-jh);
     programs.yazi = mkMerge [
@@ -116,7 +147,33 @@ in
       {
         enable = true;
         enableBashIntegration = true;
-        initLua = ./init.lua;
+        initLua = ''
+          ${builtins.readFile ./init.lua}
+          -- extra
+
+          ${optionalString plugs.relative-motions.enable ''
+            require("relative-motions"):setup({
+              show_numbers="relative_absolute",
+              show_motion = true,
+              enter_mode ="first",
+            })
+          ''}
+
+          ${optionalString plugs.zoxide.enable ''
+            require("zoxide"):setup({
+              update_db = true,
+            })
+          ''}
+
+          ${optionalString plugs.whoosh.enable ''
+            --Whoosh
+            ${builtins.readFile ./whoosh/init.lua}
+          ''}
+
+          ${optionalString plugs.gvfs.enable ''
+            ${builtins.readFile ./gvfs/init.lua}
+          ''}
+        '';
         plugins = mkMerge [
           {
             # smart-enter = ./smart-enter;
@@ -126,6 +183,24 @@ in
             toggle-pane = pkgs.yaziPlugins.toggle-pane;
             mount = pkgs.yaziPlugins.mount;
           }
+          (mkIf plugs.relative-motions.enable {
+            relative-motions = pkgs.yaziPlugins.relative-motions;
+          })
+          (mkIf plugs.jump-to-char.enable {
+            jump-to-char = pkgs.yaziPlugins.jump-to-char;
+          })
+          (mkIf plugs.whoosh.enable {
+            whoosh = pkgs.yaziPlugins.whoosh;
+          })
+          (mkIf plugs.searchjump.enable {
+            searchjump = pkgs.yaziPlugins.searchjump;
+          })
+          (mkIf plugs.gvfs.enable {
+            gvfs = pkgs.yaziPlugins.gvfs;
+          })
+          (mkIf plugs.ouch.enable {
+            ouch = pkgs.yaziPlugins.ouch;
+          })
           (mkIf plugs.mime.enable {
             mime-ext = pkgs.yaziPlugins.mime-ext;
           })
@@ -248,7 +323,7 @@ in
           {
             desc = "Hide or show preview";
             on = [
-              "M"
+              "z"
               "m"
             ];
             run = "plugin toggle-pane min-preview";
@@ -256,7 +331,7 @@ in
           {
             desc = "Maximize or restore preview";
             on = [
-              "M"
+              "z"
               "M"
             ];
             run = "plugin toggle-pane max-preview";
@@ -269,14 +344,77 @@ in
             ];
             run = "plugin chmod";
           }
+          (optionals plugs.relative-motions.enable [
+            {
+              on = [ "1" ];
+              run = "plugin relative-motions 1";
+              desc = "Move in relative steps";
+            }
+
+            {
+              on = [ "2" ];
+              run = "plugin relative-motions 2";
+              desc = "Move in relative steps";
+            }
+
+            {
+              on = [ "3" ];
+              run = "plugin relative-motions 3";
+              desc = "Move in relative steps";
+            }
+
+            {
+              on = [ "4" ];
+              run = "plugin relative-motions 4";
+              desc = "Move in relative steps";
+            }
+
+            {
+              on = [ "5" ];
+              run = "plugin relative-motions 5";
+              desc = "Move in relative steps";
+            }
+
+            {
+              on = [ "6" ];
+              run = "plugin relative-motions 6";
+              desc = "Move in relative steps";
+            }
+
+            {
+              on = [ "7" ];
+              run = "plugin relative-motions 7";
+              desc = "Move in relative steps";
+            }
+
+            {
+              on = [ "8" ];
+              run = "plugin relative-motions 8";
+              desc = "Move in relative steps";
+            }
+
+            {
+              on = [ "9" ];
+              run = "plugin relative-motions 9";
+              desc = "Move in relative steps";
+            }
+          ])
           (optionals plugs.fg.enable [
             {
-              desc = "find file by content";
+              desc = "find text in file by content (fuzzy)";
               on = [
                 "f"
                 "g"
               ];
               run = "plugin fg";
+            }
+            {
+              desc = "find text in file by content (ripgrep match)";
+              on = [
+                "f"
+                "G"
+              ];
+              run = "plugin fg -- rg";
             }
             {
               desc = "find file by file name";
@@ -285,6 +423,136 @@ in
                 "f"
               ];
               run = "plugin fg --args='fzf'";
+            }
+          ])
+          (optionals plugs.gvfs.enable [
+            {
+              on = [
+                "M"
+                "m"
+              ];
+              run = "plugin gvfs -- select-then-mount";
+              desc = "Select device then mount";
+            }
+            # or this if you want to jump to mountpoint after mounted
+            {
+              on = [
+                "M"
+                "m"
+              ];
+              run = "plugin gvfs -- select-then-mount --jump";
+              desc = "Select device to mount and jump to its mount point";
+            }
+            # This will remount device under cwd (e.g. cwd = /run/user/1000/gvfs/DEVICE_1/FOLDER_A, device mountpoint = /run/user/1000/gvfs/DEVICE_1)
+            {
+              on = [
+                "M"
+                "R"
+              ];
+              run = "plugin gvfs -- remount-current-cwd-device";
+              desc = "Remount device under cwd";
+            }
+            {
+              on = [
+                "M"
+                "u"
+              ];
+              run = "plugin gvfs -- select-then-unmount";
+              desc = "Select device then unmount";
+            }
+            # or this if you want to unmount and eject device. Ejected device can safely be removed.
+            # Ejecting a device will unmount all paritions/volumes under it.
+            # Fallback to normal unmount if not supported by device.
+            {
+              on = [
+                "M"
+                "u"
+              ];
+              run = "plugin gvfs -- select-then-unmount --eject";
+              desc = "Select device then eject";
+            }
+            # Also support force unmount/eject.
+            # force = true -> Ignore outstanding file operations when unmounting or ejecting
+            {
+              on = [
+                "M"
+                "U"
+              ];
+              run = "plugin gvfs -- select-then-unmount --eject --force";
+              desc = "Select device then force to eject/unmount";
+            }
+
+            # Add|Edit|Remove mountpoint: smb, sftp, ftp, nfs, dns-sd, dav, davs, dav+sd, davs+sd, afp, afc, sshfs
+            # Read more about the schemes here: https://wiki.gnome.org/Projects(2f)gvfs(2f)schemes.html
+            # For example: smb://user@192.168.1.2/share, smb://WORKGROUP;user@192.168.1.2/share, sftp://user@192.168.1.2/, ftp://192.168.1.2/
+            # - Scheme/Mount URIs shouldn't contain password.
+            # - Google Drive, One drive are mounted automatically via GNOME Online Accounts (GOA). Avoid adding them. Use GOA instead: ./GNOME_ONLINE_ACCOUNTS_GOA.md
+            # - MTP, GPhoto2, AFC, Hard disk/drive are listed automatically. Avoid adding them
+            {
+              on = [
+                "M"
+                "a"
+              ];
+              run = "plugin gvfs -- add-mount";
+              desc = "Add a GVFS mount URI";
+            }
+            # Edit or remove a GVFS mount URI will clear saved passwords for that mount URI.
+            {
+              on = [
+                "M"
+                "e"
+              ];
+              run = "plugin gvfs -- edit-mount";
+              desc = "Edit a GVFS mount URI";
+            }
+            {
+              on = [
+                "M"
+                "r"
+              ];
+              run = "plugin gvfs -- remove-mount";
+              desc = "Remove a GVFS mount URI";
+            }
+
+            # Jump
+            {
+              on = [
+                "g"
+                "m"
+              ];
+              run = "plugin gvfs -- jump-to-device";
+              desc = "Select device then jump to its mount point";
+            }
+            # If you use `x-systemd.automount` in /etc/fstab or manually added automount unit, you can use `--automount` to automount device automatically
+            {
+              on = [
+                "g"
+                "m"
+              ];
+              run = "plugin gvfs -- jump-to-device --automount";
+              desc = "Automount then select device to jump to its mount point";
+            }
+            {
+              on = [
+                "`"
+                "`"
+              ];
+              run = "plugin gvfs -- jump-back-prev-cwd";
+              desc = "Jump back to the position before jumped to device";
+            }
+          ])
+          (optionals plugs.jump-to-char.enable [
+            {
+              desc = "Jump to char";
+              run = "plugin jump-to-char";
+              on = [ "f" ];
+            }
+          ])
+          (optionals plugs.searchjump.enable [
+            {
+              desc = "Searchjump mode";
+              run = "plugin searchjump";
+              on = [ "i" ];
             }
           ])
           (optionals plugs.wl-clipboard.enable [
@@ -346,7 +614,7 @@ in
                 "u"
                 "a"
               ];
-              run = "plugin bookmarks-persistence --args=save";
+              run = "plugin bookmarks -- save";
             }
             {
               desc = "Jump to a bookmark";
@@ -354,7 +622,7 @@ in
                 "u"
                 "g"
               ];
-              run = "plugin bookmarks-persistence --args=jump";
+              run = "plugin bookmarks -- jump";
             }
             {
               desc = "Delete a bookmark";
@@ -362,7 +630,7 @@ in
                 "u"
                 "d"
               ];
-              run = "plugin bookmarks-persistence --args=delete";
+              run = "plugin bookmarks -- delete";
             }
             {
               desc = "Delete all bookmarks";
@@ -370,7 +638,15 @@ in
                 "u"
                 "D"
               ];
-              run = "plugin bookmarks-persistence --args=delete_all";
+              run = "plugin bookmarks -- delete_all";
+            }
+            {
+              desc = "Modify key bind to hoverd path";
+              on = [
+                "u"
+                "m"
+              ];
+              run = "plugin bookmarks -- modify";
             }
           ])
         ];
@@ -402,6 +678,10 @@ in
               ])
             ];
             prepend_previewers = flatten [
+              (optional cfg.plugins.ouch.enable {
+                mime = "application/{*zip,x-tar,x-bzip2,x-7z-compressed,x-rar,vnd.rar,x-xz,xz,x-zstd,zstd,java-archive}";
+                run = "ouch";
+              })
               (optional cfg.plugins.glow.enable {
                 mime = "*.md";
                 run = "glow";

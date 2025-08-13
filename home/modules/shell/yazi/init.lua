@@ -52,7 +52,3 @@ function Status:render(area)
 		table.unpack(Progress:render(area, right:width())),
 	}
 end
-
-require("zoxide"):setup({
-	update_db = true,
-})

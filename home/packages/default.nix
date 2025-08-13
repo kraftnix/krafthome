@@ -37,6 +37,9 @@ let
         "what-size.yazi"
         "wl-clipboard.yazi"
         "open-with-cmd.yazi"
+        "whoosh.yazi"
+        "gvfs.yazi"
+        "searchjump.yazi"
         "officialPluginsSource"
       ]
     );

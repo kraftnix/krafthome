@@ -35,9 +35,9 @@ def main [
   ...directories            # directories to search for images
 ] {
   print $"(ansi green)Starting swww.(ansi reset)"
-  $env.SWWW_TRANSITION_FPS = ($fps | default ($env | get -i SWWW_TRANSITION_FPS | default 60))
-  $env.SWWW_TRANSITION_STEP = ($step | default ($env | get -i SWWW_TRANSITION_STEP | default 2))
-  $env.SWWW_TRANSITION = ($transition | default ($env | get -i SWWW_TRANSITION | default "simple"))
+  $env.SWWW_TRANSITION_FPS = ($fps | default ($env | get -o SWWW_TRANSITION_FPS | default 60))
+  $env.SWWW_TRANSITION_STEP = ($step | default ($env | get -o SWWW_TRANSITION_STEP | default 2))
+  $env.SWWW_TRANSITION = ($transition | default ($env | get -o SWWW_TRANSITION | default "simple"))
   let interval = ($interval | default 60)
   print $"Searching directories: (ansi yellow)($directories)(ansi reset)"
   mut images = ($directories | findImages)

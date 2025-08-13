@@ -1,7 +1,7 @@
 # returns true if provided env var exists and true-like
 #   i.e. "true", 1, "y"
 def testBoolikeVar [ envName : string ]: any -> bool {
-  if ($env | get -i $envName) == null {
+  if ($env | get -o $envName) == null {
     false
   } else {
     let v = ($env | get $envName)
@@ -98,7 +98,7 @@ if $enableStarship {
     let separator_color = (if (is-admin) { ansi light_red_bold } else { ansi light_green_bold })
     let path_segment = $"($path_color)($dir)(ansi reset)"
     let host_color = ansi blue
-    let host = (open /etc/hostname | default ($env | get -i HOSTNAME | default "unknown_host"))
+    let host = (open /etc/hostname | default ($env | get -o HOSTNAME | default "unknown_host"))
     let host_segment = $"$($host_color)($host)(ansi reset)"
 
     $path_segment | str replace --all (char path_sep) $"($host_segment)($separator_color)(char path_sep)($path_color)"

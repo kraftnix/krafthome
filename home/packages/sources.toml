@@ -57,3 +57,15 @@ fetch.github = "grappas/wl-clipboard.yazi"
 ["open-with-cmd.yazi"]
 src.git = "https://github.com/Ape/open-with-cmd.yazi"
 fetch.github = "Ape/open-with-cmd.yazi"
+
+["whoosh.yazi"]
+src.git = "https://github.com/WhoSowSee/whoosh.yazi"
+fetch.github = "WhoSowSee/whoosh.yazi"
+
+["gvfs.yazi"]
+src.git = "https://github.com/boydaihungst/gvfs.yazi"
+fetch.github = "boydaihungst/gvfs.yazi"
+
+["searchjump.yazi"]
+src.git = "https://github.com/DreamMaoMao/searchjump.yazi"
+fetch.github = "DreamMaoMao/searchjump.yazi"

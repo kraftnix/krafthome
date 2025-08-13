@@ -16,7 +16,7 @@ def override [ cmd ] {
   {
     nvim: neovim
     ssh: md-ssh
-  } | get -i $cmd | default $cmd
+  } | get -o $cmd | default $cmd
 }
 
 def main [ matchString? : string ] {

@@ -124,7 +124,7 @@ in
 
         '';
       autocd = true;
-      dotDir = ".config/zsh";
+      dotDir = "${config.xdg.configHome}/zsh";
       defaultKeymap = "emacs";
       autosuggestion.enable = true;
       enableCompletion = true;

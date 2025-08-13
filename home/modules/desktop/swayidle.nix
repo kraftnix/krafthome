@@ -18,7 +18,7 @@ let
     #!/usr/bin/env nu
 
     def main [ switch ] {
-      if ($env | get -i HYPRLAND_INSTANCE_SIGNATURE) != null {
+      if ($env | get -o HYPRLAND_INSTANCE_SIGNATURE) != null {
         hyprctl dispatch dpms $switch
       } else {
         swaymsg $"output * dpms ($switch)"
