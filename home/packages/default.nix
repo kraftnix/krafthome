@@ -22,10 +22,10 @@ let
       nu_plugin_explore = "sha256-YqmU+j1dcw9YN0p3h+s4hJpt1O6z6EYrSj8lApQX93o=";
       # nu_plugin_dialog = "sha256-nbSbQ1DEBlT5ZqYgj+1Z4LU4t1833chPWxKMmCe4yAI="; # failed to load manifest
       nu_plugin_dbus = "sha256-7pD5LA1ytO7VqFnHwgf7vW9eS3olnZBgdsj+rmcHkbU=";
-      nu_plugin_file = "sha256-rtzFq4iKzBnICwdhkoK7TSl6fgRUUXyedboZGmSM7qQ=";
+      nu_plugin_file = "sha256-yH/zNTWqWjYz3+rpmIfaIHmPbeA6TM26D7Lmahb8e+g=";
       nu_plugin_port_list = "sha256-LicKxycLeBcD8NBwLvMttAS3rNkpaiealMmGZZ6d/HQ=";
       nu_plugin_prometheus = "sha256-2uBOm8AL+i11BD2wSk150qjTo0LXc/gawHK+y0IzL08=";
-      nu_plugin_skim = "sha256-2poE7Nnwe5rRoU8WknEgzX68z+y9ZplX53v8FURzxmE=";
+      nu_plugin_skim = "sha256-A90CfbgWQs/1AcoLZspiQ5aEz2rRjJKxHM0fTuyKSDw=";
     };
   getSources = prev: prev.callPackage (import ./_sources/generated.nix) { };
   yaziPluginsSources =
