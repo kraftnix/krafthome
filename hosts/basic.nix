@@ -9,8 +9,8 @@
     # users.test-deploy
   ];
 
-  provision.defaults.enable = true;
-  provision.core.env.enable = true;
+  provision.core.enable = true;
+  provision.core.defaults.enable = true;
   provision.core.shell.enable = true;
   provision.virt.qemu.guestAgent = true;
   provision.fs.boot.enable = true;

@@ -66,8 +66,9 @@ localFlake@{
   flake.overlays = {
     workarounds = final: prev: {
       inherit (localFlake.inputs.stable.legacyPackages.${final.system})
-        isd
-        volumeicon
+        # due to qtwebengine
+        jellyfin-mpv-shim
+        jellyfin-media-player
         ;
     };
   };

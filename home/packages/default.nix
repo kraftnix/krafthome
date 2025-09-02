@@ -25,7 +25,7 @@ let
       nu_plugin_file = "sha256-yH/zNTWqWjYz3+rpmIfaIHmPbeA6TM26D7Lmahb8e+g=";
       nu_plugin_port_list = "sha256-LicKxycLeBcD8NBwLvMttAS3rNkpaiealMmGZZ6d/HQ=";
       nu_plugin_prometheus = "sha256-2uBOm8AL+i11BD2wSk150qjTo0LXc/gawHK+y0IzL08=";
-      nu_plugin_skim = "sha256-A90CfbgWQs/1AcoLZspiQ5aEz2rRjJKxHM0fTuyKSDw=";
+      nu_plugin_skim = "sha256-WJoAhDnjvt9S5PUcl+aWulFFtVBqd9bnngCn7Kezet4=";
     };
   getSources = prev: prev.callPackage (import ./_sources/generated.nix) { };
   yaziPluginsSources =

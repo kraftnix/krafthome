@@ -8,7 +8,6 @@ source: cargoHash:
 }:
 rustPlatform.buildRustPackage rec {
   pname = "nushell_plugin_dbus";
-  useFetchCargoVendor = true;
   inherit cargoHash;
   inherit (source) version src;
   nativeBuildInputs = [ pkg-config ] ++ lib.optionals stdenv.cc.isClang [ rustPlatform.bindgenHook ];

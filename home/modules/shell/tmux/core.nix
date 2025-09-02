@@ -25,7 +25,6 @@ let
   tmuxThumbsRust = pkgs.rustPlatform.buildRustPackage {
     inherit src pname version;
     cargoHash = "sha256-xvfjWS1QZWrlwytFyWVtjOyB3EPT9leodVLt72yyM4E=";
-    useFetchCargoVendor = true;
   };
   tmux-thumbs = pkgs.tmuxPlugins.mkTmuxPlugin {
     inherit version src;

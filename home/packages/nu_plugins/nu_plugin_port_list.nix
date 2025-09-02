@@ -6,7 +6,6 @@ source: cargoHash:
 }:
 rustPlatform.buildRustPackage rec {
   pname = "nushell_plugin_port_list";
-  useFetchCargoVendor = true;
   inherit cargoHash;
   inherit (source) version src;
   checkPhase = ''

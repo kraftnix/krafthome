@@ -140,7 +140,7 @@ in
     };
 
     greetdBin = mkOption {
-      default = "${pkgs.greetd.tuigreet}/bin/tuigreet";
+      default = "${pkgs.tuigreet}/bin/tuigreet";
       description = "greetd binary to run";
       type = types.str;
     };

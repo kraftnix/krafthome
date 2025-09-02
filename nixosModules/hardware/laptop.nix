@@ -32,9 +32,9 @@ in
       );
     })
     (mkIf cfg.headless {
-      services.logind = {
-        lidSwitch = "ignore";
-        lidSwitchDocked = "ignore";
+      services.logind.settings.Login = {
+        HandleLidSwitchDocked = "ignore";
+        HandleLidSwitch = "ignore";
       };
     })
     (mkIf cfg.powersave {

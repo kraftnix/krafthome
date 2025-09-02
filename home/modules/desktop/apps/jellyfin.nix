@@ -125,7 +125,7 @@ in
       uuid = options.string "" "sets `client_uuid` (optional)";
       # TODO: auto set this to host's `networking.hostName` if available
       name = options.string "" "sets `player_name` (optional)";
-      external.enable = options.enable "use a host / user's mpv shim instead of jellyfin-mpv-shim bundled mpv, sets `mpv_ext`";
+      external.enable = options.enable "use a host / user's mpv instead of jellyfin-mpv-shim bundled mpv, sets `mpv_ext`";
       external.path = options.string "~/.nix-profile/bin/jellyfin-mpv-shim" "path of external mpv binary, sets `mpv_ext_path` (optional)";
     };
     mediaPlayer.enable = options.enable "add jellyfin-media-player";
