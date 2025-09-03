@@ -76,7 +76,7 @@ in
             }
           '';
         };
-        home.stateVersion = mkDefault "22.05";
+        home.stateVersion = lib.mkOptionDefault "22.05";
       };
     # System user config
     users.users.${cfg.name} = {

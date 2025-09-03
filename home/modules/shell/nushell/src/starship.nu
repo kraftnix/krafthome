@@ -1,6 +1,6 @@
 ## STARSHIP SPECIFIC (from upstream)
 
-let starship_cache = ($"($env.XDG_CACHE_HOME)/starship" | path expand)
+let starship_cache = ($"($env | get -o XDG_CACHE_HOME | default "~/.cache")/starship" | path expand)
 if not ($starship_cache | path exists) {
   mkdir $starship_cache
 }

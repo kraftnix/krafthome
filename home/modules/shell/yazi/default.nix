@@ -240,6 +240,16 @@ in
         };
         keymap.mgr.prepend_keymap = flatten [
           {
+            desc = "Peek preview down";
+            on = [ "<C-j>" ];
+            run = "seek 5";
+          }
+          {
+            desc = "Peek preview up";
+            on = [ "<C-k>" ];
+            run = "seek -5";
+          }
+          {
             desc = "Enter the child directory, or open the file";
             on = [ "l" ];
             run = "plugin --sync smart-enter";
@@ -652,6 +662,14 @@ in
         ];
         settings = {
           log.enabled = true;
+          tasks = {
+            # Unlimited picture size
+            image_alloc = 0; # this doesn't appear to have any affect when image_bound is set
+            image_bound = [
+              0
+              0
+            ];
+          };
           mgr = {
             inherit (cfg)
               sort_by
