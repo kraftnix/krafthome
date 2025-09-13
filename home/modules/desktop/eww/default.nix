@@ -115,8 +115,8 @@ in
       onChange = if cfg.autoReload then reload_script.outPath else "";
     };
 
-    programs.hyprland.execOnce = mkIf (!cfg.systemd.enable) {
-      swaync = "waybar";
+    programs.hyprland.execOnce = mkIf (!cfg.systemd) {
+      eww = "eww";
     };
     wayland.windowManager.sway.config.startup = mkIf (!cfg.systemd) [
       {
