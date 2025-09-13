@@ -47,6 +47,7 @@
       };
       khome.desktop.wm.sway = {
         enable = true;
+        enableTap = true;
         full = true;
       };
       khome.shell.atuin.enableSystemdDaemon = true;

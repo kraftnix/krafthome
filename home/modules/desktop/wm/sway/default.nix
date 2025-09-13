@@ -32,6 +32,7 @@ in
   options.khome.desktop.wm.sway = {
     enable = opts.enable "enable sway config";
     enableDefaults = opts.enableTrue "enable default shared config";
+    enableTap = opts.enableTrue "enable tap on all input devices";
     startup = mkOption {
       description = "startup commands";
       default = [ ];
@@ -69,12 +70,15 @@ in
     enableSystemd = opts.enableTrue "enable system integration";
     enableSwaymsg = opts.enableTrue "enable swaynag integration";
     enableGtk = opts.enableTrue "enable gtk";
-    input = opts.raw {
-      "*" = {
-        xkb_layout = "gb";
-        xkb_options = "caps:escape";
-      };
-    } "inputs option";
+    input = opts.raw { } "inputs option" // {
+      example = lib.literalExpression ''
+        {
+                "*" = {
+                  xkb_layout = "gb";
+                  xkb_options = "caps:escape";
+                };
+              }'';
+    };
     bars = mkOption {
       type = with types; listOf raw;
       default = wcfg.bars;
@@ -84,6 +88,12 @@ in
 
   config = mkMerge [
     {
+      khome.desktop.wm.sway.input."*" = {
+        xkb_layout = "gb";
+        xkb_options = "caps:escape";
+        tap = lib.mkIf cfg.enableTap "enabled";
+        tap_button_map = lib.mkIf cfg.enableTap "lrm"; # 1: left, 2: right: 3 middle
+      };
       khome.desktop.wm.sway = {
         startup = [
           {
