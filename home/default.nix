@@ -25,7 +25,6 @@ args@{
   };
 
   flake.overlays = {
-    # anyrun = inputs.anyrun.overlays.default;
     misc-fixes = final: prev: {
       vimPlugins = prev.vimPlugins // {
         nvim-spectre = self.channels.${final.system}.stable.pkgs.vimPlugins.nvim-spectre;

@@ -115,11 +115,21 @@ in
       onChange = if cfg.autoReload then reload_script.outPath else "";
     };
 
+    programs.hyprland.execOnce = mkIf (!cfg.systemd.enable) {
+      swaync = "waybar";
+    };
+    wayland.windowManager.sway.config.startup = mkIf (!cfg.systemd) [
+      {
+        always = false;
+        command = "exec eww daemon";
+      }
+    ];
+
     # colors file
     xdg.configFile."eww/css/_colors.scss".text =
       if cfg.colors != null then cfg.colors else (builtins.readFile "${cfg.configDir}/css/_colors.scss");
 
-    systemd.user.services.eww = {
+    systemd.user.services.eww = mkIf cfg.systemd {
       Unit = {
         Description = "Eww Daemon";
         PartOf = [ "graphical-session.target" ];

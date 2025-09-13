@@ -40,7 +40,7 @@ in
     khome.desktop.wm.sway = {
       swayr.enable = true;
       swaylock.enable = true;
-      startup = [
+      startup = lib.mkBefore [
         {
           command = "systemctl --user daemon-reload";
           always = true;
@@ -49,29 +49,6 @@ in
           command = "dbus-update-activation-environment --systemd ${concatStringsSep " " variableUpdates}";
           always = true;
         }
-        (mkIf (config.programs.eww-hyprland.enable) (
-          if config.programs.eww-hyprland.systemd then
-            {
-              command = "systemctl --user reload eww";
-              always = true;
-            }
-          else
-            {
-              command = "exec eww daemon";
-            }
-        ))
-        (mkIf (config.services.mako.enable) {
-          command = "exec mako";
-          always = true;
-        })
-        (mkIf (config.programs.waybar.enable && config.programs.waybar.systemd.enable) {
-          command = "systemctl --user restart waybar";
-          always = true;
-        })
-        (mkIf (config.services.kanshi.enable) {
-          command = "systemctl --user restart kanshi";
-          always = true;
-        })
       ];
 
       keybindings = mapAttrs (n: mkOptionDefault) {

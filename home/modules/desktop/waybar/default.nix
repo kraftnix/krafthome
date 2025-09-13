@@ -25,6 +25,13 @@ let
   hyprlandEnable = cfg.wm == "hyprland";
 in
 {
+  imports = [
+    (lib.mkAliasOptionModule
+      [ "khome" "desktop" "waybar" "systemd" "enable" ]
+      [ "programs" "waybar" "systemd" "enable" ]
+    )
+  ];
+
   options.khome.desktop.waybar = {
     enable = mkEnableOption "enable waybar integration";
     colorsRelPath = mkStrOption ".config/waybar/colors.css" "path to place `colors.css` relative to home";
@@ -47,6 +54,16 @@ in
     home.file."${cfg.colorsRelPath}".text = builtins.concatStringsSep "\n" (
       mapAttrsToList (name: value: "@define-color ${name} ${value};") cfg.colors
     );
+
+    programs.hyprland.execOnce = mkIf (!cfg.systemd.enable) {
+      waybar = "waybar";
+    };
+    wayland.windowManager.sway.config.startup = mkIf (!cfg.systemd.enable) [
+      {
+        always = false;
+        command = "waybar";
+      }
+    ];
 
     programs.waybar = {
       enable = true;

@@ -71,5 +71,12 @@ in
       })
       cfg.extraSettings
     ];
+    programs.hyprland.execOnce.mako = "mako";
+    wayland.windowManager.sway.config.startup = [
+      {
+        always = false;
+        command = "mako";
+      }
+    ];
   };
 }
