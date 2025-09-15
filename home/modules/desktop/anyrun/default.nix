@@ -73,7 +73,7 @@ in
     };
 
     programs.hyprland = mkIf (cfg.modKeybind != "") {
-      binds."$mainMod${optionalString cfg.modIncludeShift " SHIFT"}"."${cfg.modKeybind}" = "exec, anyrun";
+      binds."$mod${optionalString cfg.modIncludeShift " SHIFT"}"."${cfg.modKeybind}" = "exec, anyrun";
     };
 
     wayland.windowManager.sway.config = {

@@ -278,7 +278,7 @@ in
     };
 
     programs.hyprland = mkIf (cfg.enableHyprlandKeybind) {
-      binds."$mainMod"."${cfg.hyprlandKey}" = "exec, ${cfg.walkerExec}";
+      binds."$mod"."${cfg.hyprlandKey}" = "exec, ${cfg.walkerExec}";
     };
 
     wayland.windowManager.sway.config.keybindings = mkIf (cfg.enableSwayKeybind) {

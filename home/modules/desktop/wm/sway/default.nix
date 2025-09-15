@@ -33,6 +33,12 @@ in
     enable = opts.enable "enable sway config";
     enableDefaults = opts.enableTrue "enable default shared config";
     enableTap = opts.enableTrue "enable tap on all input devices";
+    swayfx.enable = opts.enable "enable swayfx";
+    opacity = mkOption {
+      description = "opacity for windows, default to 1.0 (ignored and noop)";
+      default = 1.0;
+      type = types.float;
+    };
     startup = mkOption {
       description = "startup commands";
       default = [ ];
@@ -52,8 +58,10 @@ in
 
         # screenshots/recording
         sway-contrib.grimshot # screenshots
+        grim
+        slurp
         flameshot
-        fuzzel # rofi-like
+        wlr-randr
       ];
       type = with types; listOf package;
     };
@@ -125,12 +133,17 @@ in
       stylix.targets.sway.enable = true;
       wayland.windowManager.sway = {
         enable = true;
+        package = mkIf cfg.swayfx.enable pkgs.swayfx;
         checkConfig = false; # for now, breaks with colorscheme variables
         systemd.enable = cfg.enableSystemd;
         swaynag.enable = cfg.enableSwaymsg;
         extraConfig = mkIf cfg.enableDefaults wcfg.sharedExtraConfig;
         extraConfigEarly = mkBefore ''
           set $mod ${config.wayland.windowManager.sway.config.modifier}
+          ${lib.optionalString (cfg.opacity != 1.0) ''
+            # Default opacity for all windows.
+            for_window [app_id=".*"] opacity ${toString cfg.opacity}
+          ''}
         '';
         wrapperFeatures.gtk = mkIf cfg.enableGtk true;
         config = mkMerge [

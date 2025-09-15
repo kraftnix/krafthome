@@ -38,7 +38,7 @@ in
 
     # wayland.windowManager.sway.config = sharedConfig;
     khome.desktop.wm.sway = {
-      swayr.enable = true;
+      # swayr.enable = true;
       swaylock.enable = true;
       startup = lib.mkBefore [
         {
@@ -62,11 +62,23 @@ in
         # "$mod+Shift+d" = ''exec "rofi -show-icons -modi ssh,drun,filebrowser,emoji -show drun"'';
 
         "$mod+Shift+d" = "exec eww open system-menu --toggle";
-        "$mod+Shift+r" = "exec ${pkgs.writeScript "reload_eww" ''
+        "$mod+Shift+r" = "exec ${pkgs.writeScript "reload_all" ''
           eww close bar
           swaymsg reload
+          ${lib.optionalString config.services.kanshi.enable "systemctl --user restart kanshi"}
+          ${lib.optionalString config.services.shikane.enable "systemctl --user restart shikane"}
           eww reload
           eww open bar
+        ''}";
+        "$mod+o" = "exec ${pkgs.writers.writeNu "toggle_opacity.nu" ''
+          let i = (swaymsg opacity plus 0.01 | complete)
+          if $i.exit_code != 0 {
+            # was opaque, make transparent
+            swaymsg opacity 0.95
+          } else {
+            # was transparent, make opaque
+            swaymsg opacity 1
+          }
         ''}";
 
         "$mod+a" = wrapSwayrLog "switch-window";

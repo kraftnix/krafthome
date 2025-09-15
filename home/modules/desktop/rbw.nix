@@ -50,7 +50,7 @@ in
     };
 
     programs.hyprland = mkIf (cfg.enableHyprlandKeybind) {
-      binds."$mainMod SHIFT"."${cfg.hyprlandKey}" = "exec, rofi-rbw";
+      binds."$mod SHIFT"."${cfg.hyprlandKey}" = "exec, rofi-rbw";
     };
 
     wayland.windowManager.sway.config.keybindings = mkIf (cfg.enableSwayKeybind) {

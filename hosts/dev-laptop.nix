@@ -52,6 +52,7 @@
       };
       khome.shell.atuin.enableSystemdDaemon = true;
       programs.eww-hyprland.enable = true;
+      programs.wl-kbptr.enable = true;
     };
 
   khome = {

@@ -40,10 +40,10 @@ let
       "2" = [
         { app_id = "Firefox$"; }
       ];
-      "3" = [
+      "5" = [
         { app_id = "Signal"; }
-        { app_id = "telegramdesktop"; }
         { app_id = "evolution"; }
+        { app_id = "Element"; }
       ];
     };
     floating = {
@@ -76,11 +76,6 @@ in
     xsession.windowManager.i3.config = sharedConfig // {
       assigns = builtins.mapAttrs (name: builtins.map criteriaRewrite) sharedConfig.assigns;
       floating.criteria = builtins.map criteriaRewrite sharedConfig.floating.criteria;
-    };
-    khome.desktop.wm = {
-      keybindings = {
-        "$mod+Shift+f" = "exec pcmanfm";
-      };
     };
   };
 }
