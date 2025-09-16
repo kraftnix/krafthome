@@ -69,7 +69,7 @@ in
     };
     xdg.portal = {
       enable = true;
-      config.common.default = "*";
+      config.common.default = lib.mkDefault [ "gtk" ];
       xdgOpenUsePortal = true;
       extraPortals = cfg.extraXdgPortals;
     };

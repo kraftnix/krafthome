@@ -40,7 +40,8 @@ in
     '';
     xdg.portal = {
       enable = true;
-      config.sway.default = "wlr";
+      # upstream uses gtk
+      # config.sway.default = [ "wlr" ];
       wlr.enable = true;
       wlr.settings.screencast = {
         # output_name = "HDMI-A-1";

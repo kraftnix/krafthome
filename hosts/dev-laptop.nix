@@ -49,6 +49,10 @@
         enable = true;
         enableTap = true;
         full = true;
+        swayfx = {
+          enable = true;
+          corner_radius = 5;
+        };
       };
       khome.shell.atuin.enableSystemdDaemon = true;
       programs.eww-hyprland.enable = true;
@@ -60,10 +64,7 @@
       enable = true;
       tuigreet.enable = true;
       sway.enable = true;
-      sway.swayfx = {
-        enable = true;
-        corner_radius = 5;
-      };
+      sway.polkitAgent = "gnome";
       wifi.enable = true;
     };
     users.dev-user.enable = true;
