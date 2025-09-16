@@ -145,10 +145,12 @@ in
         hyprland.command = "submap,resize";
       };
       float_click = {
+        exec = true;
         mapping = "a";
         command = "wl-kbptr -o modes=floating,click -o mode_floating.source=detect";
       };
       float = {
+        exec = true;
         mapping = "a";
         command = "wl-kbptr -o modes=floating -o mode_floating.source=detect";
         extraKeys = [ "Shift" ];

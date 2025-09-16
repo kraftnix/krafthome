@@ -60,6 +60,10 @@
       enable = true;
       tuigreet.enable = true;
       sway.enable = true;
+      sway.swayfx = {
+        enable = true;
+        corner_radius = 5;
+      };
       wifi.enable = true;
     };
     users.dev-user.enable = true;

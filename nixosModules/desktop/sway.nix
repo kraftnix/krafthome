@@ -40,9 +40,8 @@ in
     '';
     xdg.portal = {
       enable = true;
+      config.sway.default = "wlr";
       wlr.enable = true;
-      # deprecated, see: https://github.com/NixOS/nixpkgs/pull/179204
-      # gtkUsePortal = true;
       wlr.settings.screencast = {
         # output_name = "HDMI-A-1";
         max_fps = 30;

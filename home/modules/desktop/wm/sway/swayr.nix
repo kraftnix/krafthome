@@ -29,7 +29,7 @@ in
 
     # wayland.windowManager.sway.config = sharedConfig;
     khome.desktop.wm.sway = {
-      startup = [
+      startup = lib.mkAfter [
         (
           if cfg.swayr.systemd then
             {

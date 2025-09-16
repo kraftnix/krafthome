@@ -115,15 +115,34 @@ in
       onChange = if cfg.autoReload then reload_script.outPath else "";
     };
 
-    programs.hyprland.execOnce = mkIf (!cfg.systemd) {
-      eww = "eww";
-    };
-    wayland.windowManager.sway.config.startup = mkIf (!cfg.systemd) [
-      {
-        always = false;
-        command = "exec eww daemon";
-      }
-    ];
+    programs.hyprland.execOnce =
+      if (!cfg.systemd) then
+        {
+          eww = "eww";
+        }
+      else
+        {
+          eww = "systemctl --user restart eww && eww open bar";
+        };
+    wayland.windowManager.sway.config.startup =
+      if (!cfg.systemd) then
+        [
+          {
+            always = false;
+            command = "exec eww daemon";
+          }
+        ]
+      else
+        [
+          {
+            always = true;
+            command = "exec systemctl --user restart eww";
+          }
+          {
+            always = true;
+            command = "exec eww open bar";
+          }
+        ];
 
     # colors file
     xdg.configFile."eww/css/_colors.scss".text =

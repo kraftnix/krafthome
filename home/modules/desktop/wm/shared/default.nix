@@ -154,10 +154,10 @@ in
         (mapAttrs (_: mkDefault) cfg.keybindings)
       ];
       gaps = mkIf cfg.gaps.enable {
-        inner = 14;
-        outer = -2;
-        smartGaps = true;
-        smartBorders = "on";
+        inner = mkDefault 14;
+        outer = mkDefault (-2);
+        smartGaps = mkDefault true;
+        smartBorders = mkDefault "no_gaps";
       };
       modes = {
         resize = mkIf cfg.modes.resize.enable {

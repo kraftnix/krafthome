@@ -46,6 +46,10 @@ in
           always = true;
         }
         {
+          command = "systemctl --user import-environment ${concatStringsSep " " variableUpdates}";
+          always = true;
+        }
+        {
           command = "dbus-update-activation-environment --systemd ${concatStringsSep " " variableUpdates}";
           always = true;
         }
@@ -56,17 +60,17 @@ in
         Print = "exec flameshot gui";
         "$mod+Print" = "exec grimshot copy area";
         "$mod+Shift+Print" = "exec grimshot save screen";
-        "$mod+Shift+n" = "move scratchpad, scratchpad show, resize set 1912 1043, move position 4 4";
+        "$mod+Shift+n" =
+          "mark 11-logseq, move scratchpad, scratchpad show, resize set 1912 1043, move position 4 4";
         "$mod+g" = "exec rofi -show emoji -modi emoji ";
         # "$mod+d" = "exec fuzzel --show-actions";
         # "$mod+Shift+d" = ''exec "rofi -show-icons -modi ssh,drun,filebrowser,emoji -show drun"'';
 
         "$mod+Shift+d" = "exec eww open system-menu --toggle";
         "$mod+Shift+r" = "exec ${pkgs.writeScript "reload_all" ''
-          eww close bar
           swaymsg reload
-          ${lib.optionalString config.services.kanshi.enable "systemctl --user restart kanshi"}
-          ${lib.optionalString config.services.shikane.enable "systemctl --user restart shikane"}
+          ${lib.optionalString config.services.kanshi.enable "systemctl --user restart kanshi --no-block"}
+          ${lib.optionalString config.services.shikane.enable "systemctl --user restart shikane --no-block"}
           eww reload
           eww open bar
         ''}";

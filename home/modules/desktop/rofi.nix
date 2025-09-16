@@ -80,9 +80,6 @@ in
 {
   options.khome.desktop.rofi = {
     enable = mkEnableOption "enable mako integration";
-    enableWayland = mkEnableOption "use rofi-wayland" // {
-      default = true;
-    };
     theme = mkOption {
       type =
         with types;
@@ -130,7 +127,6 @@ in
     stylix.targets.rofi.enable = true;
     programs.rofi = {
       enable = true;
-      package = if cfg.enableWayland then pkgs.rofi-wayland else pkgs.rofi;
       inherit (cfg) plugins terminal;
       theme = mkDefault cfg.theme;
       extraConfig = mkMerge [

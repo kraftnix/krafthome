@@ -34,6 +34,11 @@ in
     enableDefaults = opts.enableTrue "enable default shared config";
     enableTap = opts.enableTrue "enable tap on all input devices";
     swayfx.enable = opts.enable "enable swayfx";
+    swayfx.corner_radius = mkOption {
+      description = "sets `corner_radius` if not 0";
+      default = 5;
+      type = types.int;
+    };
     opacity = mkOption {
       description = "opacity for windows, default to 1.0 (ignored and noop)";
       default = 1.0;
@@ -103,16 +108,6 @@ in
         tap_button_map = lib.mkIf cfg.enableTap "lrm"; # 1: left, 2: right: 3 middle
       };
       khome.desktop.wm.sway = {
-        startup = [
-          {
-            command = "systemctl --user daemon-reload";
-            always = true;
-          }
-          {
-            command = "dbus-update-activation-environment --systemd DISPLAY WAYLAND_DISPLAY SWAYSOCK XDG_CURRENT_DESKTOP";
-            always = true;
-          }
-        ];
         sessionVariables = {
           MOZ_ENABLE_WAYLAND = 1;
           # set this in tuigreet to not clash
@@ -144,6 +139,9 @@ in
             # Default opacity for all windows.
             for_window [app_id=".*"] opacity ${toString cfg.opacity}
           ''}
+          ${lib.optionalString (
+            cfg.swayfx.enable && cfg.swayfx.corner_radius != 0
+          ) "corner_radius ${toString cfg.swayfx.corner_radius}"}
         '';
         wrapperFeatures.gtk = mkIf cfg.enableGtk true;
         config = mkMerge [

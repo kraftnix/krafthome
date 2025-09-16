@@ -22,7 +22,7 @@ let
   startAndRandom =
     if cfg.systemdIntegration then
       # "systemctl --user start swww && ${singleRandom}"
-      "systemctl --user start swww && systemctl --user start swww-rotate"
+      "systemctl --user restart swww && systemctl --user restart swww-rotate"
     else
       "swww-daemon init && ${singleRandom}";
   randomiseCommand = "swww-randomise -i ${toString cfg.interval} -f ${toString cfg.fps} ${
@@ -87,10 +87,18 @@ in
 
     wayland.windowManager.sway.config = {
       keybindings."${cfg.swayKey}" = lib.mkOverride 250 "exec ${singleRandom}";
-      startup = [
-        { command = startAndRandom; }
-      ]
-      ++ (optional (!cfg.systemdIntegration) { command = randomiseCommand; });
+      startup = lib.mkAfter (
+        [
+          {
+            command = startAndRandom;
+            always = cfg.systemdIntegration;
+          }
+        ]
+        ++ (optional (!cfg.systemdIntegration) {
+          command = randomiseCommand;
+          always = cfg.systemdIntegration;
+        })
+      );
     };
 
     provision.scripts.scripts.swww-randomise.file = ./swww-randomise.nu;
