@@ -34,7 +34,6 @@ in
 
   options.khome.desktop.waybar = {
     enable = mkEnableOption "enable waybar integration";
-    colorsRelPath = mkStrOption ".config/waybar/colors.css" "path to place `colors.css` relative to home";
     stylecss = mkStrOption (builtins.readFile ./lightweight.css) "style css file";
     wm = mkStrOption "sway" "window manager to optimise for, `sway` or `hyprland` supported.";
     colors = mkOption {
@@ -50,10 +49,6 @@ in
   };
 
   config = mkIf cfg.enable {
-    khome.desktop.waybar.colors = mkDefault (config.lib.base16.getColorsH "waybar");
-    home.file."${cfg.colorsRelPath}".text = builtins.concatStringsSep "\n" (
-      mapAttrsToList (name: value: "@define-color ${name} ${value};") cfg.colors
-    );
 
     programs.hyprland.execOnce = mkIf (!cfg.systemd.enable) {
       waybar = "waybar";
@@ -65,13 +60,11 @@ in
       }
     ];
 
+    stylix.targets.waybar.enable = lib.mkDefault true;
     programs.waybar = {
       enable = true;
-      # systemd.enable = true;
-      style = ''
-        @import "/home/${config.home.username}/${cfg.colorsRelPath}";
-      ''
-      + cfg.stylecss;
+      systemd.enable = true;
+      style = lib.mkAfter cfg.stylecss;
       settings.mainbar = mkMerge [
         {
           layer = "top";
