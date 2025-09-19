@@ -10,24 +10,24 @@
       lib.mapAttrs (_: lib.mkDefault) {
         "Mod+Shift+Slash" = {
           action = show-hotkey-overlay;
-          hotkey-overlay-title.title = "Show hotkey overlay";
+          hotkey-overlay.title = "Show hotkey overlay";
         };
 
         "Mod+Alt+L" = {
           action = spawn "swaylock";
-          hotkey-overlay-title.title = "Lock the Screen: swaylock";
+          hotkey-overlay.title = "Lock the Screen: swaylock";
         };
 
         "Mod+X" = {
           repeat = false;
           action = toggle-overview;
-          hotkey-overlay-title.title = "Toggle Overview";
+          hotkey-overlay.title = "Toggle Overview";
         };
 
         "Mod+Shift+Q" = {
           repeat = false;
           action = close-window;
-          hotkey-overlay-title.title = "Close window";
+          hotkey-overlay.title = "Close window";
         };
 
         # "XF86AudioRaiseVolume".action = spawn "wpctl" "set-volume" "@DEFAULT_AUDIO_SINK@" "0.1+";
@@ -55,11 +55,11 @@
 
         "Mod+Shift+E" = {
           action = quit;
-          hotkey-overlay-title.title = "Quit";
+          hotkey-overlay.title = "Quit";
         };
         "Mod+Ctrl+Shift+E" = {
           action = quit { skip-confirmation = true; };
-          hotkey-overlay-title.title = "Force Quit";
+          hotkey-overlay.title = "Force Quit";
         };
 
         "Mod+Left".action = focus-column-left;
