@@ -55,6 +55,11 @@ in
       type = types.raw;
       description = "lib.base16 color attribute set";
     };
+    extraCss = mkOption {
+      description = "Extra css to append to {programs.waybar.style}";
+      default = "";
+      type = types.str;
+    };
     extraConfig = mkOption {
       default = { };
       type = types.raw;
@@ -78,7 +83,7 @@ in
     programs.waybar = {
       enable = true;
       systemd.enable = lib.mkDefault true;
-      style = lib.mkAfter cfg.stylecss;
+      style = lib.mkAfter cfg.extraCss;
       settings.mainbar = mkMerge [
         {
           layer = "top";
