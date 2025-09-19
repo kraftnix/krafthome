@@ -64,42 +64,40 @@ in
       default = true;
       description = "add shift key to hyprand/sway mapping";
     };
-    hyprlandKey = mkOption {
+    keybind = mkOption {
       type = types.str;
-      default = "I";
+      default = "i";
       description = "hyprland mod key (with $mod + shift)";
-    };
-    swayKey = mkOption {
-      type = types.str;
-      default = "$mod${optionalString cfg.enableShift "+Shift"}+i";
-      description = "sway mod key (with $mod + shift)";
     };
   };
 
   config = mkIf cfg.enable {
-    programs.hyprland = {
-      binds."$mod${optionalString cfg.enableShift " SHIFT"}".${cfg.hyprlandKey} = "exec, ${singleRandom}";
-      execOnce = {
-        "swww-init" = startAndRandom;
-        "swww-randomise" = mkIf (!cfg.systemdIntegration) randomiseCommand;
-      };
+
+    khome.desktop.wm.shared.binds.swww-next = {
+      enable = true;
+      exec = true;
+      mapping = cfg.keybind;
+      command = singleRandom;
+      extraKeys = mkIf cfg.enableShift [ "Shift" ];
     };
 
-    wayland.windowManager.sway.config = {
-      keybindings."${cfg.swayKey}" = lib.mkOverride 250 "exec ${singleRandom}";
-      startup = lib.mkAfter (
-        [
-          {
-            command = startAndRandom;
-            always = cfg.systemdIntegration;
-          }
-        ]
-        ++ (optional (!cfg.systemdIntegration) {
-          command = randomiseCommand;
-          always = cfg.systemdIntegration;
-        })
-      );
+    programs.hyprland.execOnce = {
+      "swww-init" = startAndRandom;
+      "swww-randomise" = mkIf (!cfg.systemdIntegration) randomiseCommand;
     };
+
+    wayland.windowManager.sway.config.startup = lib.mkAfter (
+      [
+        {
+          command = startAndRandom;
+          always = cfg.systemdIntegration;
+        }
+      ]
+      ++ (optional (!cfg.systemdIntegration) {
+        command = randomiseCommand;
+        always = cfg.systemdIntegration;
+      })
+    );
 
     provision.scripts.scripts.swww-randomise.file = ./swww-randomise.nu;
 

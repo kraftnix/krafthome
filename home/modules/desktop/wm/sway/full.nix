@@ -31,10 +31,7 @@ in
   };
 
   config = mkIf cfg.full {
-    khome.desktop.swaynotificationcenter = {
-      enable = true;
-      modKeybind = "grave"; # backtick
-    };
+    khome.desktop.swaynotificationcenter.enable = true;
 
     # wayland.windowManager.sway.config = sharedConfig;
     khome.desktop.wm.sway = {
@@ -62,8 +59,6 @@ in
         "$mod+Shift+Print" = "exec grimshot save screen";
         "$mod+Shift+n" =
           "mark 11-logseq, move scratchpad, scratchpad show, resize set 1912 1043, move position 4 4";
-        "$mod+g" = "exec rofi -show emoji -modi emoji ";
-        # "$mod+d" = "exec fuzzel --show-actions";
         # "$mod+Shift+d" = ''exec "rofi -show-icons -modi ssh,drun,filebrowser,emoji -show drun"'';
 
         "$mod+Shift+d" = "exec eww open system-menu --toggle";
@@ -74,19 +69,6 @@ in
           eww reload
           eww open bar
         ''}";
-        "$mod+o" = "exec ${pkgs.writers.writeNu "toggle_opacity.nu" ''
-          let i = (swaymsg opacity plus 0.01 | complete)
-          if $i.exit_code != 0 {
-            # was opaque, make transparent
-            swaymsg opacity 0.95
-          } else {
-            # was transparent, make opaque
-            swaymsg opacity 1
-          }
-        ''}";
-
-        "$mod+a" = wrapSwayrLog "switch-window";
-        "$mod+Shift+a" = wrapSwayrLog "switch-workspace-or-window";
 
         "$mod+period" = "workspace next";
         "$mod+comma" = "workspace prev";

@@ -22,7 +22,9 @@ let
       inherit description default;
       type = types.str;
     };
-  hyprlandEnable = cfg.wm == "hyprland";
+  hyprlandEnable = config.programs.hyprland.enable;
+  niriEnable = config.programs.niri.enable;
+  swayEnable = config.wayland.windowManager.sway.enable;
 in
 {
   imports = [
@@ -30,12 +32,24 @@ in
       [ "khome" "desktop" "waybar" "systemd" "enable" ]
       [ "programs" "waybar" "systemd" "enable" ]
     )
+    (lib.mkAliasOptionModule [ "khome" "desktop" "waybar" "style" ] [ "programs" "waybar" "style" ])
+    (lib.mkAliasOptionModule
+      [ "khome" "desktop" "waybar" "settings" ]
+      [ "programs" "waybar" "settings" ]
+    )
   ];
 
   options.khome.desktop.waybar = {
     enable = mkEnableOption "enable waybar integration";
-    stylecss = mkStrOption (builtins.readFile ./lightweight.css) "style css file";
-    wm = mkStrOption "sway" "window manager to optimise for, `sway` or `hyprland` supported.";
+    workspacesConfig = mkOption {
+      description = "Default options to set in <wm>/workspaces";
+      default = {
+        disable-scroll = false;
+        all-outputs = true;
+        format = "{icon}";
+      };
+      type = types.raw;
+    };
     colors = mkOption {
       default = { };
       type = types.raw;
@@ -63,7 +77,7 @@ in
     stylix.targets.waybar.enable = lib.mkDefault true;
     programs.waybar = {
       enable = true;
-      systemd.enable = true;
+      systemd.enable = lib.mkDefault true;
       style = lib.mkAfter cfg.stylecss;
       settings.mainbar = mkMerge [
         {
@@ -71,13 +85,13 @@ in
           position = "top";
           height = 30;
           modules-left =
-            if hyprlandEnable then
-              [ "${cfg.wm}/workspaces" ]
-            else
-              [
-                "${cfg.wm}/workspaces"
-                "sway/mode"
-              ];
+            [ ]
+            ++ (lib.optional hyprlandEnable "hyprland/workspaces")
+            ++ (lib.optional niriEnable "niri/workspaces")
+            ++ (lib.optionals swayEnable [
+              "sway/workspaces"
+              "sway/mode"
+            ]);
           modules-center = [ "clock" ];
           modules-right = [
             "idle_inhibitor"
@@ -90,10 +104,11 @@ in
             "battery"
             "tray"
           ];
-          "${cfg.wm}/workspaces" = {
-            disable-scroll = true;
-            all-outputs = false;
-            format = "{icon}";
+          "niri/workspaces" = mkIf niriEnable cfg.workspacesConfig;
+          "hyprland/workspaces" = mkIf hyprlandEnable cfg.workspacesConfig;
+          "sway/workspaces" = mkIf swayEnable cfg.workspacesConfig;
+          "sway/mode" = mkIf swayEnable {
+            format = "<span style =\"italic\">{}</span>";
           };
           "battery" = {
             format = "{capacity}% {icon}";
@@ -108,9 +123,6 @@ in
               critical = 15;
               warning = 30;
             };
-          };
-          "sway/mode" = mkIf (!hyprlandEnable) {
-            format = "<span style =\"italic\">{}</span>";
           };
           "idle_inhibitor" = {
             format = "{icon}";

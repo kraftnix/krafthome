@@ -44,8 +44,7 @@ localFlake@{
     pkgs = self.nixosConfigurations.dev-laptop.pkgs;
     inherit (self.nixosConfigurations.dev-laptop.config.home-manager) extraSpecialArgs;
     # modules = (builtins.attrValues self.auto-import.homeManager.modules') ++ [
-    modules = [
-      inputs.stylix.homeModules.stylix
+    modules = self.externalHomeModules ++ [
       {
         options.meta.doc = lib.mkOption { default = { }; };
         config.home.stateVersion = "23.11";

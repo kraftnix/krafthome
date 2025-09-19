@@ -78,8 +78,8 @@
             ''
               cp $WALLPAPER $out
             '';
-        wezterm-upstream = inputs'.wezterm.packages.default;
         hl = pkgs.callPackage (import ./hl/hl.nix) { };
+        nirius = pkgs.callPackage (import ./nirius.nix) { };
         # inherit (extraGrammars) tree-sitter-nu tree-sitter-bash tree-sitter-markdown tree-sitter-python tree-sitter-yuck;
         tree-sitter-with-nu = pkgs.tree-sitter.override {
           extraGrammars = {
@@ -144,13 +144,13 @@
           tree-sitter-yuck
           ;
         inherit (config.packages)
+          nirius
           # tree-sitter-full
           # tree-sitter-grammars
           # tree-sitter-parsers
           # nvim-treesitter-full
           # allTreesitter
           allNvimTreesitter
-          wezterm-upstream
           get-default-ssh
           skr
           get-recent-ssh

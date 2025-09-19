@@ -23,7 +23,6 @@ let
   custom = cfg.themes.custom;
 in
 {
-  ##### interface
   options.programs.walker = {
     enable = mkOption {
       description = "Whether to enable walker completion.";
@@ -31,27 +30,9 @@ in
       type = types.bool;
     };
 
-    enableHyprlandKeybind = mkOption {
-      description = "enable hyprland keybinding";
-      default = true;
-      type = types.bool;
-    };
-
-    enableSwayKeybind = mkOption {
-      description = "enable sway keybinding";
-      default = true;
-      type = types.bool;
-    };
-
-    hyprlandKey = mkOption {
+    key = mkOption {
       description = "hyprland mod key (with $mod)";
       default = "d";
-      type = types.str;
-    };
-
-    swayKey = mkOption {
-      description = "sway mod key (with $mod)";
-      default = "$mod+d";
       type = types.str;
     };
 
@@ -108,7 +89,6 @@ in
     };
   };
 
-  ##### implementation
   config = mkIf cfg.enable {
     xdg.configFile = mkMerge (flatten [
       { "walker/config.toml".source = toml.generate "walker-config.toml" cfg.settings; }
@@ -277,12 +257,13 @@ in
       style = ./custom.css;
     };
 
-    programs.hyprland = mkIf (cfg.enableHyprlandKeybind) {
-      binds."$mod"."${cfg.hyprlandKey}" = "exec, ${cfg.walkerExec}";
-    };
+    khome.desktop.wm.menu = cfg.walkerExec;
+    # khome.desktop.wm.shared.binds.walker = {
+    #   enable = true;
+    #   exec = true;
+    #   mapping = cfg.key;
+    #   command = cfg.walkerExec;
+    # };
 
-    wayland.windowManager.sway.config.keybindings = mkIf (cfg.enableSwayKeybind) {
-      "${cfg.swayKey}" = "exec ${cfg.walkerExec}";
-    };
   };
 }

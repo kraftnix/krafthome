@@ -17,6 +17,7 @@ args@{
 
   flake.externalHomeModules = [
     inputs.stylix.homeModules.stylix
+    inputs.niri.homeModules.niri
   ];
 
   flake.hmProfiles = inputs.provision.lib.nix.rakeLeaves ./profiles // {
@@ -32,16 +33,12 @@ args@{
       # logseq removed from unstable: https://github.com/NixOS/nixpkgs/issues/389011
       inherit (final.channels.stable.pkgs) logseq;
     };
-    wezterm-upstream = final: prev: {
-      wezterm-upstream = inputs.wezterm.packages.${final.system}.default;
-    };
   };
   flake.overlaysLists = {
     core = with self.overlays; [
       nushellPlugins
       yaziPlugins
       misc-fixes
-      wezterm-upstream
       inputs.elewrap.overlays.default
     ];
   };

@@ -7,9 +7,7 @@ args:
 let
   cfg = config.khome.desktop.wm;
   sharedKeybindings = lib.mapAttrs (n: lib.mkDefault) {
-    "$mod+Return" = "exec ${cfg.terminal}";
     "$mod+Shift+q" = "kill";
-    "$mod+d" = "exec ${cfg.menu}";
 
     "$mod+${cfg.left}" = "focus left";
     "$mod+${cfg.down}" = "focus down";

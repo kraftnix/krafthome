@@ -26,6 +26,8 @@
     {
       imports = [ hmProfiles.neovim ];
       khome.misc.keepass.firejail.enable = true;
+      services.yubikey-touch-detector.enable = true;
+      programs.wl-ocr.enable = true;
       programs.walker = {
         enable = true;
         runAsService = true;
@@ -35,9 +37,21 @@
         };
       };
       khome.desktop.services.poweralertd.enable = true;
+      khome.desktop.rbw = {
+        enable = true;
+        keybind = "p";
+        settings = {
+          base_url = "https://bitwarden.home.internal";
+          email = "myuser@email.com";
+        };
+      };
       khome.desktop.anyrun = {
         enable = true;
-        modKeybind = "b";
+        keybind = "b";
+      };
+      khome.desktop.wm.niri = {
+        enable = true;
+        enableDefaults = true;
       };
       khome.desktop.wm.legacyTheme.enable = true;
       khome.desktop.swww = {

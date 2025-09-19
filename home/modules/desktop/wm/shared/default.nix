@@ -27,6 +27,7 @@ in
     (import ./keybindings.nix args)
     (import ./legacy-theme.nix args)
     (import ./lock_mode.nix args)
+    ./binds
   ];
 
   options.khome.desktop.wm = {
@@ -37,7 +38,7 @@ in
     terminal = opts.string "wezterm" "wm modifier key";
     backAndForth = {
       enable = opts.enableTrue "enable workspaceAutoBackAndForth: back and forth (with/without active container)";
-      key = opts.string "$mod+Tab" "keybind for back and forth";
+      key = opts.string "Tab" "keybind for back and forth";
     };
     fonts = opts.raw {
       # only works for hm atm
@@ -94,6 +95,20 @@ in
     right = opts.string "l" "right";
     up = opts.string "k" "up";
     down = opts.string "j" "down";
+    reloadScript = mkOption {
+      description = "Script to run when hard-reloading the current window manager";
+      default = ''
+        ${lib.optionalString config.services.kanshi.enable "systemctl --user restart kanshi --no-block"}
+        ${lib.optionalString config.services.shikane.enable "systemctl --user restart shikane --no-block"}
+        ${lib.optionalString config.programs.waybar.enable "systemctl --user restart waybar --no-block"}
+        ${lib.optionalString config.programs.eww-hyprland.enable ''
+          eww close bar
+          systemctl --user restart eww
+          eww open bar
+        ''}
+      '';
+      type = types.str;
+    };
   };
 
   config = {
@@ -128,31 +143,7 @@ in
         down
         ;
       workspaceAutoBackAndForth = cfg.backAndForth.enable;
-      keybindings = mkMerge [
-        (mkIf cfg.backAndForth.enable {
-          ${cfg.backAndForth.key} = mkDefault "workspace back_and_forth";
-        })
-        (mkIf cfg.brightness.enable {
-          # bind brightnessctl to function keys
-          "XF86MonBrightnessUp" = "exec ${cfg.brightness.upCommand}";
-          "XF86MonBrightnessDown" = "exec ${cfg.brightness.downCommand}";
-          "Shift+XF86MonBrightnessDown" = "exec ${cfg.brightness.minCommand}";
-        })
-        (mkIf cfg.media.enable {
-          # start/stop/next/prev via playerctl
-          "XF86AudioPlay" = "exec ${cfg.media.pausePlayCommand}";
-          "XF86AudioNext" = "exec ${cfg.media.nextCommand}";
-          "XF86AudioPrev" = "exec ${cfg.media.prevCommand}";
-        })
-        (mkIf cfg.volume.enable {
-          # Set volume via pulse audio controls
-          "XF86AudioRaiseVolume" = "exec ${cfg.volume.raise}";
-          "XF86AudioLowerVolume" = "exec ${cfg.volume.lower}";
-          "XF86AudioMute" = "exec ${cfg.volume.mute}";
-        })
-        # bind brightnessctl to function keys
-        (mapAttrs (_: mkDefault) cfg.keybindings)
-      ];
+      keybindings = mapAttrs (_: mkDefault) cfg.keybindings;
       gaps = mkIf cfg.gaps.enable {
         inner = mkDefault 14;
         outer = mkDefault (-2);

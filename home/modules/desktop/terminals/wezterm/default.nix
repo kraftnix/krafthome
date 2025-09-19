@@ -18,8 +18,6 @@ let
 in
 {
   options.khome.desktop.terminals.wezterm = {
-    # until this is resolved: https://github.com/wez/wezterm/issues/5990
-    # package = opts.package self.packages.${pkgs.system}.wezterm-upstream "wezterm package to use";
     package = opts.package pkgs.wezterm "wezterm package to use";
     front_end = mkOption {
       type = types.enum [

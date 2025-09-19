@@ -18,43 +18,42 @@ in
 {
   options.khome.desktop.swaynotificationcenter = {
     enable = mkEnableOption "anyrun khome swaynotificationcenter config";
-    modKeybind = mkOption {
-      default = "";
-      description = "keybind to add to hyprland/sway with Mod+{keybind}, empty string to disasble";
+    keybind = mkOption {
+      default = "grave";
+      description = "keybind to add to hyprland/sway/niri with Mod+{keybind}, empty string to disasble";
       type = types.str;
     };
-    modIncludeShift = mkEnableOption "add shift to generated keybind";
     extraConfig = mkOption {
       default = { };
-      description = "extra config to add to `programs.anyrun.config`";
-      type = types.raw;
+      description = "extra config to add to the swaync config json at `/etc/swaync/config.json`";
+      type = types.attrsOf types.raw;
     };
   };
 
   config = mkIf cfg.enable {
     home.packages = with pkgs; [ swaynotificationcenter ];
-    xdg.configFile."swaync/config.json".text = builtins.toJSON {
-      "$schema" = "${pkgs.swaynotificationcenter}/etc/xdg/swaync/configSchema.json";
-      timeout-critical = 20;
-      timeout = 10;
-      timeout-low = 5;
-      script-fail-notify = true;
-      widgets = [ "mpris" ];
-      widget-config.mpris = {
-        image-size = 64;
-        image-radius = 20;
-      };
-    };
+    xdg.configFile."swaync/config.json".text = builtins.toJSON (
+      lib.mkMerge [
+        (lib.mapAttrs (_: lib.mkDefault) {
+          "$schema" = "${pkgs.swaynotificationcenter}/etc/xdg/swaync/configSchema.json";
+          timeout-critical = 20;
+          timeout = 10;
+          timeout-low = 5;
+          script-fail-notify = true;
+          widgets = [ "mpris" ];
+          widget-config.mpris = {
+            image-size = 64;
+            image-radius = 20;
+          };
+        })
+      ]
+    );
 
-    programs.hyprland.binds = mkIf (cfg.modKeybind != "") {
-      "$mod${optionalString cfg.modIncludeShift " SHIFT"}"."${cfg.modKeybind}" = "exec, swaync-client -t";
-    };
-
-    wayland.windowManager.sway.config = {
-      keybindings = mkIf (cfg.modKeybind != "") {
-        "$mod+${optionalString cfg.modIncludeShift "+"}${cfg.modKeybind}" =
-          lib.mkOverride 250 "exec swaync-client -t";
-      };
+    khome.desktop.wm.shared.binds.swaynotificationcenter = {
+      enable = true;
+      exec = true;
+      mapping = cfg.keybind;
+      command = "swaync-client -t";
     };
   };
 }

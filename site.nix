@@ -57,7 +57,6 @@ let
           ++ [
             localFlake.inputs.provision.homeManagerModules.provision-scripts
             # localFlake.inputs.nix-index-database.hmModules.nix-index
-            localFlake.inputs.stylix.homeModules.stylix
             (
               { config, ... }:
               {

@@ -11,8 +11,6 @@ let
     mkIf
     mkMerge
     mkOption
-    mkOverride
-    optionalString
     types
     ;
   cfg = config.khome.desktop.anyrun;
@@ -20,12 +18,11 @@ in
 {
   options.khome.desktop.anyrun = {
     enable = mkEnableOption "anyrun khome anyrun config";
-    modKeybind = mkOption {
+    keybind = mkOption {
       default = "";
       description = "keybind to add to hyprland/sway with Mod+{keybind}, empty string to disasble";
       type = types.str;
     };
-    modIncludeShift = mkEnableOption "add shift to generated keybind";
     plugins = mkOption {
       default = [
         "applications"
@@ -72,14 +69,12 @@ in
       ];
     };
 
-    programs.hyprland = mkIf (cfg.modKeybind != "") {
-      binds."$mod${optionalString cfg.modIncludeShift " SHIFT"}"."${cfg.modKeybind}" = "exec, anyrun";
+    khome.desktop.wm.shared.binds.anyrun = {
+      enable = cfg.keybind != "";
+      exec = true;
+      mapping = cfg.keybind;
+      command = "anyrun";
     };
 
-    wayland.windowManager.sway.config = {
-      keybindings = mkIf (cfg.modKeybind != "") {
-        "$mod+${optionalString cfg.modIncludeShift "+"}${cfg.modKeybind}" = mkOverride 250 "exec anyrun";
-      };
-    };
   };
 }

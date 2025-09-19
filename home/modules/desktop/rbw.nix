@@ -16,22 +16,16 @@ let
   cfg = config.khome.desktop.rbw;
 in
 {
+  imports = [
+    (lib.mkAliasOptionModule [ "khome" "desktop" "rbw" "settings" ] [ "programs" "rbw" "settings" ])
+  ];
+
   options.khome.desktop.rbw = {
     enable = opts.enable "enable rbw integration";
-    enableHyprlandKeybind = opts.enableTrue "enable hyprland keybinding";
-    enableSwayKeybind = opts.enableTrue "enable sway keybinding";
     package = opts.package pkgs.rbw "rbw package";
     rofiPackage = opts.package pkgs.rofi-rbw-wayland "rofi package to use";
-    hyprlandKey = opts.string "P" "hyprland mod key (with $mod + shift)";
-    swayKey = opts.string "$mod+Shift+p" "sway mod key (with $mod + shift)";
-    settings = mkOption {
-      type = (pkgs.formats.json { }).type;
-      default = {
-        # base_url = "https://bitwarden.home.internal";
-        # email = "myuser@email.com";
-      };
-      description = "settings to passthrough";
-    };
+    keybind = opts.string "p" "hyprland mod key (with $mod + shift)";
+    enableShift = opts.enableTrue "add Shift to keybind";
   };
 
   config = mkIf cfg.enable {
@@ -40,21 +34,18 @@ in
     programs.rbw = {
       enable = true;
       package = cfg.package;
-      settings = mkMerge [
-        cfg.settings
-        {
-          lock_timeout = mkDefault (60 * 60 * 24);
-          pinentry = mkDefault pkgs.pinentry.gnome3;
-        }
-      ];
+      settings = {
+        lock_timeout = mkDefault (60 * 60 * 24);
+        pinentry = mkDefault pkgs.pinentry.gnome3;
+      };
     };
 
-    programs.hyprland = mkIf (cfg.enableHyprlandKeybind) {
-      binds."$mod SHIFT"."${cfg.hyprlandKey}" = "exec, rofi-rbw";
-    };
-
-    wayland.windowManager.sway.config.keybindings = mkIf (cfg.enableSwayKeybind) {
-      "${cfg.swayKey}" = lib.mkOverride 250 "exec rofi-rbw";
+    khome.desktop.wm.shared.binds.rbw = {
+      enable = true;
+      exec = true;
+      mapping = cfg.keybind;
+      command = "rofi-rbw";
+      extraKeys = mkIf cfg.enableShift [ "Shift" ];
     };
   };
 }

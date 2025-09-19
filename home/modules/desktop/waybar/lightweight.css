@@ -12,8 +12,8 @@ window#waybar {
     opacity: 0.8;
     color: @foreground;
     border-bottom: 3px solid rgba(169, 172, 214, 0.7);
-    transition-property: background-color;
-    transition-duration: .5s;
+    /* transition-property: background-color; */
+    /* transition-duration: .5s; */
 }
 
 #window {
