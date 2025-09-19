@@ -70,12 +70,16 @@ window#waybar {
     margin: 0 3px;
 }
 
+#temperature {
+    font-weight: bold;
+    padding: 0 1px 5px;
+}
+
 #disk,
-#temperature,
 #cpu {
     font-weight: bold;
     padding: 0 1px 5px;
-    margin: 0 1px;
+    margin: 0 5px;
 }
 
 #clock {

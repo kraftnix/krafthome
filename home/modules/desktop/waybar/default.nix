@@ -16,6 +16,7 @@ let
     types
     ;
   cfg = config.khome.desktop.waybar;
+  colors = config.lib.stylix.colors.withHashtag;
   mkStrOption =
     default: description:
     mkOption {
@@ -52,8 +53,13 @@ in
     };
     colors = mkOption {
       default = { };
-      type = types.raw;
-      description = "lib.base16 color attribute set";
+      type = types.attrsOf types.str;
+      description = "Set of color -> #color string to be added as `defined-color` in the style css";
+    };
+    cssFile = mkOption {
+      description = "optional css file to add to waybar css";
+      default = ./lightweight.css;
+      type = types.nullOr types.path;
     };
     extraCss = mkOption {
       description = "Extra css to append to {programs.waybar.style}";
@@ -68,6 +74,30 @@ in
   };
 
   config = mkIf cfg.enable {
+
+    khome.desktop.waybar.colors = {
+      # workspace = colors.red;
+      # workspaceBorder = colors.red;
+      background = colors.base00;
+      workspace = colors.brown;
+      workspaceBorder = colors.brown;
+      mode = colors.magenta;
+      clock = colors.base07;
+      audio = colors.green;
+      network = colors.orange;
+      cpu = colors.base07;
+      # temperature = colors.red;
+      temperature = colors.brown;
+      memory = colors.cyan;
+      disk = colors.magenta;
+      battery = colors.blue;
+    };
+    khome.desktop.waybar.style = ''
+      ${lib.concatStringsSep "\n" (
+        lib.mapAttrsToList (name: color: "@define-color ${name} ${color};") cfg.colors
+      )}
+      ${lib.optionalString (cfg.cssFile != null) (builtins.readFile cfg.cssFile)}
+    '';
 
     programs.hyprland.execOnce = mkIf (!cfg.systemd.enable) {
       waybar = "waybar";
@@ -212,7 +242,7 @@ in
           };
           "tray" = {
             icon-size = 21;
-            spacing = 10;
+            spacing = 2;
           };
         }
         cfg.extraConfig
