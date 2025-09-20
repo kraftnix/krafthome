@@ -56,6 +56,7 @@ in
           bottom-right = cfg.cornerRadius;
           bottom-left = cfg.cornerRadius;
         };
+        clip-to-geometry = mkDefault true;
       };
       firefox-pip = {
         matches = [

@@ -90,7 +90,7 @@ in
             let matches = (
               niri msg -j windows
               | from json
-              | where title == Logseq
+              | where app_id == Logseq
             )
             if ($matches | length) > 0 {
               let match = ($matches | get 0)
@@ -105,7 +105,7 @@ in
                 if not $match.is_floating {
                   niri msg action toggle-window-floating --id $match.id
                 }
-                nirius move-to-current-workspace -f --title Logseq
+                nirius move-to-current-workspace -f --app-id Logseq
               }
             } else {
               notify-send "Logseq is not open"
