@@ -67,6 +67,7 @@ in
     };
     stylix = {
       enable = opts.enable' cfg.enable "enable stylix";
+      includeOverlays = opts.enable "add stylix overlays to home-manager";
       base16 = {
         name = opts.string "tokyo-night-storm" "name of base16 scheme";
         scheme = mkOption {
@@ -134,6 +135,7 @@ in
         cfg.hosts.defaultColour;
     stylix = {
       enable = cfg.stylix.enable;
+      overlays.enable = cfg.stylix.includeOverlays;
       image = cfg.images.wallpaper;
       polarity = cfg.polarity;
       base16Scheme = cfg.stylix.base16.scheme;

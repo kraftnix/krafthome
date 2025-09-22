@@ -27,7 +27,7 @@ in
         helvum # GTK pipewire patch bay
         # cadence # GTK jack audio tools # deprecated
         pavucontrol # volume control
-        easyeffects # audio post processing
+        # easyeffects # audio post processing # quick large closure size, shouldnt be auto-added
         waypipe # network proxy for wayland clients
       ];
       description = "core packages for sound";

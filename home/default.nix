@@ -30,8 +30,6 @@ args@{
       vimPlugins = prev.vimPlugins // {
         nvim-spectre = self.channels.${final.system}.stable.pkgs.vimPlugins.nvim-spectre;
       };
-      # logseq removed from unstable: https://github.com/NixOS/nixpkgs/issues/389011
-      inherit (final.channels.stable.pkgs) logseq;
     };
   };
   flake.overlaysLists = {
