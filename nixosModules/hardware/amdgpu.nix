@@ -24,9 +24,6 @@ in
     opencl = mkEnableOption "enable opencl" // {
       default = true;
     };
-    vulkan = mkEnableOption "enable amd vulkan" // {
-      default = true;
-    };
   };
 
   config = mkIf cfg.enable {
@@ -55,10 +52,6 @@ in
       amdgpu = {
         initrd.enable = !cfg.headless;
         opencl.enable = cfg.opencl;
-        amdvlk = {
-          enable = cfg.vulkan;
-          support32Bit.enable = true;
-        };
       };
     };
     # systemd.tmpfiles.rules = [
