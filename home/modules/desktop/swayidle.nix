@@ -70,7 +70,12 @@ in
   };
 
   config = mkIf cfg.enable {
-    khome.desktop.swayidle.swayStartupCommand = mkDefault config.systemd.user.services.swayidle.Service.ExecStart;
+    khome.desktop.swayidle.swayStartupCommand = mkDefault (
+      if builtins.typeOf config.systemd.user.services.swayidle.Service.ExecStart == "list" then
+        builtins.head config.systemd.user.services.swayidle.Service.ExecStart
+      else
+        config.systemd.user.services.swayidle.Service.ExecStart
+    );
     # TODO: find way to disable systemd user unit when this option is enabled.
     wayland.windowManager.sway.config.startup = mkIf cfg.appendToSwayConfig [
       {

@@ -59,6 +59,8 @@
         systemdIntegration = true;
         wallpaperDirs = [ "${../home/modules/themes}" ];
       };
+      khome.desktop.swayidle.enable = true;
+      khome.desktop.swaynotificationcenter.enable = true;
       khome.desktop.wm.sway = {
         enable = true;
         enableTap = true;
