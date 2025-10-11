@@ -70,7 +70,14 @@ let
           ];
       }).options;
 
-    docgen.home-all.filter = option: builtins.elemAt option.loc 0 == "khome";
+    docgen.home-all.filter =
+      option:
+      builtins.elemAt option.loc 0 == "khome"
+      && (
+        # filter out niri settings that have no description
+        builtins.length option.loc >= 4
+        -> (builtins.elemAt option.loc 3 == "niri" -> builtins.length option.loc < 6)
+      );
   };
 in
 {
