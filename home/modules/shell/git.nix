@@ -7,6 +7,7 @@ args:
 }:
 let
   inherit (lib)
+    mkDefault
     mkEnableOption
     mkIf
     optionals
@@ -38,9 +39,11 @@ in
       };
       difftastic = mkIf cfg.enableDifftastic {
         enable = true;
-        background = "dark";
-        color = "auto";
-        display = "side-by-side-show-both";
+        options = {
+          background = mkDefault "dark";
+          color = mkDefault "auto";
+          display = mkDefault "side-by-side-show-both";
+        };
       };
       extraConfig = {
         # pager = {

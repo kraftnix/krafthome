@@ -68,6 +68,8 @@ localFlake@{
         # due to qtwebengine
         jellyfin-mpv-shim
         jellyfin-media-player
+        antlr_4_9 # luaformatter / antlr issues
+        luaformatter
         ;
     };
   };
