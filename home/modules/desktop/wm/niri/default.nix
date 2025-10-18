@@ -7,6 +7,7 @@ args@{ self, ... }:
 }:
 let
   inherit (lib)
+    filterAttrs
     mkDefault
     mkIf
     mkMerge
@@ -88,9 +89,36 @@ in
       type = types.float;
     };
     startup = mkOption {
-      description = "startup commands";
-      default = [ ];
-      type = with types; listOf raw;
+      description = ''
+        Startup commands to add to niri startup.
+
+        Each command is ordered into a list, `order` defaults to 100.
+      '';
+      default = { };
+      type = types.attrsOf (
+        types.submodule (
+          { config, name, ... }:
+          {
+            options = {
+              enable = lib.mkEnableOption "enable startup command" // {
+                default = true;
+              };
+              order = lib.mkOption {
+                description = "order of command at startup";
+                default = 100;
+                type = types.int;
+                example = 10;
+              };
+              command = mkOption {
+                description = "command to run at startup, defaults to attr name";
+                default = name;
+                type = types.str;
+                example = "systemctl --user restart swww";
+              };
+            };
+          }
+        )
+      );
     };
     extraPackages = mkOption {
       description = "extra packages required by niri";
@@ -134,6 +162,32 @@ in
     (mkIf cfg.enable {
       home.packages = cfg.extraPackages;
       # stylix.targets.niri.enable = true;
+      khome.desktop.wm.niri.startup = {
+        xwayland-satellite = {
+          enable = true;
+          order = 20;
+        };
+        systemd-daemon-reload = {
+          enable = true;
+          order = 10;
+          command = "systemctl --user daemon-reload";
+        };
+        systemd-import-environment = {
+          enable = true;
+          order = 10;
+          command = "systemctl --user import-environment ${lib.concatStringsSep " " cfg.importVars}";
+        };
+        dbus-update-environment = {
+          enable = true;
+          order = 10;
+          command = "dbus-update-activation-environment --systemd ${lib.concatStringsSep " " cfg.importVars}";
+        };
+        nirius = {
+          enable = true;
+          order = 50;
+          command = "niriusd";
+        };
+      };
       khome.desktop.wm.niri.xkb = mkIf cfg.enableDefaults {
         layout = "gb";
         options = "caps:escape";
@@ -144,29 +198,16 @@ in
           {
             input.keyboard.xkb = cfg.xkb;
             workspaces = cfg.workspaces;
+            spawn-at-startup = lib.pipe cfg.startup [
+              (filterAttrs (_: s: s.enable))
+              lib.attrValues
+              (lib.sort (a: b: a.order < b.order))
+              (lib.map (s: {
+                command = lib.singleton s.command;
+              }))
+            ];
           }
           (mkIf cfg.enableDefaults {
-
-            spawn-at-startup = lib.mkBefore [
-              {
-                command = [ "xwayland-satellite" ];
-              }
-              {
-                command = [ "systemctl --user daemon-reload" ];
-              }
-              {
-                command = [ "systemctl --user import-environment ${lib.concatStringsSep " " cfg.importVars}" ];
-              }
-              {
-                command = [
-                  "dbus-update-activation-environment --systemd ${lib.concatStringsSep " " cfg.importVars}"
-                ];
-              }
-              {
-                command = [ "niriusd" ];
-              }
-            ];
-
             # clipboard.disable-primary = true;
             screenshot-path = "~/xdg/screenshots/%Y-%m-%d %H-%M-%S.png";
 

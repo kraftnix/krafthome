@@ -43,9 +43,10 @@ in
       settings.mainbar."sway/workspaces".format-icons."11-logseq" = lib.mkIf swayMain "📔";
     };
 
-    programs.niri.settings = mkIf cfg.niri {
-      window-rules = mkIf (builtins.hasAttr cfg.niriWorkspace config.khome.desktop.wm.niri.workspaces) [
+    khome.desktop.wm.niri.window-rules.logseq =
+      mkIf (builtins.hasAttr cfg.niriWorkspace config.khome.desktop.wm.niri.workspaces)
         {
+          enable = cfg.niri;
           matches = [
             {
               app-id = "Logseq";
@@ -54,11 +55,9 @@ in
           open-on-workspace = config.khome.desktop.wm.niri.workspaces."010-logseq".name;
           open-floating = true;
           open-maximized = true;
-          default-column-width.proportion = 0.96;
+          default-column-width.proportion = 0.98;
           default-window-height.proportion = 0.96;
-        }
-      ];
-    };
+        };
 
     programs.hyprland = mkIf cfg.hyprland {
       windowRules."title:^(Logseq)$" = [

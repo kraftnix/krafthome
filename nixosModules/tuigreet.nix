@@ -182,6 +182,14 @@ in
       NIXOS_OZONE_WL = "1";
     };
     khome.tuigreet.sessions = {
+      niri = {
+        enable = mkDefault false;
+        command = "niri";
+        # environment = { # automatically set by niri
+        #   XDG_SESSION_DESKTOP = "niri";
+        #   XDG_CURRENT_DESKTOP = "niri";
+        # };
+      };
       sway = {
         enable = mkDefault false;
         command = "sway";
