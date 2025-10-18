@@ -184,7 +184,7 @@ in
     khome.tuigreet.sessions = {
       niri = {
         enable = mkDefault false;
-        command = "niri";
+        command = "niri-session";
         # environment = { # automatically set by niri
         #   XDG_SESSION_DESKTOP = "niri";
         #   XDG_CURRENT_DESKTOP = "niri";
