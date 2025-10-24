@@ -43,7 +43,7 @@
     },
     "gvfs.yazi": {
         "cargoLocks": null,
-        "date": "2025-08-29",
+        "date": "2025-10-21",
         "extract": null,
         "name": "gvfs.yazi",
         "passthru": null,
@@ -55,12 +55,12 @@
             "name": null,
             "owner": "boydaihungst",
             "repo": "gvfs.yazi",
-            "rev": "b58c30588215093cb6f8b0dc4eed562894c091bc",
-            "sha256": "sha256-koqbOTSEFL7O8J3PYcdv+XtPK8//m2nixuan6fWMR9Y=",
+            "rev": "6db0c605ff4ccc9ef59613773aecbacc6fb93c9c",
+            "sha256": "sha256-0W1nQ8MJ+BgPyKcn+oDzntX9BXplJEyl8UjsHWCHrE8=",
             "sparseCheckout": [],
             "type": "github"
         },
-        "version": "b58c30588215093cb6f8b0dc4eed562894c091bc"
+        "version": "6db0c605ff4ccc9ef59613773aecbacc6fb93c9c"
     },
     "nu_plugin_dbus": {
         "cargoLocks": null,
@@ -127,7 +127,7 @@
     },
     "nu_plugin_file": {
         "cargoLocks": null,
-        "date": "2025-07-24",
+        "date": "2025-10-15",
         "extract": null,
         "name": "nu_plugin_file",
         "passthru": null,
@@ -139,12 +139,12 @@
             "name": null,
             "owner": "fdncred",
             "repo": "nu_plugin_file",
-            "rev": "9331b9b163e5f14eb4142e1b088bb69601fff3cf",
-            "sha256": "sha256-GyZlyEiOlL745fjMVPLEHwQGCFPq3LEhI9dezRp2PRc=",
+            "rev": "115542af6ec2f37e45a95c87770b707b5822d527",
+            "sha256": "sha256-djFzoqtn2o/n/zMRHstSeocKolA8WerO5Mcbroxxv4Y=",
             "sparseCheckout": [],
             "type": "github"
         },
-        "version": "9331b9b163e5f14eb4142e1b088bb69601fff3cf"
+        "version": "115542af6ec2f37e45a95c87770b707b5822d527"
     },
     "nu_plugin_port_list": {
         "cargoLocks": null,
@@ -190,7 +190,7 @@
     },
     "nu_plugin_skim": {
         "cargoLocks": null,
-        "date": "2025-09-02",
+        "date": "2025-10-16",
         "extract": null,
         "name": "nu_plugin_skim",
         "passthru": null,
@@ -202,16 +202,16 @@
             "name": null,
             "owner": "idanarye",
             "repo": "nu_plugin_skim",
-            "rev": "6bbedb69891ee723e48b1693da58b92bdaeae265",
-            "sha256": "sha256-zFY/HKBpMyGs8btrOa1loouEzgfzGYXYP2BADws3zmI=",
+            "rev": "c6375bd8a2e5f3dbb609c71746b4951fa6924406",
+            "sha256": "sha256-2CqgtV2DnBd8HqnRdZRiT14aw+meaX4A3ndTGvbsMfo=",
             "sparseCheckout": [],
             "type": "github"
         },
-        "version": "6bbedb69891ee723e48b1693da58b92bdaeae265"
+        "version": "c6375bd8a2e5f3dbb609c71746b4951fa6924406"
     },
     "officialPluginsSource": {
         "cargoLocks": null,
-        "date": "2025-08-23",
+        "date": "2025-10-22",
         "extract": null,
         "name": "officialPluginsSource",
         "passthru": null,
@@ -223,12 +223,12 @@
             "name": null,
             "owner": "yazi-rs",
             "repo": "plugins",
-            "rev": "d7588f6d29b5998733d5a71ec312c7248ba14555",
-            "sha256": "sha256-9+58QhdM4HVOAfEC224TrPEx1N7F2VLGMxKVLAM4nJw=",
+            "rev": "8f1d9711bcd0e48af1fcb4153c16d24da76e732d",
+            "sha256": "sha256-7vsqHvdNimH/YVWegfAo7DfJ+InDr3a1aNU0f+gjcdw=",
             "sparseCheckout": [],
             "type": "github"
         },
-        "version": "d7588f6d29b5998733d5a71ec312c7248ba14555"
+        "version": "8f1d9711bcd0e48af1fcb4153c16d24da76e732d"
     },
     "open-with-cmd.yazi": {
         "cargoLocks": null,
@@ -292,27 +292,6 @@
             "type": "github"
         },
         "version": "d8966568f2a80394bf1f9a1ace6708ddd4cc8154"
-    },
-    "whoosh.yazi": {
-        "cargoLocks": null,
-        "date": "2025-09-01",
-        "extract": null,
-        "name": "whoosh.yazi",
-        "passthru": null,
-        "pinned": false,
-        "src": {
-            "deepClone": false,
-            "fetchSubmodules": false,
-            "leaveDotGit": false,
-            "name": null,
-            "owner": "WhoSowSee",
-            "repo": "whoosh.yazi",
-            "rev": "527ab13e524ff73c164032fce768c1ef2851d28d",
-            "sha256": "sha256-4COD1H5BZU7HXSMbQ5XpzUpLhzSq4bf1XYR01WcvUwE=",
-            "sparseCheckout": [],
-            "type": "github"
-        },
-        "version": "527ab13e524ff73c164032fce768c1ef2851d28d"
     },
     "wl-clipboard.yazi": {
         "cargoLocks": null,

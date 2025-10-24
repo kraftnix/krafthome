@@ -115,9 +115,9 @@ in
         // {
           default = false;
         };
-      whoosh.enable = mkEnableOption "enable whoosh.yazi plugin (advanced bookmarks)" // {
-        default = false;
-      };
+      # whoosh.enable = mkEnableOption "enable whoosh.yazi plugin (advanced bookmarks)" // {
+      #   default = false;
+      # };
       jump-to-char.enable =
         mkEnableOption "enable jump-to-char.yazi plugin (Vim-like f<char>, jump to the next file whose name starts with <char>.)"
         // {
@@ -165,15 +165,14 @@ in
             })
           ''}
 
-          ${optionalString plugs.whoosh.enable ''
-            --Whoosh
-            ${builtins.readFile ./whoosh/init.lua}
-          ''}
-
           ${optionalString plugs.gvfs.enable ''
             ${builtins.readFile ./gvfs/init.lua}
           ''}
         '';
+        # ${optionalString plugs.whoosh.enable ''
+        #   --Whoosh
+        #   ${builtins.readFile ./whoosh/init.lua}
+        # ''}
         plugins = mkMerge [
           {
             # smart-enter = ./smart-enter;
@@ -189,9 +188,9 @@ in
           (mkIf plugs.jump-to-char.enable {
             jump-to-char = pkgs.yaziPlugins.jump-to-char;
           })
-          (mkIf plugs.whoosh.enable {
-            whoosh = pkgs.yaziPlugins.whoosh;
-          })
+          # (mkIf plugs.whoosh.enable {
+          #   whoosh = pkgs.yaziPlugins.whoosh;
+          # })
           (mkIf plugs.searchjump.enable {
             searchjump = pkgs.yaziPlugins.searchjump;
           })
