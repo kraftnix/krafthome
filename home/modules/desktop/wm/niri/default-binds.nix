@@ -238,7 +238,7 @@
         # // since it will switch twice upon pressing the hotkey (once by xkb, once by niri).
         # // Mod+Space       { switch-layout "next"; }
         # // Mod+Shift+Space { switch-layout "prev"; }
-        "Print".action = screenshot;
+        "Print".action.screenshot = [ ];
         # "Ctrl+Print".action = screenshot-screen;
         # "Alt+Print".action = screenshot-window;
 
@@ -265,7 +265,7 @@
 
         # "Mod+S".action = screenshot-screen;
         # # "Print".action = screenshot-screen;
-        "Mod+Shift+S".action = screenshot;
+        "Mod+Shift+S".action.screenshot = [ ];
         # "Shift+Print".action = screenshot;
         # "Mod+Alt+S".action = screenshot-window;
         # "Ctrl+Print".action = screenshot-window;
