@@ -50,20 +50,6 @@
       def ssh-fpscan [] {
         ssh-keyscan localhost | ssh-keygen -lf -
       }
-
-      # Point ~/.ssh/auth_sock to most recently created SSH_AUTH_SOCK in /tmp/
-      def skre [] {
-        let auth_socks = (ls /tmp/ | where name =~ "ssh-")
-        if $auth_socks == [] {
-          print $"(ansi red)No auth sockets found(ansi reset) in (ansi yellow)/tmp/ssh-*(ansi reset)"
-          exit 1
-        } else {
-          let auth_sock_dir = ($auth_socks | sort-by modified -r | get name | get 0)
-          let auth_sock = (ls $auth_sock_dir | get 0.name)
-          ln -sf $auth_sock ~/.ssh/auth_sock
-          print $"(ansi green)Set auth sock to:(ansi reset) (ansi yellow)($auth_sock)(ansi reset)"
-        }
-      }
     '';
   };
   home.stateVersion = "23.11";

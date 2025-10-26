@@ -34,7 +34,12 @@ in
       skre = pkgs.writeScriptBin "skre" ''
         ln -sf /run/user/$UID/gnupg/S.gpg-agent.ssh /home/$USER/.ssh/auth_sock
       '';
+      # for ssh 10.1+
       skke = pkgs.writeScriptBin "skke" ''
+        ln -sf $(nu -c "ls (ls /home/$USER/.ssh/agent/ | where name =~ "sshd" | sort-by modified -r | get name | get 0) | get name.0") /home/$USER/.ssh/auth_sock
+      '';
+      # for ssh <10.1
+      skke-old = pkgs.writeScriptBin "skke" ''
         ln -sf $(nu -c "ls (ls /tmp/ | where name =~ "ssh-" | sort-by modified -r | get name | get 0) | get name.0") /home/$USER/.ssh/auth_sock
       '';
       skkg = pkgs.writeScriptBin "skkg" ''
