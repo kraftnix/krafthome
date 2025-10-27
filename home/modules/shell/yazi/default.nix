@@ -64,18 +64,14 @@ in
     enablePluginsByDefault = mkEnableOption "enables default plugins" // {
       default = true;
     };
-    bundleExtraPackages =
-      mkEnableOption ''
-        when enabled, adds plugin's `extraPackages` to `programs.yazi.extraPackages`
-        which bundles dependencies with yazi binary.
+    bundleExtraPackages = mkEnableOption ''
+      when enabled, adds plugin's `extraPackages` to `programs.yazi.extraPackages`
+      which bundles dependencies with yazi binary.
 
-        this bundling can cause conflicts if you include `pkgs.yazi` elsewhere
-        in your configuration, disabling this option adds plugin `extraPackages`
-        to `home.packages` instead.
-      ''
-      // {
-        default = true;
-      };
+      this bundling can cause conflicts if you include `pkgs.yazi` elsewhere
+      in your configuration, disabling this option adds plugin `extraPackages`
+      to `home.packages` instead.
+    '';
     plugins = mkOption {
       description = "Plugins to add";
       default = { };
