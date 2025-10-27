@@ -60,6 +60,9 @@ let
     ## Static Configuration
     ${builtins.readFile ./src/config.nu}
 
+    ## Default Keybindings
+    source ~/.config/nushell/keybindings.nu
+
     def smn [] {
       ^manix "" | grep '^# ' | sed 's/^# \(.*\) (.*/\1/;s/ (.*//;s/^# //' | fzf | xargs manix
     }
@@ -93,7 +96,7 @@ in
 #   (filterAttrs (name: _: hasSuffix ".nu" name) scriptDir);
 {
   options.khome.nushell = {
-    enable = mkEnableOption "nushell-unstable (0.60+)";
+    enable = mkEnableOption "nushell";
 
     enableStarship = mkEnableOption "starship integration" // {
       default = config.programs.starship.enable;
@@ -187,6 +190,32 @@ in
         ]);
     };
 
+    autoload = mkOption {
+      description = "Extra configuration files to source, happens after env.nu, config.nu and $nu.vendor-autodir-dirs";
+      default = { };
+      type = types.attrsOf (
+        types.submodule (
+          { config, name, ... }:
+          {
+            options = {
+              enable = mkEnableOption "enable autoloading this file" // {
+                default = true;
+              };
+              name = mkOption {
+                description = "File name to add to `~/.config/nushell/autoload/<name>`, defaults to `<attrName>.nu`";
+                default = "${name}.nu";
+                type = types.str;
+              };
+              path = mkOption {
+                description = "Path of nushell file in nix store or local repo";
+                type = types.path;
+              };
+            };
+          }
+        )
+      );
+    };
+
     extraConfig = mkOption {
       description = "Extra configuration to add to config.nu";
       default = "";
@@ -207,10 +236,13 @@ in
       pkgs.starship
       pkgs.atuin
     ];
-    home.sessionVariables = {
-      NUSHELL_ENABLE_ATUIN = toString cfg.enableAtuin;
-      NUSHELL_ENABLE_STARSHIP = toString cfg.enableStarship;
-      NUSHELL_ENABLE_PAYRESPECTS = toString cfg.enablePayrespects;
+    khome.nushell.autoload = {
+      atuin.path = ./src/autoload/atuin.nu;
+      carapace.path = ./src/autoload/carapace.nu;
+      menus.path = ./src/autoload/menus.nu;
+      pay-respects.path = ./src/autoload/pay-respects.nu;
+      starship.path = ./src/autoload/starship.nu;
+      theme.path = ./src/autoload/theme.nu;
     };
     khome.nushell.env =
       mapAttrs (_: v: if (typeOf v) == "int" then toString v else "${v}") config.home.sessionVariables
@@ -271,14 +303,13 @@ in
       #   (path:
       #     nameValuePair "nushell/plugins/${builtins.baseNameOf path}" { source = path; }
       #   ) cfg.plugins))
+      (lib.listToAttrs (
+        mapAttrsToList (_: a: lib.nameValuePair "nushell/autoload/${a.name}" { source = a.path; }) (
+          lib.filterAttrs (_: a: a.enable) cfg.autoload
+        )
+      ))
       {
-        "nushell/atuin.nu".source = ./src/atuin.nu;
-        "nushell/carapace.nu".source = ./src/carapace.nu;
-        "nushell/pay-respects.nu".source = ./src/pay-respects.nu;
         "nushell/keybindings.nu".source = ./src/keybindings.nu;
-        "nushell/menus.nu".source = ./src/menus.nu;
-        "nushell/starship.nu".source = ./src/starship.nu;
-        "nushell/theme.nu".source = ./src/theme.nu;
       }
     ];
   };

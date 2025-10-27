@@ -1,22 +1,9 @@
-# returns true if provided env var exists and true-like
-#   i.e. "true", 1, "y"
-def testBoolikeVar [ envName : string ]: any -> bool {
-  if ($env | get -o $envName) == null {
-    false
-  } else {
-    let v = ($env | get $envName)
-    ($v == "true" or $v == 1 or $v == "y" or $v == "1" or $v == true)
-  }
-}
-
-let enableAtuin = (testBoolikeVar NUSHELL_ENABLE_ATUIN)
-let enableStarship = (testBoolikeVar NUSHELL_ENABLE_STARSHIP)
-let enablePayrespects = (testBoolikeVar NUSHELL_ENABLE_PAYRESPECTS)
-
-source ~/.config/nushell/theme.nu
-
 # The default config record. This is where much of your global configuration is setup.
 $env.config = ($env.config
+  | upsert show_banner true
+  | upsert rm {
+    always_trash: false # always act as if -t was given. Can be overridden with -p
+  }
   | upsert history {
     max_size: 100000 # Session has to be reloaded for this to take effect
     sync_on_enter: true # Enable to share history between multiple sessions, else you have to close the session to write history to file
@@ -64,7 +51,7 @@ $env.config = ($env.config
     # reset_application_mode is escape \x1b[?1l and was added to help ssh work better
     reset_application_mode: true
   } # enables terminal markers and a workaround to arrow keys stop working issue
-  | upsert keybindings []
+  | upsert keybindings [ ]
   | upsert menus []
   # | upsert plugins_gc {
   #   default: {
@@ -74,69 +61,49 @@ $env.config = ($env.config
   # }
 )
 
-source ~/.config/nushell/keybindings.nu
-source ~/.config/nushell/menus.nu
-source ~/.config/nushell/carapace.nu
-
-if $enablePayrespects {
-  source ~/.config/nushell/pay-respects.nu
-}
-if $enableAtuin {
-  source ~/.config/nushell/atuin.nu
-}
-if $enableStarship {
-  source ~/.config/nushell/starship.nu
-} else {
-  def create_left_prompt_original [] {
-    let dir = match (do --ignore-errors { $env.PWD | path relative-to $nu.home-path }) {
-      null => $env.PWD
-      '' => '~'
-      $relative_pwd => ([~ $relative_pwd] | path join)
-    }
-
-    let path_color = (if (is-admin) { ansi red_bold } else { ansi green_bold })
-    let separator_color = (if (is-admin) { ansi light_red_bold } else { ansi light_green_bold })
-    let path_segment = $"($path_color)($dir)(ansi reset)"
-    let host_color = ansi blue
-    let host = (open /etc/hostname | default ($env | get -o HOSTNAME | default "unknown_host"))
-    let host_segment = $"$($host_color)($host)(ansi reset)"
-
-    $path_segment | str replace --all (char path_sep) $"($host_segment)($separator_color)(char path_sep)($path_color)"
+def create_left_prompt_original [] {
+  let dir = match (do --ignore-errors { $env.PWD | path relative-to $nu.home-path }) {
+    null => $env.PWD
+    '' => '~'
+    $relative_pwd => ([~ $relative_pwd] | path join)
   }
 
-  def create_right_prompt [] {
-    # create a right prompt in magenta with green separators and am/pm underlined
-    let time_segment = (
-      [
-        (ansi reset)
-        (ansi magenta)
-        (date now | format date '%x %X') # try to respect user's locale
-      ]
-      | str join
-      | str replace --regex --all "([/:])" $"(ansi green)${1}(ansi magenta)"
-      | str replace --regex --all "([AP]M)" $"(ansi magenta_underline)${1}"
-    )
+  let path_color = (if (is-admin) { ansi red_bold } else { ansi green_bold })
+  let separator_color = (if (is-admin) { ansi light_red_bold } else { ansi light_green_bold })
+  let path_segment = $"($path_color)($dir)(ansi reset)"
+  let host_color = ansi blue
+  let host = (open /etc/hostname | default ($env | get -o HOSTNAME | default "unknown_host"))
+  let host_segment = $"$($host_color)($host)(ansi reset)"
 
-    let last_exit_code = if ($env.LAST_EXIT_CODE != 0) {
-      ([
-        (ansi rb)
-        ($env.LAST_EXIT_CODE)
-      ] | str join)
-    } else { "" }
+  $path_segment | str replace --all (char path_sep) $"($host_segment)($separator_color)(char path_sep)($path_color)"
+}
 
-    ([$last_exit_code, (char space), $time_segment] | str join)
-  }
-
-  $env.PROMPT_COMMAND = (
-    if $enableStarship {
-      { || create_left_prompt }
-    } else {
-      { || create_left_prompt_original }
-    }
+def create_right_prompt [] {
+  # create a right prompt in magenta with green separators and am/pm underlined
+  let time_segment = (
+    [
+      (ansi reset)
+      (ansi magenta)
+      (date now | format date '%x %X') # try to respect user's locale
+    ]
+    | str join
+    | str replace --regex --all "([/:])" $"(ansi green)${1}(ansi magenta)"
+    | str replace --regex --all "([AP]M)" $"(ansi magenta_underline)${1}"
   )
-  $env.PROMPT_COMMAND_RIGHT = { || create_right_prompt }
-  $env.PROMPT_INDICATOR = (if $enableStarship { "" } else { ">" })
-  $env.PROMPT_INDICATOR_VI_INSERT = ": "
-  $env.PROMPT_INDICATOR_VI_NORMAL = "〉"
-  $env.PROMPT_MULTILINE_INDICATOR = "::: "
+
+  let last_exit_code = if ($env.LAST_EXIT_CODE != 0) {
+    ([
+      (ansi rb)
+      ($env.LAST_EXIT_CODE)
+    ] | str join)
+  } else { "" }
+
+  ([$last_exit_code, (char space), $time_segment] | str join)
 }
+
+$env.PROMPT_COMMAND = { || create_left_prompt_original }
+$env.PROMPT_COMMAND_RIGHT = { || create_right_prompt }
+$env.PROMPT_INDICATOR = ">"
+$env.PROMPT_INDICATOR_VI_INSERT = ": "
+$env.PROMPT_INDICATOR_VI_NORMAL = "〉"
+$env.PROMPT_MULTILINE_INDICATOR = "::: "

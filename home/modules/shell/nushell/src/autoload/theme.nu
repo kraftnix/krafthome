@@ -85,17 +85,12 @@ let dark_theme = {
 let theme = $dark_theme
 
 # The default config record. This is where much of your global configuration is setup.
-$env.config = {
-  # true or false to enable or disable the welcome banner at startup
-  show_banner: true
-  ls: {
+$env.config = ($env.config
+  | upsert ls {
     use_ls_colors: true # use the LS_COLORS environment variable to colorize output
     clickable_links: true # enable or disable clickable links. Your terminal has to support links.
   }
-  rm: {
-    always_trash: false # always act as if -t was given. Can be overridden with -p
-  }
-  table: {
+  | upsert table {
     mode: rounded # basic, compact, compact_double, light, thin, with_love, rounded, reinforced, heavy, none, other
     index_mode: always # "always" show indexes, "never" show indexes, "auto" = show indexes when a table has "index" column
     show_empty: true # show 'empty list' and 'empty record' placeholders for command output
@@ -105,8 +100,7 @@ $env.config = {
       truncating_suffix: "..." # A suffix used by the 'truncating' methodology
     }
   }
-
-  explore: {
+  | upsert explore {
     help_banner: true
     exit_esc: true
 
@@ -162,25 +156,20 @@ $env.config = {
       # list_color: green
     }
   }
-
-  filesize: {
+  | upsert filesize {
     unit: metric
     precision: 2
   }
-
-  cursor_shape: {
+  | upsert cursor_shape {
     emacs: line # block, underscore, line, blink_block, blink_underscore, blink_line (line is the default)
     vi_insert: block # block, underscore, line , blink_block, blink_underscore, blink_line (block is the default)
     vi_normal: underscore # block, underscore, line, blink_block, blink_underscore, blink_line (underscore is the default)
   }
-
-  color_config: $dark_theme   # if you want a light theme, replace `$dark_theme` to `$light_theme`
-  footer_mode: 25 # always, never, number_of_rows, auto
-
-  use_ansi_coloring: true
-  render_right_prompt_on_last_line: false # true or false to enable or disable right prompt to be rendered on last line of the prompt.
-
-  hooks: {
+  | upsert color_config $dark_theme   # if you want a light theme, replace `$dark_theme` to `$light_theme`
+  | upsert footer_mode 25 # always, never, number_of_rows, auto
+  | upsert use_ansi_coloring true
+  | upsert render_right_prompt_on_last_line false # true or false to enable or disable right prompt to be rendered on last line of the prompt.
+  | upsert hooks {
     pre_prompt: [{||
       null  # replace with source code to run before the prompt is shown
     }]
@@ -200,7 +189,5 @@ $env.config = {
       null  # replace with source code to return an error message when a command is not found
     }
   }
-  completions: {}
-  keybindings: []
-  menus: []
-}
+
+)

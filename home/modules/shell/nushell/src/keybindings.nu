@@ -71,15 +71,6 @@ let kb = [
     event: { send: MenuPrevious }
   }
 
-  ## Menus
-  { # [Control + r]: History Menu
-    name: history_menu
-    modifier: control
-    keycode: char_r
-    mode: emacs
-    event: { send: Menu name: history_menu }
-  }
-
   ## Shell Control
   { # [Control + h]: Move work left
     name: move_word_left
@@ -93,17 +84,17 @@ let kb = [
     }
   }
   # TODO: not working
-  # { # [Control + Alt + h]: Move to beginning of line
-  #   name: move_to_beginning
-  #   modifier: control_alt
-  #   keycode: char_h
-  #   mode: [emacs, vi_normal, vi_insert]
-  #   event: {
-  #     until: [
-  #       { edit: MoveToLineStart }
-  #     ]
-  #   }
-  # }
+  { # [Control + Alt + h]: Move to beginning of line
+    name: move_to_beginning
+    modifier: control_alt
+    keycode: char_h
+    mode: [emacs, vi_normal, vi_insert]
+    event: {
+      until: [
+        { edit: MoveToLineStart }
+      ]
+    }
+  }
   { # [Control + l]: Move work right
     name: move_work_left
     modifier: control
@@ -116,17 +107,17 @@ let kb = [
     }
   }
   # TODO: not working
-  # { # [Control + l]: Move to end of line
-  #   name: move_to_end
-  #   modifier: control_alt
-  #   keycode: char_l
-  #   mode: [emacs, vi_normal, vi_insert]
-  #   event: {
-  #     until: [
-  #       { edit: MoveToLineEnd }
-  #     ]
-  #   }
-  # }
+  { # [Control + alt + l]: Move to end of line
+    name: move_to_end
+    modifier: control_alt
+    keycode: char_l
+    mode: [emacs, vi_normal, vi_insert]
+    event: {
+      until: [
+        { edit: MoveToLineEnd }
+      ]
+    }
+  }
 
   { # [Control + y]: yank / copy
     name: yank
@@ -152,17 +143,17 @@ let kb = [
     }
   }
 
-  { # [Control + k]: Delete cursor -> end
-    name: kill-line
-    modifier: control
-    keycode: char_k
-    mode: [emacs, vi_normal, vi_insert]
-    event: {
-      until: [
-        { edit: CutToLineEnd }
-      ]
-    }
-  }
+  # { # [Control + k]: Delete cursor -> end
+  #   name: kill-line
+  #   modifier: control
+  #   keycode: char_k
+  #   mode: [emacs, vi_normal, vi_insert]
+  #   event: {
+  #     until: [
+  #       { edit: CutToLineEnd }
+  #     ]
+  #   }
+  # }
 
   { # [Control + e]: Open EDITOR
     name: open_editor
@@ -170,6 +161,15 @@ let kb = [
     keycode: char_e
     mode: [emacs, vi_normal, vi_insert]
     event: { send: OpenEditor }
+  }
+
+  ## Menus
+  { # [Control + r]: History Menu
+    name: history_menu
+    modifier: control
+    keycode: char_r
+    mode: emacs
+    event: { send: Menu name: history_menu }
   }
 
   ## Keybindings used to trigger the user defined menus
