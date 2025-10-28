@@ -788,11 +788,11 @@
         ]
       },
       "locked": {
-        "lastModified": 1761617575,
-        "narHash": "sha256-XweRRIxl/z0qx3RelnOi29+CcAYKx/wssJ242XucHKg=",
+        "lastModified": 1761621457,
+        "narHash": "sha256-nxviriXUzIcNGwmw8sOW2Q+YSjUPGyReX0Ky8OfxEDw=",
         "owner": "kraftnix",
         "repo": "kraftnvim",
-        "rev": "d76651a20b719c56c76a93da9fbe74707ab2124d",
+        "rev": "0b82018172b488b0408c6379a4177b9f7f888721",
         "type": "github"
       },
       "original": {
