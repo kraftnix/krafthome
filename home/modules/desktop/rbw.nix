@@ -36,7 +36,7 @@ in
       package = cfg.package;
       settings = {
         lock_timeout = mkDefault (60 * 60 * 24);
-        pinentry = mkDefault pkgs.pinentry.gnome3;
+        pinentry = mkDefault pkgs.pinentry-gnome3;
       };
     };
 

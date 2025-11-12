@@ -35,7 +35,7 @@ in
         "symbols"
         # translate # only google translate
         "websearch"
-        # inputs.cryptorun.packages.${pkgs.system}.default
+        # inputs.cryptorun.packages.${pkgs.stdenv.hostPlatform.system}.default
       ];
       description = "plugins to use";
       type = with types; nullOr (listOf (either package str));

@@ -39,7 +39,7 @@ in
         default = with pkgs; [
           # shell
           dogdns # dig alternative
-          du-dust # du alternative
+          dust # du alternative
           gping # ping alternative (tui)
           prettyping # ping alternative
           cryptsetup # LUKS
@@ -120,7 +120,7 @@ in
         nix-tree # Interactively browse a Nix store paths dependencies
         nvd # Nix/NixOS package version diff tool
         nix-output-monitor # nom, pretty build printing
-        args.self.packages.${pkgs.system}.nix-find
+        args.self.packages.${pkgs.stdenv.hostPlatform.system}.nix-find
       ]);
     programs.direnv = mkIf cfg.direnv.enable {
       enable = mkDefault true;

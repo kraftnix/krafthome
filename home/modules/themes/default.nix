@@ -108,7 +108,7 @@ in
     };
     images = {
       wallpaper = mkOption {
-        default = localFlake.self.packages.${pkgs.system}.stylix-default-wallpaper;
+        default = localFlake.self.packages.${pkgs.stdenv.hostPlatform.system}.stylix-default-wallpaper;
         description = "path to default wallpaper";
         type = with types; package;
       };

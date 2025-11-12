@@ -26,7 +26,7 @@ in
     };
 
     home.packages = with pkgs; [
-      tor-browser-bundle-bin
+      tor-browser
       tor
       arti
     ];

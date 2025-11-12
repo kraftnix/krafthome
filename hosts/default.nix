@@ -18,7 +18,9 @@ args@{
         (
           { pkgs, lib, ... }:
           {
-            stylix.image = lib.mkDefault self.packages.${pkgs.system}.stylix-default-wallpaper;
+            stylix.image =
+              lib.mkDefault
+                self.packages.${pkgs.stdenv.hostPlatform.system}.stylix-default-wallpaper;
           }
         )
         inputs.home.nixosModules.home-manager
@@ -59,11 +61,9 @@ args@{
     {
       channels = {
         nixpkgs.config.permittedInsecurePackages = [
-          # "electron-28.3.3"
+          "jitsi-meet-1.0.8792" # element
         ];
-        stable.config.permittedInsecurePackages = [
-          "electron-27.3.11"
-        ];
+        stable.config.permittedInsecurePackages = [ ];
       };
     };
 }

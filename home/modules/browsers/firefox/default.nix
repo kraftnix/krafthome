@@ -32,7 +32,7 @@ in
     package = mkOption {
       type = types.package;
       description = "final package used for firefox";
-      default = pkgs.firefox-wayland;
+      default = pkgs.firefox;
     };
     forceWayland = mkEnableOption "force wayland chromium flags";
     profiles = mkOption {

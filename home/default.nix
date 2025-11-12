@@ -28,7 +28,8 @@ args@{
   flake.overlays = {
     misc-fixes = final: prev: {
       vimPlugins = prev.vimPlugins // {
-        nvim-spectre = self.channels.${final.system}.stable.pkgs.vimPlugins.nvim-spectre;
+        nvim-spectre =
+          self.channels.${final.stdenv.hostPlatform.system}.stable.pkgs.vimPlugins.nvim-spectre;
       };
     };
   };
