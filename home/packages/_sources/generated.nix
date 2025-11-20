@@ -80,15 +80,15 @@
   };
   nu_plugin_file = {
     pname = "nu_plugin_file";
-    version = "115542af6ec2f37e45a95c87770b707b5822d527";
+    version = "68b971917be70d8eced027ec46a5533c29b055d3";
     src = fetchFromGitHub {
       owner = "fdncred";
       repo = "nu_plugin_file";
-      rev = "115542af6ec2f37e45a95c87770b707b5822d527";
+      rev = "68b971917be70d8eced027ec46a5533c29b055d3";
       fetchSubmodules = false;
-      sha256 = "sha256-djFzoqtn2o/n/zMRHstSeocKolA8WerO5Mcbroxxv4Y=";
+      sha256 = "sha256-PeO0SSAhHCVkt1hcg0QTI1q9X5NVlhULydSBip5kXwI=";
     };
-    date = "2025-10-15";
+    date = "2025-11-07";
   };
   nu_plugin_port_list = {
     pname = "nu_plugin_port_list";
@@ -128,15 +128,15 @@
   };
   officialPluginsSource = {
     pname = "officialPluginsSource";
-    version = "8f1d9711bcd0e48af1fcb4153c16d24da76e732d";
+    version = "2301ff803a033cd16d16e62697474d6cb9a94711";
     src = fetchFromGitHub {
       owner = "yazi-rs";
       repo = "plugins";
-      rev = "8f1d9711bcd0e48af1fcb4153c16d24da76e732d";
+      rev = "2301ff803a033cd16d16e62697474d6cb9a94711";
       fetchSubmodules = false;
-      sha256 = "sha256-7vsqHvdNimH/YVWegfAo7DfJ+InDr3a1aNU0f+gjcdw=";
+      sha256 = "sha256-+lirIBXv3EvztE/1b3zHnQ9r5N3VWBCUuH3gZR52fE0=";
     };
-    date = "2025-10-22";
+    date = "2025-11-19";
   };
   "open-with-cmd.yazi" = {
     pname = "open-with-cmd.yazi";
