@@ -1,32 +1,66 @@
-## STARSHIP SPECIFIC (from upstream)
-
 let starship_cache = ($"($env | get -o XDG_CACHE_HOME | default "~/.cache")/starship" | path expand)
 if not ($starship_cache | path exists) {
   mkdir $starship_cache
 }
 # ^starship init nu | save --force $"($starship_cache | path expand)/init.nu"
 
-$env.STARSHIP_SHELL = "nu"
-$env.STARSHIP_SESSION_KEY = (random chars -l 16)
-$env.PROMPT_MULTILINE_INDICATOR = (^starship prompt --continuation)
+## STARSHIP SPECIFIC (from upstream)
 
-# Does not play well with default character module.
-# TODO: Also Use starship vi mode indicators?
-$env.PROMPT_INDICATOR = ""
-$env.PROMPT_COMMAND = { ||
-    # jobs are not supported
-    let width = (term size).columns
-    ^starship prompt $"--cmd-duration=($env.CMD_DURATION_MS)" $"--status=($env.LAST_EXIT_CODE)" $"--terminal-width=($width)"
-}
+# this file is both a valid
+# - overlay which can be loaded with `overlay use starship.nu`
+# - module which can be used with `use starship.nu`
+# - script which can be used with `source starship.nu`
+export-env { $env.STARSHIP_SHELL = "nu"; load-env {
+    STARSHIP_SESSION_KEY: (random chars -l 16)
+    PROMPT_MULTILINE_INDICATOR: (
+        ^starship prompt --continuation
+    )
 
-# Whether we have config items
-let has_config_items = (not ($env | get -o config | is-empty))
+    # Does not play well with default character module.
+    # TODO: Also Use starship vi mode indicators?
+    PROMPT_INDICATOR: ""
 
-$env.config = $env.config? | default { } | merge {
-    render_right_prompt_on_last_line: true
-}
+    PROMPT_COMMAND: {||
+        (
+            # The initial value of `$env.CMD_DURATION_MS` is always `0823`, which is an official setting.
+            # See https://github.com/nushell/nushell/discussions/6402#discussioncomment-3466687.
+            let cmd_duration = if $env.CMD_DURATION_MS == "0823" { 0 } else { $env.CMD_DURATION_MS };
+            ^starship prompt
+                --cmd-duration $cmd_duration
+                $"--status=($env.LAST_EXIT_CODE)"
+                --terminal-width (term size).columns
+                ...(
+                    if (which "job list" | where type == built-in | is-not-empty) {
+                        ["--jobs", (job list | length)]
+                    } else {
+                        []
+                    }
+                )
+        )
+    }
 
-$env.PROMPT_COMMAND_RIGHT = { ||
-    let width = (term size).columns
-    ^starship prompt --right $"--cmd-duration=($env.CMD_DURATION_MS)" $"--status=($env.LAST_EXIT_CODE)" $"--terminal-width=($width)"
-}
+    config: ($env.config? | default {} | merge {
+        render_right_prompt_on_last_line: true
+    })
+
+    PROMPT_COMMAND_RIGHT: {||
+        (
+            # The initial value of `$env.CMD_DURATION_MS` is always `0823`, which is an official setting.
+            # See https://github.com/nushell/nushell/discussions/6402#discussioncomment-3466687.
+            let cmd_duration = if $env.CMD_DURATION_MS == "0823" { 0 } else { $env.CMD_DURATION_MS };
+            ^starship prompt
+                --right
+                --cmd-duration $cmd_duration
+                $"--status=($env.LAST_EXIT_CODE)"
+                --terminal-width (term size).columns
+                ...(
+                    if (which "job list" | where type == built-in | is-not-empty) {
+                        ["--jobs", (job list | length)]
+                    } else {
+                        []
+                    }
+                )
+        )
+    }
+}}
+
