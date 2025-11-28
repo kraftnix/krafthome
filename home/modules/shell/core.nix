@@ -131,5 +131,20 @@ in
     programs.pay-respects.enable = mkDefault cfg.pay-respects.enable;
     manual.manpages.enable = mkDefault cfg.man.enable;
     manual.json.enable = mkDefault cfg.man.enable;
+
+    # maintain old ssh default config behaviour
+    programs.ssh.enableDefaultConfig = mkDefault false;
+    programs.ssh.matchBlocks."*" = mkDefault {
+      forwardAgent = false;
+      addKeysToAgent = "no";
+      compression = false;
+      serverAliveInterval = 0;
+      serverAliveCountMax = 3;
+      hashKnownHosts = false;
+      userKnownHostsFile = "~/.ssh/known_hosts";
+      controlMaster = "no";
+      controlPath = "~/.ssh/master-%r@%n:%p";
+      controlPersist = "no";
+    };
   };
 }

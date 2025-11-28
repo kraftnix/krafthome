@@ -82,6 +82,7 @@ in
     programs.gnupg.agent = mkIf cfg.disableOtherAgents {
       enable = mkForce false;
     };
+
     programs.ssh.startAgent = mkIf cfg.disableOtherAgents {
       enable = mkForce false;
     };

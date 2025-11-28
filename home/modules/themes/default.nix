@@ -149,6 +149,8 @@ in
         desktop = mkDefault cfg.opacity;
       };
       override = mkDefault cfg.override;
+      # WORKAROUND(stylix): 25.11 switch-over in home-manager has occurred but not in stylix
+      enableReleaseChecks = mkDefault false;
     }
     // cfg.stylix.extra;
 
