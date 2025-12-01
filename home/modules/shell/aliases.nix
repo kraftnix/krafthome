@@ -67,7 +67,7 @@ in
       se = "sudoedit";
       si = "sudo -i";
       stl = "doas systemctl";
-      sudo = "doas";
+      # sudo = "doas";
       sup = "doas systemctl start";
       sdown = "doas systemctl stop";
       ssta = "doas systemctl status";
