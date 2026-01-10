@@ -14,7 +14,7 @@
   ## Mine
   inputs = {
     kraftnvim.url = "github:kraftnix/kraftnvim";
-    kraftnvim.inputs.nixpkgs.follows = "nixpkgs";
+    # kraftnvim.inputs.nixpkgs.follows = "nixpkgs"; # WORKAROUND(nvim-treesitter): main is in unstable and very broken
 
     provision.url = "github:kraftnix/provision-nix";
     provision.inputs = {
