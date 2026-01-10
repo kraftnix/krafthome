@@ -18,11 +18,6 @@ in
 {
   options.khome.desktop.swaynotificationcenter = {
     enable = mkEnableOption "anyrun khome swaynotificationcenter config";
-    keybind = mkOption {
-      default = "grave";
-      description = "keybind to add to hyprland/sway/niri with Mod+{keybind}, empty string to disasble";
-      type = types.str;
-    };
     extraConfig = mkOption {
       default = { };
       description = "extra config to add to the swaync config json at `/etc/swaync/config.json`";
@@ -52,7 +47,8 @@ in
     khome.desktop.wm.shared.binds.swaynotificationcenter = {
       enable = true;
       exec = true;
-      mapping = cfg.keybind;
+      mapping = lib.mkDefault "n";
+      extraKeys = lib.mkDefault [ "Ctrl" ];
       command = "swaync-client -t";
     };
   };

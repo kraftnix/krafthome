@@ -38,7 +38,7 @@ in
       packages = mkOption {
         default = with pkgs; [
           # shell
-          dogdns # dig alternative
+          doggo # dig alternative
           dust # du alternative
           gping # ping alternative (tui)
           prettyping # ping alternative
