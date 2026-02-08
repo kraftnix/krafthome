@@ -37,7 +37,7 @@ let
   };
   starshipEnv = {
     PROMPT_INDICATOR = ''""'';
-    PROMPT_COMMAND = ''{ || starship prompt --cmd-duration $env.CMD_DURATION_MS $'--status=($env.LAST_EXIT_CODE)' }'';
+    PROMPT_COMMAND = "{ || starship prompt --cmd-duration $env.CMD_DURATION_MS $'--status=($env.LAST_EXIT_CODE)' }";
     PROMPT_COMMAND_RIGHT = ''
       { ||
             let time_segment = ([

@@ -44,7 +44,7 @@ in
     stylix.targets.fzf.enable = config.khome.themes.enable;
     programs.fzf = {
       enable = true;
-      defaultCommand = ''fd --type f'';
+      defaultCommand = "fd --type f";
       defaultOptions = [
         "--ansi"
         "--height ${cfg.height}"
@@ -66,7 +66,7 @@ in
       fileWidgetOptions = [ ''--preview='bat {} --theme="base16" --color=always --style="numbers" ' '' ];
 
       changeDirWidgetCommand = "fd --type d .";
-      changeDirWidgetOptions = [ ''--preview='lsd {} -l --color=always' '' ];
+      changeDirWidgetOptions = [ "--preview='lsd {} -l --color=always' " ];
     };
   };
 }

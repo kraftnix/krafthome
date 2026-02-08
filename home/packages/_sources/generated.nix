@@ -8,39 +8,39 @@
 {
   "bookmarks.yazi" = {
     pname = "bookmarks.yazi";
-    version = "fa65ba2ec762c37096a5787bd9305b62827f2753";
+    version = "43e20e7e9e600e774ba76a4c44338bb18f697eaf";
     src = fetchFromGitHub {
       owner = "DreamMaoMao";
       repo = "bookmarks.yazi";
-      rev = "fa65ba2ec762c37096a5787bd9305b62827f2753";
+      rev = "43e20e7e9e600e774ba76a4c44338bb18f697eaf";
       fetchSubmodules = false;
-      sha256 = "sha256-0bJw2bs1o3G2LpCwUV2HPYbNtyuI6IaoA42yl26YF8s=";
+      sha256 = "sha256-F+HVXjQ7kn9/zyG4WVku+u9Q4ZAtQfAhK/dRxqlMjA0=";
     };
-    date = "2025-04-22";
+    date = "2026-01-04";
   };
   "fg.yazi" = {
     pname = "fg.yazi";
-    version = "c201a3e1c0cda921c06019127886f16faef4b17e";
+    version = "b9fb819d2c407795d0e0678ef33f0dd0b2db8bb3";
     src = fetchFromGitHub {
       owner = "DreamMaoMao";
       repo = "fg.yazi";
-      rev = "c201a3e1c0cda921c06019127886f16faef4b17e";
+      rev = "b9fb819d2c407795d0e0678ef33f0dd0b2db8bb3";
       fetchSubmodules = false;
-      sha256 = "sha256-PNZngyiWuzw2bmJ4v66er9HEAcD5z0Dr6iKYwcxJwf0=";
+      sha256 = "sha256-fgv7iNqx/4EMIcRGmXYY7Y+9/O+nZKeZtsbi0NQPCbw=";
     };
-    date = "2025-07-27";
+    date = "2026-01-04";
   };
   "gvfs.yazi" = {
     pname = "gvfs.yazi";
-    version = "6db0c605ff4ccc9ef59613773aecbacc6fb93c9c";
+    version = "30440c70affb1916a553d805a193c4b5ddab4058";
     src = fetchFromGitHub {
       owner = "boydaihungst";
       repo = "gvfs.yazi";
-      rev = "6db0c605ff4ccc9ef59613773aecbacc6fb93c9c";
+      rev = "30440c70affb1916a553d805a193c4b5ddab4058";
       fetchSubmodules = false;
-      sha256 = "sha256-0W1nQ8MJ+BgPyKcn+oDzntX9BXplJEyl8UjsHWCHrE8=";
+      sha256 = "sha256-jcNHthObhZ5OPHwBxy0Pc3udlGUaZF9WqxHeoXeFbtg=";
     };
-    date = "2025-10-21";
+    date = "2026-01-26";
   };
   nu_plugin_dbus = {
     pname = "nu_plugin_dbus";
@@ -80,15 +80,15 @@
   };
   nu_plugin_file = {
     pname = "nu_plugin_file";
-    version = "68b971917be70d8eced027ec46a5533c29b055d3";
+    version = "613f9a34a0925053b986ae001d9f597272396b9f";
     src = fetchFromGitHub {
       owner = "fdncred";
       repo = "nu_plugin_file";
-      rev = "68b971917be70d8eced027ec46a5533c29b055d3";
+      rev = "613f9a34a0925053b986ae001d9f597272396b9f";
       fetchSubmodules = false;
-      sha256 = "sha256-PeO0SSAhHCVkt1hcg0QTI1q9X5NVlhULydSBip5kXwI=";
+      sha256 = "sha256-dETkGFRo216ZB+gl7q1n3aPLpLswTblgMa5JHMFPoqk=";
     };
-    date = "2025-11-07";
+    date = "2026-01-20";
   };
   nu_plugin_port_list = {
     pname = "nu_plugin_port_list";
@@ -104,75 +104,75 @@
   };
   nu_plugin_prometheus = {
     pname = "nu_plugin_prometheus";
-    version = "4a006851e56ceb474b93fc3f2d1980304065fce4";
+    version = "f080a87adff5660869e6b3bacb3002bee0003048";
     src = fetchFromGitHub {
       owner = "drbrain";
       repo = "nu_plugin_prometheus";
-      rev = "4a006851e56ceb474b93fc3f2d1980304065fce4";
+      rev = "f080a87adff5660869e6b3bacb3002bee0003048";
       fetchSubmodules = false;
-      sha256 = "sha256-bcAzfSaSvxOvlyJAmaxLHaPbGxhvVShawZ8mGTEABAY=";
+      sha256 = "sha256-/YeAdIn9RRXUw1Eg/5GXBoh7wmUna9g6qc60RL81FnM=";
     };
-    date = "2025-05-06";
+    date = "2026-01-22";
   };
   nu_plugin_skim = {
     pname = "nu_plugin_skim";
-    version = "c6375bd8a2e5f3dbb609c71746b4951fa6924406";
+    version = "926bc3aab0e1e77c5b94ef87059f01f18b8c6a39";
     src = fetchFromGitHub {
       owner = "idanarye";
       repo = "nu_plugin_skim";
-      rev = "c6375bd8a2e5f3dbb609c71746b4951fa6924406";
+      rev = "926bc3aab0e1e77c5b94ef87059f01f18b8c6a39";
       fetchSubmodules = false;
-      sha256 = "sha256-2CqgtV2DnBd8HqnRdZRiT14aw+meaX4A3ndTGvbsMfo=";
+      sha256 = "sha256-CWjds0AWYwrKk1sgBSOalEIYJd2Aymc6XK22Bd9QLuo=";
     };
-    date = "2025-10-16";
+    date = "2026-02-01";
   };
   officialPluginsSource = {
     pname = "officialPluginsSource";
-    version = "2301ff803a033cd16d16e62697474d6cb9a94711";
+    version = "88990a6cf1d31afd9d8db1a0d74bf37ef50d6786";
     src = fetchFromGitHub {
       owner = "yazi-rs";
       repo = "plugins";
-      rev = "2301ff803a033cd16d16e62697474d6cb9a94711";
+      rev = "88990a6cf1d31afd9d8db1a0d74bf37ef50d6786";
       fetchSubmodules = false;
-      sha256 = "sha256-+lirIBXv3EvztE/1b3zHnQ9r5N3VWBCUuH3gZR52fE0=";
+      sha256 = "sha256-0K6qGgbGt8N6HgGNEmn2FDLar6hCPiPBbvOsrTjSubM=";
     };
-    date = "2025-11-19";
+    date = "2026-02-06";
   };
   "open-with-cmd.yazi" = {
     pname = "open-with-cmd.yazi";
-    version = "433cf301c36882c31032d3280ab0c94825fc5e9f";
+    version = "e3d430f8b12cb314a1d5744bcf8f76dd56b071e7";
     src = fetchFromGitHub {
       owner = "Ape";
       repo = "open-with-cmd.yazi";
-      rev = "433cf301c36882c31032d3280ab0c94825fc5e9f";
+      rev = "e3d430f8b12cb314a1d5744bcf8f76dd56b071e7";
       fetchSubmodules = false;
-      sha256 = "sha256-QazKfNEPFdkHwMrH4D+VMwj8fGXM8KHDdSvm1tik3dQ=";
+      sha256 = "sha256-vN7zQeGuYN8TPKlA/6+SNFTVsA607z1DJPKXlNFJ9YM=";
     };
-    date = "2025-02-09";
+    date = "2026-01-06";
   };
   "searchjump.yazi" = {
     pname = "searchjump.yazi";
-    version = "7fafec3e667f2b93d3ad21989ef75bbf95bb43fc";
+    version = "cab627c1ab0af40aa6ac404c9e9e42d7405f8055";
     src = fetchFromGitHub {
       owner = "DreamMaoMao";
       repo = "searchjump.yazi";
-      rev = "7fafec3e667f2b93d3ad21989ef75bbf95bb43fc";
+      rev = "cab627c1ab0af40aa6ac404c9e9e42d7405f8055";
       fetchSubmodules = false;
-      sha256 = "sha256-zH/X7YUpfDiOcEKuXG4J1MZFj3Dv28rWOi9XEod8NNo=";
+      sha256 = "sha256-l0mNqZIS3IAPpcIxN17JOuc09UHYmzRtRR8/fGu3oe8=";
     };
-    date = "2025-07-11";
+    date = "2026-01-04";
   };
   "what-size.yazi" = {
     pname = "what-size.yazi";
-    version = "d8966568f2a80394bf1f9a1ace6708ddd4cc8154";
+    version = "179ebf69c9c3ade40cacc0f25e9557a43427c6ca";
     src = fetchFromGitHub {
       owner = "pirafrank";
       repo = "what-size.yazi";
-      rev = "d8966568f2a80394bf1f9a1ace6708ddd4cc8154";
+      rev = "179ebf69c9c3ade40cacc0f25e9557a43427c6ca";
       fetchSubmodules = false;
-      sha256 = "sha256-s2BifzWr/uewDI6Bowy7J+5LrID6I6OFEA5BrlOPNcM=";
+      sha256 = "sha256-7q/45TopqbojNRvYDmP9+hgSGPmiyLHBcV051qpOB2Y=";
     };
-    date = "2025-06-19";
+    date = "2026-01-05";
   };
   "wl-clipboard.yazi" = {
     pname = "wl-clipboard.yazi";
