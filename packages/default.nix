@@ -48,7 +48,7 @@
           skr
           get-recent-ssh
           skk
-          libbluray-full
+          libbluray-full-mine
           mpv-bluray
           firefox-priv-defaults-wayland
           stylix-default-wallpaper
