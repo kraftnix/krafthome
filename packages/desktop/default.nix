@@ -1,15 +1,15 @@
 nixpkgs:
 let
-  libbluray-full = nixpkgs.libbluray.override {
+  libbluray-full-mine = nixpkgs.libbluray.override {
     inherit (nixpkgs) libaacs libbdplus;
     withAACS = true;
     withBDplus = true;
   };
 in
 {
-  libbluray = libbluray-full;
+  inherit libbluray-full-mine;
   mpv-bluray = nixpkgs.mpv-unwrapped.override {
-    libbluray = libbluray-full;
+    libbluray = libbluray-full-mine;
     bluraySupport = true;
   };
   firefox-priv-defaults-wayland = nixpkgs.wrapFirefox nixpkgs.firefox-unwrapped {
