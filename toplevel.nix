@@ -65,11 +65,6 @@ localFlake@{
   flake.overlays = {
     workarounds = final: prev: {
       inherit (localFlake.inputs.stable.legacyPackages.${final.stdenv.hostPlatform.system})
-        # due to qtwebengine
-        jellyfin-mpv-shim
-        jellyfin-media-player
-        antlr_4_9 # luaformatter / antlr issues
-        luaformatter
         ;
     };
   };

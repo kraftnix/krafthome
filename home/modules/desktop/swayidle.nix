@@ -105,16 +105,10 @@ in
           resumeCommand = "${command} on";
         }
       ];
-      events = [
-        {
-          event = "before-sleep";
-          command = "swaylock -fF";
-        }
-        {
-          event = "lock";
-          command = "swaylock -fF";
-        }
-      ];
+      events = {
+        before-sleep = mkDefault "swaylock -fF";
+        lock = mkDefault "swaylock -fF";
+      };
     };
   };
 }

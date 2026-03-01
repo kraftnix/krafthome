@@ -62,7 +62,7 @@ in
         gnome.gnome-settings-daemon
       ];
     };
-    environment.systemPackages = with pkgs; [ xorg.xeyes ];
+    environment.systemPackages = with pkgs; [ xeyes ];
     services.xserver = {
       enable = true;
       xkb.layout = cfg.keyboardLayout;

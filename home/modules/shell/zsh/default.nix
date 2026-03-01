@@ -85,18 +85,6 @@ in
 
           export SSH_AUTH_SOCK="/home/$USER/.ssh/auth_sock"
 
-          ${optionalString cfg.enableYazi ''
-            # yazi
-            function yy() {
-              local tmp="$(mktemp -t "yazi-cwd.XXXXXX")"
-              yazi "$@" --cwd-file="$tmp"
-              if cwd="$(cat -- "$tmp")" && [ -n "$cwd" ] && [ "$cwd" != "$PWD" ]; then
-                cd -- "$cwd"
-              fi
-              rm -f -- "$tmp"
-            }
-          ''}
-
           ${lib.optionalString cfg.manpageSearcher ''
             # from: https://github.com/junegunn/fzf/wiki/Examples#fzf-man-pages-widget-for-zsh
             fzf-man-widget() {

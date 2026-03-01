@@ -274,6 +274,7 @@ in
         extraPackages = mkIf cfg.bundleExtraPackages (
           flatten (mapAttrsToList (_: p: p.extraPackages) enabledPlugins)
         );
+        shellWrapperName = lib.mkDefault "yy"; # keep legacy behaviour
         initLua = ''
           ${builtins.readFile ./init.lua}
 

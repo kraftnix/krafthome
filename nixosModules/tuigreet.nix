@@ -163,11 +163,6 @@ in
       type = types.attrsOf types.str;
     };
 
-    greeterUser = mkOption {
-      default = "greeter";
-      description = "default user to launch tuigreet with";
-      type = types.str;
-    };
   };
 
   config = mkIf cfg.enable {
@@ -213,22 +208,13 @@ in
       };
     };
 
-    users.users.${cfg.greeterUser}.group = cfg.greeterUser;
-    users.groups.${cfg.greeterUser} = { };
-
-    systemd.services.display-manager.enable = false;
-    services.xserver.displayManager.lightdm.enable = lib.mkForce false;
-    services.displayManager.execCmd = "";
-
     security.pam.services.greetd.enableGnomeKeyring = cfg.enableGnomeKeyring;
 
     services.greetd = {
       enable = true;
+      useTextGreeter = true;
       settings = {
-        default_session = {
-          command = "${cfg.greetdBin} --sessions ${sessionDirs cfg.sessions} ${concatStringsSep " " cfg.extraArgs}";
-          user = cfg.greeterUser;
-        };
+        default_session.command = "${cfg.greetdBin} --sessions ${sessionDirs cfg.sessions} ${concatStringsSep " " cfg.extraArgs}";
         terminal.vt = 1;
       };
     };
