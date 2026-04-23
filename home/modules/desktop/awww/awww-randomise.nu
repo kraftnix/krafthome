@@ -22,22 +22,22 @@ def checkLength [
 }
 
 # starts a never-ending process that cycles through images in a sends them
-# to swww at a specific time interval
+# to awww at a specific time interval
 #
 # if interval is 0, then don't loop
-# i.e. `swww_randomise -i 0 ~/mypics`
+# i.e. `awww_randomise -i 0 ~/mypics`
 def main [
   --interval(-i) : int      # time interval between switching images (60s default)
-  --step(-s)     : int      # ? : corresponds to SWWW_TRANSITION_FPS
-  --fps(-f)      : int      # ? : corresponds to SWWW_TRANSITION_STEP
+  --step(-s)     : int      # ? : corresponds to awww_TRANSITION_FPS
+  --fps(-f)      : int      # ? : corresponds to awww_TRANSITION_STEP
   --noShuffle               # toggle to disable automatic shuffle of all images
   --transition(-t) : string # transition type (center)
   ...directories            # directories to search for images
 ] {
-  print $"(ansi green)Starting swww.(ansi reset)"
-  $env.SWWW_TRANSITION_FPS = ($fps | default ($env | get -o SWWW_TRANSITION_FPS | default 60))
-  $env.SWWW_TRANSITION_STEP = ($step | default ($env | get -o SWWW_TRANSITION_STEP | default 2))
-  $env.SWWW_TRANSITION = ($transition | default ($env | get -o SWWW_TRANSITION | default "simple"))
+  print $"(ansi green)Starting awww.(ansi reset)"
+  $env.awww_TRANSITION_FPS = ($fps | default ($env | get -o awww_TRANSITION_FPS | default 60))
+  $env.awww_TRANSITION_STEP = ($step | default ($env | get -o awww_TRANSITION_STEP | default 2))
+  $env.awww_TRANSITION = ($transition | default ($env | get -o awww_TRANSITION | default "simple"))
   let interval = ($interval | default 60)
   print $"Searching directories: (ansi yellow)($directories)(ansi reset)"
   mut images = ($directories | findImages)
@@ -46,7 +46,7 @@ def main [
     $images = ($images | shuffle)
   }
   if $interval <= 0 {
-    swww img ($images | first)
+    awww img ($images | first)
     exit 0
   }
   mut i = 0
@@ -54,7 +54,7 @@ def main [
   loop {
     if $i < $length {
       let image = ($images | get $i)
-      swww img $image
+      awww img $image
       $i = $i + 1
       sleep (echo $interval sec | str join "" | into duration)
     } else {
@@ -63,5 +63,5 @@ def main [
       $i = 0
     }
   }
-  print $"Stopping swww."
+  print $"Stopping awww."
 }

@@ -113,7 +113,7 @@ in
                 description = "command to run at startup, defaults to attr name";
                 default = name;
                 type = types.str;
-                example = "systemctl --user restart swww";
+                example = "systemctl --user restart awww";
               };
             };
           }

@@ -54,7 +54,7 @@
         enableDefaults = true;
       };
       khome.desktop.wm.legacyTheme.enable = true;
-      khome.desktop.swww = {
+      khome.desktop.awww = {
         enable = true;
         systemdIntegration = true;
         wallpaperDirs = [ "${../home/modules/themes}" ];

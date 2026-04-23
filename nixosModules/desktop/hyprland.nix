@@ -25,7 +25,7 @@ in
       grim
       slurp
       wlr-randr
-      xorg.xprop
+      xprop
 
       hcfg.package # add final hyprland package to system level
     ];

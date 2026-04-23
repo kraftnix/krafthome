@@ -7,7 +7,7 @@ args@{ inputs, ... }:
     ./misc.nix
     ./rofi.nix
     ./swayidle.nix
-    ./swww
+    ./awww
     ./waybar
     # (import ./wayfire.nix args)
     # (import ./wezterm.nix args)

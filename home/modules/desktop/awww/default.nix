@@ -16,33 +16,33 @@ let
     optionalString
     types
     ;
-  cfg = config.khome.desktop.swww;
+  cfg = config.khome.desktop.awww;
   wallpaperDirs = concatStringsSep " " cfg.wallpaperDirs;
-  singleRandom = "swww-randomise -i 0 ${wallpaperDirs}";
+  singleRandom = "awww-randomise -i 0 ${wallpaperDirs}";
   startAndRandom =
     if cfg.systemdIntegration then
-      # "systemctl --user start swww && ${singleRandom}"
-      "systemctl --user restart swww && systemctl --user restart swww-rotate"
+      # "systemctl --user start awww && ${singleRandom}"
+      "systemctl --user restart awww && systemctl --user restart awww-rotate"
     else
-      "swww-daemon init && ${singleRandom}";
-  randomiseCommand = "swww-randomise -i ${toString cfg.interval} -f ${toString cfg.fps} ${
+      "awww-daemon init && ${singleRandom}";
+  randomiseCommand = "awww-randomise -i ${toString cfg.interval} -f ${toString cfg.fps} ${
     optionalString (cfg.transitionType != null) "-t ${cfg.transitionType}"
   } -s ${toString cfg.step} ${wallpaperDirs}";
-  randomisePackage = config.provision.scripts.scripts.swww-randomise.package;
+  randomisePackage = config.provision.scripts.scripts.awww-randomise.package;
 in
 {
-  options.khome.desktop.swww = {
-    enable = mkEnableOption "enable swww wallpapers";
+  options.khome.desktop.awww = {
+    enable = mkEnableOption "enable awww wallpapers";
     systemdIntegration = mkEnableOption "enable systemd user service";
     step = mkOption {
       default = 2;
       type = types.int;
-      description = "corresponds to SWWW_TRANSITION_STEP";
+      description = "corresponds to awww_TRANSITION_STEP";
     };
     fps = mkOption {
       default = 60;
       type = types.int;
-      description = "corresponds to SWWW_TRANSITION_FPS";
+      description = "corresponds to awww_TRANSITION_FPS";
     };
     interval = mkOption {
       default = 60;
@@ -52,7 +52,7 @@ in
     transitionType = mkOption {
       default = "simple";
       type = with types; str;
-      description = "optional `transition-type` argument to `swww`";
+      description = "optional `transition-type` argument to `awww`";
     };
     wallpaperDirs = mkOption {
       default = optional config.khome.themes.enable config.khome.themes.images.wallpaperDir;
@@ -73,7 +73,7 @@ in
 
   config = mkIf cfg.enable {
 
-    khome.desktop.wm.shared.binds.swww-next = {
+    khome.desktop.wm.shared.binds.awww-next = {
       enable = true;
       exec = true;
       mapping = cfg.keybind;
@@ -82,8 +82,8 @@ in
     };
 
     programs.hyprland.execOnce = {
-      "swww-init" = startAndRandom;
-      "swww-randomise" = mkIf (!cfg.systemdIntegration) randomiseCommand;
+      "awww-init" = startAndRandom;
+      "awww-randomise" = mkIf (!cfg.systemdIntegration) randomiseCommand;
     };
 
     wayland.windowManager.sway.config.startup = lib.mkAfter (
@@ -99,31 +99,31 @@ in
       })
     );
 
-    provision.scripts.scripts.swww-randomise.file = ./swww-randomise.nu;
+    provision.scripts.scripts.awww-randomise.file = ./awww-randomise.nu;
 
-    home.packages = [ pkgs.swww ];
+    home.packages = [ pkgs.awww ];
 
-    systemd.user.services.swww = mkIf cfg.systemdIntegration {
+    systemd.user.services.awww = mkIf cfg.systemdIntegration {
       Install.WantedBy = [ "graphical-session.target" ];
       Unit = {
         ConditionEnvironment = "WAYLAND_DISPLAY";
-        Description = "SWWW Wallpaper Daemon";
+        Description = "awww Wallpaper Daemon";
         After = [ "graphical-session-pre.target" ];
         PartOf = [ "graphical-session.target" ];
       };
       Service = {
         Type = "simple";
         RemainAfterExit = true;
-        ExecStart = "${pkgs.swww}/bin/swww-daemon";
+        ExecStart = "${pkgs.awww}/bin/awww-daemon";
       };
     };
 
-    systemd.user.services.swww-rotate = mkIf cfg.systemdIntegration {
+    systemd.user.services.awww-rotate = mkIf cfg.systemdIntegration {
       Install.WantedBy = [ "graphical-session.target" ];
       Unit = {
         ConditionEnvironment = "WAYLAND_DISPLAY";
-        Description = "SWWW Wallpaper Rotate Service";
-        After = [ "swww.service" ];
+        Description = "awww Wallpaper Rotate Service";
+        After = [ "awww.service" ];
         PartOf = [ "graphical-session.target" ];
       };
       Service = {
@@ -131,13 +131,13 @@ in
           "PATH=${
             lib.makeBinPath [
               pkgs.fd
-              pkgs.swww
+              pkgs.awww
             ]
           }"
         ]
-        ++ (optional (cfg.fps != null) "SWWW_TRANSITION_FPS=${toString cfg.fps}")
-        ++ (optional (cfg.step != null) "SWWW_TRANSITION_STEP=${toString cfg.step}")
-        ++ (optional (cfg.transitionType != null) "SWWW_TRANSITION_TYPE=${cfg.transitionType}");
+        ++ (optional (cfg.fps != null) "awww_TRANSITION_FPS=${toString cfg.fps}")
+        ++ (optional (cfg.step != null) "awww_TRANSITION_STEP=${toString cfg.step}")
+        ++ (optional (cfg.transitionType != null) "awww_TRANSITION_TYPE=${cfg.transitionType}");
         Restart = "on-failure";
         ExecStart = "${randomisePackage}/bin/${randomiseCommand}";
       };

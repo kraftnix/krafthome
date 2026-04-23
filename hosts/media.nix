@@ -10,7 +10,7 @@
         graphical = true;
       };
       khome.desktop.swayidle.enable = true;
-      khome.desktop.swww.enable = true;
+      khome.desktop.awww.enable = true;
       khome.browsers.firefox = {
         enable = true;
         profiles = {

@@ -39,6 +39,8 @@ in
     };
     programs.git = {
       enable = true;
+      # maintain old default
+      signing.format = mkDefault "openpgp";
       delta = mkIf cfg.enableDelta {
         enable = true;
         options = {

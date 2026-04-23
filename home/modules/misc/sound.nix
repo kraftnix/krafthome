@@ -17,7 +17,7 @@ in
 
   config = mkIf cfg.enable {
     home.packages = with pkgs; [
-      helvum # GTK pipewire patch bay
+      crosspipe # GTK pipewire patch bay
       # cadence # GTK jack audio tools # deprecated
       pavucontrol # volume control
       easyeffects # audio post processing

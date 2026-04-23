@@ -15,7 +15,10 @@
   provision.virt.qemu.guestAgent = true;
   provision.fs.boot.enable = true;
 
-  fileSystems."/" = lib.mkDefault { device = "/dev/disk/by-label/nixos"; };
+  fileSystems."/" = lib.mkDefault {
+    device = "/dev/disk/by-label/nixos";
+    fsType = "auto";
+  };
 
   users.users.test.isNormalUser = true;
   # home-manager.users.test = import ../../home/users/example.nix;
