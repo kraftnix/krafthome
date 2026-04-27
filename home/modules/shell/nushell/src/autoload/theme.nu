@@ -169,25 +169,11 @@ $env.config = ($env.config
   | upsert footer_mode 25 # always, never, number_of_rows, auto
   | upsert use_ansi_coloring true
   | upsert render_right_prompt_on_last_line false # true or false to enable or disable right prompt to be rendered on last line of the prompt.
-  | upsert hooks {
-    pre_prompt: [{||
-      null  # replace with source code to run before the prompt is shown
-    }]
-    pre_execution: [{||
-      null  # replace with source code to run before the repl input is run
-    }]
-    env_change: {
-      PWD: [{|before, after|
-        null  # replace with source code to run if the PWD environment is different since the last repl input
-      }]
-    }
+  | upsert hooks ($env.config.hooks | default {
     display_output: {||
       # if (term size).columns >= 100 { table -e } else { table }
       if (term size).columns >= 20 { table -e } else { table }
     }
-    command_not_found: {||
-      null  # replace with source code to return an error message when a command is not found
-    }
-  }
+  })
 
 )
