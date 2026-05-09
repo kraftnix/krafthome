@@ -49,7 +49,7 @@ in
   };
   config = mkIf cfg.enable {
     khome.shell.aliases.aliases = mkIf cfg.aliasDefaultToNvim {
-      nvim = lib.getExe config.wrappers.kraftnvim.wrapper;
+      nvim = cfg.defaultPackage;
     };
     wrappers.kraftnvim = {
       enable = true;
