@@ -1,6 +1,7 @@
 args@{
   self,
   inputs,
+  lib,
   ...
 }:
 {
@@ -63,6 +64,12 @@ args@{
         nixpkgs.config.permittedInsecurePackages = [
           "jitsi-meet-1.0.8792" # element
         ];
+        nixpkgs.config.allowUnfreePredicate =
+          pkg:
+          builtins.elem (lib.getName pkg) [
+            "diagram.nvim" # doesn't have any license
+            "terminal.nvim" # doesn't have any license
+          ];
         stable.config.permittedInsecurePackages = [ ];
       };
     };

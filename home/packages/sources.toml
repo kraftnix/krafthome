@@ -20,10 +20,6 @@ fetch.github = "Trivernis/nu-plugin-dialog"
 src.git = "https://github.com/fdncred/nu_plugin_file"
 fetch.github = "fdncred/nu_plugin_file"
 
-[nu_plugin_port_list]
-src.git = "https://github.com/FMotalleb/nu_plugin_port_list"
-fetch.github = "FMotalleb/nu_plugin_port_list"
-
 [nu_plugin_prometheus]
 src.git = "https://github.com/drbrain/nu_plugin_prometheus"
 fetch.github = "drbrain/nu_plugin_prometheus"

@@ -15,6 +15,7 @@
   inputs = {
     kraftnvim.url = "github:kraftnix/kraftnvim";
     kraftnvim.inputs.nixpkgs.follows = "nixpkgs";
+    kraftnvim.inputs.wrappers.follows = "wrappers";
 
     provision.url = "github:kraftnix/provision-nix";
     provision.inputs = {
@@ -36,6 +37,9 @@
       nixpkgs.follows = "nixpkgs";
       nixpkgs-stable.follows = "stable";
     };
+
+    wrappers.url = "github:BirdeeHub/nix-wrapper-modules";
+    wrappers.inputs.nixpkgs.follows = "nixpkgs";
 
     stylix.url = "github:nix-community/stylix";
     stylix.inputs.nixpkgs.follows = "nixpkgs";

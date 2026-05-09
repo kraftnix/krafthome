@@ -4,11 +4,15 @@ source: cargoHash:
   lib,
   rustPlatform,
   nushell,
+  openssl,
+  pkg-config,
 }:
 rustPlatform.buildRustPackage rec {
   pname = "nushell_plugin_file";
   inherit cargoHash;
   inherit (source) version src;
+  nativeBuildInputs = [ pkg-config ];
+  buildInputs = [ openssl ];
   # patches = [
   #   ./file.Cargo.toml.patch
   # ];

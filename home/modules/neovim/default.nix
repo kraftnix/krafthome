@@ -7,6 +7,7 @@ localFlake:
 }:
 let
   inherit (lib)
+    mkDefault
     mkEnableOption
     mkIf
     mkMerge
@@ -20,57 +21,45 @@ in
   options = {
     khome.nvim = {
       enable = mkEnableOption "enable adding neovim configuration form kraftnvim";
+      aliasDefaultToNvim = mkOption {
+        description = "Adds default kraftnvim package as shell alias for `nvim`";
+        default = true;
+        type = types.bool;
+      };
       defaultPackage = mkOption {
         description = "package to set as default (as `nvim` package)";
         default = "kraftnvim";
         type = types.str;
       };
-      linkConfig = mkOption {
-        description = "recursively link lua config to `.config/nvim`";
-        default = true;
-        type = types.bool;
-      };
       packagesToAdd = mkOption {
         description = "extra package names to add to `kraftnvim.packageNames`";
         default = [
           "kraftnvim"
-          "kraftnvimLocal"
-          "kraftnvimStable"
-          "kraftnvimStableLocal"
+          "kraftnvim-minimal"
+          # "kraftnvim-d2"
         ];
         type = with types; listOf str;
       };
       settings = mkOption {
         default = { };
-        description = "extra configuration to add to nixCats home module `kraftnvim`";
+        description = "extra configuration to add to nix-wrapper home module `kraftnvim`";
         type = with types; attrsOf anything;
       };
     };
   };
   config = mkIf cfg.enable {
-    kraftnvim = mkMerge [
-      {
-        enable = true;
-        packageNames = cfg.packagesToAdd;
-        packageDefinitions.merge.${cfg.defaultPackage} = (
-          { pkgs, ... }:
-          {
-            settings.aliases = [ "nvim" ];
-          }
-        );
-      }
-      cfg.settings
-    ];
-    # keep a static copy of nvim, and replace with a writable version each time
-    # somewhat required for nvim-scissors needing a writable snippets dir to be nice to user
-    xdg.configFile."nvim_static" = {
-      recursive = true;
-      source = config.kraftnvim.out.packages.kraftnvim.luaPath;
-      onChange = ''
-        rm -rf ${config.xdg.configHome}/nvim
-        cp -r ${config.xdg.configHome}/nvim_static ${config.xdg.configHome}/nvim
-        chmod -R u+w ${config.xdg.configHome}/nvim
-      '';
+    khome.shell.aliases.aliases = mkIf cfg.aliasDefaultToNvim {
+      nvim = lib.getExe config.wrappers.kraftnvim.wrapper;
+    };
+    wrappers.kraftnvim = {
+      enable = true;
+      settings = mkMerge [
+        cfg.settings
+        {
+          profile = mkDefault "full";
+          languages.enableAll = mkDefault true;
+        }
+      ];
     };
   };
 }
