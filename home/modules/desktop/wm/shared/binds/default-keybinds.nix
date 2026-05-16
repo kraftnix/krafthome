@@ -15,7 +15,7 @@ in
       exec = true;
       mapping = "Return";
       command = cfg.terminal;
-      niri.output.hotkey-overlay.title = "Open a Terminal: ${cfg.terminal}";
+      niri.props.hotkey-overlay-title = "Open a Terminal: ${cfg.terminal}";
     };
     fullscreen = {
       enable = true;
@@ -23,19 +23,19 @@ in
       sway.command = "fullscreen toggle";
       hyprland.command = "fullscreen";
       niri.output.action = config.lib.niri.actions.fullscreen-window;
-      niri.output.hotkey-overlay.title = "Fullscreen current window";
+      niri.props.hotkey-overlay-title = "Fullscreen current window";
     };
     picker = {
       exec = true;
       mapping = "d";
       command = cfg.menu;
-      niri.output.hotkey-overlay.title = "Run an application via: ${cfg.menu}";
+      niri.props.hotkey-overlay-title = "Run an application via: ${cfg.menu}";
     };
     emoji = {
       exec = true;
       mapping = "g";
       command = "rofi -show emoji -modi emoji";
-      niri.output.hotkey-overlay.title = "Select (and copy) an emoji";
+      niri.props.hotkey-overlay-title = "Select (and copy) an emoji";
     };
     opacity = {
       enable = true;
@@ -53,7 +53,7 @@ in
         }
       ''}";
       niri.output.action = config.lib.niri.actions.toggle-window-rule-opacity;
-      niri.output.hotkey-overlay.title = "Toggle opacity";
+      niri.props.hotkey-overlay-title = "Toggle opacity";
     };
     reload_hard = {
       enable = true;
@@ -71,7 +71,7 @@ in
       niri.command = "${pkgs.writers.writeNu "reload-niri.nu" ''
         ${cfg.reloadScript}
       ''}";
-      niri.output.hotkey-overlay.title = "Hard reload services";
+      niri.props.hotkey-overlay-title = "Hard reload services";
     };
     workspace_back_and_forth = mkIf cfg.backAndForth.enable {
       enable = true;
@@ -79,7 +79,7 @@ in
       sway.command = "workspace back_and_forth";
       hyprland.command = "workspace, previous";
       niri.output.action = config.lib.niri.actions.focus-workspace-previous;
-      niri.output.hotkey-overlay.title = "Go to last workspace";
+      niri.props.hotkey-overlay-title = "Go to last workspace";
     };
 
     ## Brightness: bind brightnessctl to function keys
@@ -88,14 +88,14 @@ in
       mod = false;
       mapping = "XF86MonBrightnessUp";
       command = cfg.brightness.upCommand;
-      niri.output.hotkey-overlay.title = "Increase brightness [brightness]";
+      niri.props.hotkey-overlay-title = "Increase brightness [brightness]";
     };
     brightness_down = mkIf cfg.brightness.enable {
       exec = true;
       mod = false;
       mapping = "XF86MonBrightnessDown";
       command = cfg.brightness.downCommand;
-      niri.output.hotkey-overlay.title = "Decrease brightness [brightness]";
+      niri.props.hotkey-overlay-title = "Decrease brightness [brightness]";
     };
     brightness_min = mkIf cfg.brightness.enable {
       exec = true;
@@ -103,7 +103,7 @@ in
       mapping = "XF86MonBrightnessDown";
       command = cfg.brightness.minCommand;
       extraKeys = [ "Shift" ];
-      niri.output.hotkey-overlay.title = "Decrease brightness to minimum [brightness]";
+      niri.props.hotkey-overlay-title = "Decrease brightness to minimum [brightness]";
     };
 
     ## Media: start/stop/next/prev via playerctl
@@ -112,21 +112,21 @@ in
       mod = false;
       mapping = "XF86AudioPlay";
       command = cfg.media.pausePlayCommand;
-      niri.output.hotkey-overlay.title = "Play song/video [media]";
+      niri.props.hotkey-overlay-title = "Play song/video [media]";
     };
     media_next = mkIf cfg.media.enable {
       exec = true;
       mod = false;
       mapping = "XF86AudioNext";
       command = cfg.media.nextCommand;
-      niri.output.hotkey-overlay.title = "Play next song/video [media]";
+      niri.props.hotkey-overlay-title = "Play next song/video [media]";
     };
     media_prev = mkIf cfg.media.enable {
       exec = true;
       mod = false;
       mapping = "XF86AudioPrev";
       command = cfg.media.prevCommand;
-      niri.output.hotkey-overlay.title = "Play previous song/video [media]";
+      niri.props.hotkey-overlay-title = "Play previous song/video [media]";
     };
 
     ## Volume
@@ -135,21 +135,21 @@ in
       mod = false;
       mapping = "XF86AudioRaiseVolume";
       command = cfg.volume.raise;
-      niri.output.hotkey-overlay.title = "Volume up [volume]";
+      niri.props.hotkey-overlay-title = "Volume up [volume]";
     };
     volume_down = mkIf cfg.volume.enable {
       exec = true;
       mod = false;
       mapping = "XF86AudioLowerVolume";
       command = cfg.volume.lower;
-      niri.output.hotkey-overlay.title = "Volume down [volume]";
+      niri.props.hotkey-overlay-title = "Volume down [volume]";
     };
     volume_mute = mkIf cfg.volume.enable {
       exec = true;
       mod = false;
       mapping = "XF86AudioMute";
       command = cfg.volume.mute;
-      niri.output.hotkey-overlay.title = "Toggle Mute [volume]";
+      niri.props.hotkey-overlay-title = "Toggle Mute [volume]";
     };
   };
 }

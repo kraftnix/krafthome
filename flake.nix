@@ -32,12 +32,6 @@
 
     nur.url = "github:nix-community/NUR";
 
-    niri.url = "github:sodiboo/niri-flake";
-    niri.inputs = {
-      nixpkgs.follows = "nixpkgs";
-      nixpkgs-stable.follows = "stable";
-    };
-
     wrappers.url = "github:BirdeeHub/nix-wrapper-modules";
     wrappers.inputs.nixpkgs.follows = "nixpkgs";
 

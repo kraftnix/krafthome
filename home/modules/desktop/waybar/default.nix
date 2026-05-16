@@ -24,7 +24,7 @@ let
       type = types.str;
     };
   hyprlandEnable = config.programs.hyprland.enable;
-  niriEnable = config.programs.niri.enable;
+  niriEnable = config.khome.desktop.wm.niri.enable;
   swayEnable = config.wayland.windowManager.sway.enable;
 in
 {

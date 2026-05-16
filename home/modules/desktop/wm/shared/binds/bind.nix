@@ -73,12 +73,30 @@ let
                     output = mkOption {
                       description = "output object to add for keybind at {programs.niri.settings.binds.<bind>}";
                       default = { };
+                      type =
+                        with types;
+                        oneOf [
+                          (attrsOf raw)
+                          (functionTo (attrsOf raw))
+                        ];
+                    };
+                    props = mkOption {
+                      description = "optional props (like `hotkey-overlay-title`) to pass to keybind";
+                      default = { };
                       type = with types; attrsOf raw;
                     };
                   };
-                  config = mkIf (config.exec && config.command != "") {
-                    output.action.spawn-sh = config.command;
-                  };
+                  config.output = mkIf (config.exec && config.command != "") (
+                    if config.props == { } then
+                      {
+                        spawn-sh = config.command;
+                      }
+                    else
+                      _: {
+                        content.spawn-sh = config.command;
+                        props = config.props;
+                      }
+                  );
                 }
               )
             ];

@@ -7,8 +7,6 @@ args@{ self, ... }:
 }:
 let
   inherit (lib)
-    filterAttrs
-    mkDefault
     mkIf
     mkMerge
     mkOption
@@ -17,20 +15,33 @@ let
   wcfg = config.khome.desktop.wm;
   cfg = wcfg.niri;
   opts = self.inputs.extra-lib.lib.options;
+  niriNull = _: { };
 in
 {
   imports = [
     ./default-binds.nix
-    (import ./window-rules.nix args)
+    ./window-rules.nix
     (lib.mkAliasOptionModule
       [ "khome" "desktop" "wm" "niri" "settings" ]
-      [ "programs" "niri" "settings" ]
+      [ "wrappers" "niri-kraft" "settings" ]
     )
+    # NOTE: I hate having to name this as niri-kraft, but it is impossible
+    #       to get nix-wrapper-modules to not override the niri systemd service
+    #       and doesn't allow me to have niri use ~/.config/niri/config.kdl
+    (self.inputs.wrappers.lib.mkInstallModule {
+      name = "niri-kraft";
+      value = self.inputs.wrappers.lib.wrapperModules.niri;
+      loc = [
+        "home"
+        "packages"
+      ];
+    })
   ];
 
   options.khome.desktop.wm.niri = {
     enable = opts.enable "enable niri config";
     enableDefaults = opts.enable "enable (opinionated) defaults";
+    xwayland = opts.enable "enable xwayland via xwayland-satellite";
     importVars = mkOption {
       description = "Environment variables to import into systemd user + dbus";
       default = [
@@ -122,9 +133,7 @@ in
     };
     extraPackages = mkOption {
       description = "extra packages required by niri";
-      default = with pkgs; [
-        nirius # extra window management tool
-      ];
+      default = [ ];
       type = with types; listOf package;
     };
     xkb = mkOption {
@@ -133,152 +142,153 @@ in
       type = types.raw;
       example = lib.literalExpression ''
         {
-          xkb_layout = "gb";
-          xkb_options = "caps:escape";
+          layout = "gb";
+          options = "caps:escape";
         }
       '';
     };
   };
 
-  config = mkMerge [
-    {
-      programs.niri.settings = {
-        debug.deactivate-unfocused-windows = { };
-        environment = {
-          MOZ_ENABLE_WAYLAND = "1";
-          XDG_CURRENT_DESKTOP = "niri";
-          XDG_SESSION_DESKTOP = "niri";
-          GDK_BACKEND = "wayland";
-          CLUTTER_BACKEND = "wayland";
-        };
-        xwayland-satellite = {
-          enable = true;
-          path = lib.getExe pkgs.xwayland-satellite;
-        };
-        hotkey-overlay.skip-at-startup = true;
-        prefer-no-csd = true; # issues with transparency
-      };
-    }
-    (mkIf cfg.enable {
-      home.packages = cfg.extraPackages;
-      # stylix.targets.niri.enable = true;
-      khome.desktop.wm.niri.startup = {
-        xwayland-satellite = {
-          enable = true;
-          order = 20;
-        };
-        systemd-daemon-reload = {
-          enable = true;
-          order = 10;
-          command = "systemctl --user daemon-reload";
-        };
-        systemd-import-environment = {
-          enable = true;
-          order = 10;
-          command = "systemctl --user import-environment ${lib.concatStringsSep " " cfg.importVars}";
-        };
-        dbus-update-environment = {
-          enable = true;
-          order = 10;
-          command = "dbus-update-activation-environment --systemd ${lib.concatStringsSep " " cfg.importVars}";
-        };
-        nirius = {
-          enable = true;
-          order = 50;
-          command = "niriusd";
-        };
-      };
-      khome.desktop.wm.niri.xkb = mkIf cfg.enableDefaults {
-        layout = "gb";
-        options = "caps:escape";
-      };
-      programs.niri = {
-        enable = true;
-        settings = mkMerge [
-          {
-            input.keyboard.xkb = cfg.xkb;
-            workspaces = cfg.workspaces;
-            spawn-at-startup = lib.pipe cfg.startup [
-              (filterAttrs (_: s: s.enable))
-              lib.attrValues
-              (lib.sort (a: b: a.order < b.order))
-              (lib.map (s: {
-                command = lib.singleton s.command;
-              }))
-            ];
-          }
-          (mkIf cfg.enableDefaults {
-            # clipboard.disable-primary = true;
-            screenshot-path = "~/xdg/screenshots/%Y-%m-%d %H-%M-%S.png";
+  config = mkIf cfg.enable {
+    xdg.configFile."niri/config.kdl".source =
+      config.wrappers.niri-kraft.constructFiles.generatedConfig.outPath;
 
-            animations = {
-              enable = true;
-              window-movement.kind.spring = {
+    home.packages = cfg.extraPackages;
+    # stylix.targets.niri.enable = true;
+    khome.desktop.wm.niri.extraPackages = [ pkgs.nirius ];
+    khome.desktop.wm.niri.startup = {
+      xwayland-satellite = {
+        enable = cfg.xwayland;
+        order = 20;
+      };
+      systemd-daemon-reload = {
+        enable = true;
+        order = 10;
+        command = "systemctl --user daemon-reload";
+      };
+      systemd-import-environment = {
+        enable = true;
+        order = 10;
+        command = "systemctl --user import-environment ${lib.concatStringsSep " " cfg.importVars}";
+      };
+      dbus-update-environment = {
+        enable = true;
+        order = 10;
+        command = "dbus-update-activation-environment --systemd ${lib.concatStringsSep " " cfg.importVars}";
+      };
+      nirius = {
+        enable = true;
+        command = "niriusd";
+        order = 50;
+      };
+    };
+    khome.desktop.wm.niri.xkb = mkIf cfg.enableDefaults {
+      layout = "gb";
+      options = "caps:escape";
+    };
+    wrappers.niri-kraft = {
+      enable = true;
+      v2-settings = true;
+      settings = mkMerge [
+        {
+          debug.deactivate-unfocused-windows = { };
+          environment = {
+            MOZ_ENABLE_WAYLAND = "1";
+            XDG_CURRENT_DESKTOP = "niri";
+            XDG_SESSION_DESKTOP = "niri";
+            GDK_BACKEND = "wayland";
+            CLUTTER_BACKEND = "wayland";
+          };
+          hotkey-overlay.skip-at-startup = true;
+          prefer-no-csd = true; # issues with transparency
+        }
+        (
+          if cfg.xwayland then
+            {
+              xwayland-satellite.path = lib.getExe pkgs.xwayland-satellite;
+            }
+          else
+            {
+              xwayland-satellite.off = niriNull;
+            }
+        )
+        {
+          input.keyboard.xkb = cfg.xkb;
+          spawn-at-startup = lib.pipe cfg.startup [
+            (lib.filterAttrs (_: s: s.enable))
+            lib.attrValues
+            (lib.sort (a: b: a.order < b.order))
+            (lib.map (s: lib.singleton s.command))
+          ];
+        }
+        (mkIf cfg.enableDefaults {
+          # clipboard.disable-primary = true;
+          screenshot-path = "~/xdg/screenshots/%Y-%m-%d %H-%M-%S.png";
+
+          # NOTE: workspaces must be added here since otherwise we can't enforce ordering
+          extraConfig = lib.concatStringsSep "\n" (
+            lib.mapAttrsToList (_: c: "workspace \"${c.name}\"") cfg.workspaces
+          );
+
+          animations = {
+            window-movement.spring = _: {
+              props = {
                 damping-ratio = 1.0;
                 stiffness = 1000;
                 epsilon = 0.0001;
               };
             };
-            cursor = {
-              hide-after-inactive-ms = 2000;
-              hide-when-typing = true;
-            };
-            gestures.hot-corners.enable = false;
+          };
+          cursor = {
+            hide-after-inactive-ms = 2000;
+            hide-when-typing = niriNull;
+          };
+          gestures.hot-corners = { };
 
-            input = {
-              workspace-auto-back-and-forth = true;
-              mouse = {
-                accel-profile = "flat";
-              };
-              touchpad = {
-                dwt = true;
-                dwtp = true;
-              };
+          input = {
+            workspace-auto-back-and-forth = _: { };
+            mouse.accel-profile = "flat";
+            touchpad = {
+              tap = niriNull;
+              natural-scroll = niriNull;
+              dwt = niriNull;
+              dwtp = niriNull;
             };
+          };
 
-            layout = {
-              gaps = 10;
-              always-center-single-column = true;
-              preset-column-widths = [
-                { proportion = 0.33333; }
-                { proportion = 0.5; }
-                { proportion = 0.66667; }
-                { proportion = 1.0; }
-              ];
-              default-column-width = {
-                proportion = 1.0;
-              };
-              border = {
-                enable = true;
-                width = mkDefault cfg.borderWidth;
-                active = mkDefault {
-                  color = config.lib.stylix.colors.withHashtag.base0D;
-                };
-                inactive = mkDefault {
-                  color = config.lib.stylix.colors.withHashtag.base03;
-                };
-                urgent = mkDefault {
-                  color = config.lib.stylix.colors.withHashtag.base0F;
-                };
-              };
-              focus-ring = {
-                enable = true;
-                # width = borderWidth;
-                width = 1;
-              };
-              shadow = {
-                # enable = true;
-                enable = false;
-              };
-              tab-indicator = {
-                enable = true;
-                corner-radius = 12;
-              };
+          layout = {
+            gaps = 10;
+            always-center-single-column = true;
+            preset-column-widths = [
+              { proportion = 0.33333; }
+              { proportion = 0.5; }
+              { proportion = 0.66667; }
+              { proportion = 1.0; }
+            ];
+            default-column-width.proportion = 1.0;
+            border = {
+              width = cfg.borderWidth;
+              active-color = config.lib.stylix.colors.withHashtag.base0D;
+              inactive-color = config.lib.stylix.colors.withHashtag.base03;
+              urgent-color = config.lib.stylix.colors.withHashtag.base0F;
             };
+            focus-ring = {
+              on = niriNull;
+              # width = borderWidth;
+              width = 1;
+            };
+            shadow = {
+              # enable = true;
+              off = niriNull;
+            };
+            tab-indicator = {
+              on = niriNull;
+              corner-radius = 12;
+            };
+          };
 
-          })
-        ];
-      };
-    })
-  ];
+        })
+      ];
+    };
+  };
 }

@@ -1,4 +1,3 @@
-args@{ self, ... }:
 {
   config,
   lib,
@@ -11,7 +10,6 @@ let
     mapAttrsToList
     mkDefault
     mkOption
-    removeAttrs
     types
     ;
   wcfg = config.khome.desktop.wm;
@@ -22,7 +20,7 @@ in
   options.khome.desktop.wm.niri = {
     cornerRadius = mkOption {
       description = "default corner radius for all windows, ignored if 0";
-      default = 0.0;
+      default = 12.0;
       type = types.float;
     };
     window-rules = mkOption {
@@ -33,7 +31,7 @@ in
   };
 
   config = {
-    programs.niri.settings.window-rules = mapAttrsToList (_: w: removeAttrs w [ "enable" ]) (
+    khome.desktop.wm.niri.settings.window-rules = mapAttrsToList (_: w: removeAttrs w [ "enable" ]) (
       filterAttrs (_: w: w.enable or true) cfg.window-rules
     );
 
@@ -50,15 +48,16 @@ in
       };
       corner-radius = {
         enable = cfg.cornerRadius != 0.0;
-        geometry-corner-radius = {
-          top-right = cfg.cornerRadius;
-          top-left = cfg.cornerRadius;
-          bottom-right = cfg.cornerRadius;
-          bottom-left = cfg.cornerRadius;
-        };
+        geometry-corner-radius = mkDefault [
+          cfg.cornerRadius
+          cfg.cornerRadius
+          cfg.cornerRadius
+          cfg.cornerRadius
+        ];
         clip-to-geometry = mkDefault true;
       };
       firefox-pip = {
+        enable = mkDefault cfg.enableDefaults;
         matches = [
           {
             app-id = "firefox$";
@@ -66,6 +65,29 @@ in
           }
         ];
         open-floating = true;
+      };
+      messengers = {
+        enable = mkDefault cfg.enableDefaults;
+        matches = [
+          { app-id = "fluffychat"; }
+          { app-id = "Element"; }
+        ];
+        open-on-workspace = cfg.workspaces."004-chat".name;
+      };
+      floating = {
+        enable = mkDefault cfg.enableDefaults;
+        matches = [
+          { app-id = "com.nextcloud.desktopclient.nextcloud"; }
+          { title = "alsamixer"; }
+          { title = "mpv"; }
+          { app-id = "org.pulseaudio.pavucontrol"; }
+          {
+            app-id = "thunderbird";
+            title = "Edit Calendar";
+          }
+        ];
+        open-floating = true;
+        open-focused = true;
       };
     };
   };

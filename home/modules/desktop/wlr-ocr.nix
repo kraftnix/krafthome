@@ -59,7 +59,7 @@ in
       mapping = cfg.keybind;
       command = "${cfg.ocrScript}/bin/wl-ocr";
       extraKeys = [ "Shift" ];
-      niri.output.hotkey-overlay.title = "OCR text into clipboard from a selected area.";
+      niri.props.hotkey-overlay-title = "OCR text into clipboard from a selected area.";
     };
 
   };

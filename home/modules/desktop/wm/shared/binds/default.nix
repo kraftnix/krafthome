@@ -72,8 +72,8 @@ in
   ##### implementation
   config = mkIf cfg.enableBinds {
 
-    programs.niri.settings.binds = lib.pipe cfg.binds [
-      (lib.filterAttrs (_: k: k.enable && k.niri.enable))
+    khome.desktop.wm.niri.settings.binds = lib.pipe cfg.binds [
+      (lib.filterAttrs (_: k: k.enable && k.niri.enable && (k.niri.exec && k.niri.command != "")))
       (lib.mapAttrsToList (
         _: k: {
           ${toNiriMod k.niri} = k.niri.output;
