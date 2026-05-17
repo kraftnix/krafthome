@@ -70,9 +70,13 @@ in
         enable = mkDefault cfg.enableDefaults;
         matches = [
           { app-id = "fluffychat"; }
-          { app-id = "Element"; }
+          {
+            title = "^Element";
+            app-id = "electron";
+          }
         ];
         open-on-workspace = cfg.workspaces."004-chat".name;
+        open-focused = false;
       };
       floating = {
         enable = mkDefault cfg.enableDefaults;
