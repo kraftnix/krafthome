@@ -1421,11 +1421,11 @@
         ]
       },
       "locked": {
-        "lastModified": 1779043654,
-        "narHash": "sha256-ud9ArGRWTtyc2Qiy5fNbOUxa+rVp2r7M+VQC47N/FO4=",
+        "lastModified": 1779129752,
+        "narHash": "sha256-Pi/LnAxrrkdcLO7QOokgE2MecHKjLO1Gf/tjouAcHBI=",
         "owner": "kraftnix",
         "repo": "nix-wrapper-modules",
-        "rev": "1505cdad3851b95dd60a2e1c70a9b709471842d9",
+        "rev": "ddee0bc1ee5b2b9c1575bcffb822d723cc991767",
         "type": "github"
       },
       "original": {

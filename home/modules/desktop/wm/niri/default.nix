@@ -240,7 +240,7 @@ in
             };
           };
           cursor = {
-            hide-after-inactive-ms = 2000;
+            hide-after-inactive-ms = lib.mkDefault 2000;
             hide-when-typing = niriNull;
           };
           gestures.hot-corners = { };
