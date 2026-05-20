@@ -32,8 +32,7 @@
 
     nur.url = "github:nix-community/NUR";
 
-    # wrappers.url = "github:BirdeeHub/nix-wrapper-modules";
-    wrappers.url = "github:kraftnix/nix-wrapper-modules/niri-types";
+    wrappers.url = "github:BirdeeHub/nix-wrapper-modules";
     wrappers.inputs.nixpkgs.follows = "nixpkgs";
 
     stylix.url = "github:nix-community/stylix";

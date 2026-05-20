@@ -155,7 +155,10 @@ in
 
     home.packages = cfg.extraPackages;
     # stylix.targets.niri.enable = true;
-    khome.desktop.wm.niri.extraPackages = [ pkgs.nirius ];
+    khome.desktop.wm.niri.extraPackages = [
+      pkgs.nirius
+      pkgs.fuzzel
+    ];
     khome.desktop.wm.niri.startup = {
       xwayland-satellite = {
         enable = cfg.xwayland;
