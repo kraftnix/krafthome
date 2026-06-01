@@ -5,7 +5,7 @@
   inputs = {
     nixpkgs.url = "github:nixos/nixpkgs/nixos-unstable";
     nixos.follows = "nixpkgs"; # TODO: remove
-    stable.url = "github:nixos/nixpkgs/release-25.11";
+    stable.url = "github:nixos/nixpkgs/release-26.05";
     home.url = "github:nix-community/home-manager";
     home.inputs.nixpkgs.follows = "nixpkgs";
     systems.url = "github:nix-systems/default-linux";

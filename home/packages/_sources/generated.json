@@ -1,7 +1,7 @@
 {
     "bookmarks.yazi": {
         "cargoLock": null,
-        "date": "2026-01-04",
+        "date": "2026-05-12",
         "extract": null,
         "name": "bookmarks.yazi",
         "passthru": null,
@@ -13,12 +13,12 @@
             "name": null,
             "owner": "DreamMaoMao",
             "repo": "bookmarks.yazi",
-            "rev": "43e20e7e9e600e774ba76a4c44338bb18f697eaf",
-            "sha256": "sha256-F+HVXjQ7kn9/zyG4WVku+u9Q4ZAtQfAhK/dRxqlMjA0=",
+            "rev": "f196d04895c9a37103a6daec8af3712b70109e7e",
+            "sha256": "sha256-NVGaLUwN1a1dVZJsKHAgUBjppStS9AxmkpbNLaqvSW0=",
             "sparseCheckout": [],
             "type": "github"
         },
-        "version": "43e20e7e9e600e774ba76a4c44338bb18f697eaf"
+        "version": "f196d04895c9a37103a6daec8af3712b70109e7e"
     },
     "fg.yazi": {
         "cargoLock": null,
@@ -127,7 +127,7 @@
     },
     "nu_plugin_file": {
         "cargoLock": null,
-        "date": "2026-04-20",
+        "date": "2026-05-28",
         "extract": null,
         "name": "nu_plugin_file",
         "passthru": null,
@@ -139,12 +139,12 @@
             "name": null,
             "owner": "fdncred",
             "repo": "nu_plugin_file",
-            "rev": "63f8bdc250cd4613e3232a9d5f631d0013d2294b",
-            "sha256": "sha256-hop/HBkcqAzWaKHOEAYWhh7/WCxAVWXLwsiVkWB9Z1I=",
+            "rev": "7d874cc9f73f2ef65d2593d79499b749d746d4ea",
+            "sha256": "sha256-t50YvQ/11wai5M36DfomRVTXW7EQ5WDUC8cOlwpEUJM=",
             "sparseCheckout": [],
             "type": "github"
         },
-        "version": "63f8bdc250cd4613e3232a9d5f631d0013d2294b"
+        "version": "7d874cc9f73f2ef65d2593d79499b749d746d4ea"
     },
     "nu_plugin_prometheus": {
         "cargoLock": null,
@@ -169,7 +169,7 @@
     },
     "nu_plugin_skim": {
         "cargoLock": null,
-        "date": "2026-04-12",
+        "date": "2026-05-30",
         "extract": null,
         "name": "nu_plugin_skim",
         "passthru": null,
@@ -181,16 +181,16 @@
             "name": null,
             "owner": "idanarye",
             "repo": "nu_plugin_skim",
-            "rev": "853c03230bd82d9c172d61a55b915eebce937af3",
-            "sha256": "sha256-2bhPRYbOGUMbc5BVHAJpVFPq9iDpNh8dKvZZN2cqkxw=",
+            "rev": "2fa94a0334fe42bd257546fade9afd8337686c2e",
+            "sha256": "sha256-RbDolD23azEpyfropCB32nqhrLoRXNBNLwgwBKCjmo0=",
             "sparseCheckout": [],
             "type": "github"
         },
-        "version": "853c03230bd82d9c172d61a55b915eebce937af3"
+        "version": "2fa94a0334fe42bd257546fade9afd8337686c2e"
     },
     "officialPluginsSource": {
         "cargoLock": null,
-        "date": "2026-05-07",
+        "date": "2026-05-31",
         "extract": null,
         "name": "officialPluginsSource",
         "passthru": null,
@@ -202,12 +202,12 @@
             "name": null,
             "owner": "yazi-rs",
             "repo": "plugins",
-            "rev": "4ffa48f33465c22cce48c5d506295a3eb27c1979",
-            "sha256": "sha256-wr5QL493A175dRjYSyYpMMJax1RKWaZ3jAdFdL3XXTw=",
+            "rev": "598cdb671401574ac27aeee257e2f3b0c80610a1",
+            "sha256": "sha256-bqGN6JxbU+/o7TlM/Cm9Qj/s1McA4pB5QWArGZPcme4=",
             "sparseCheckout": [],
             "type": "github"
         },
-        "version": "4ffa48f33465c22cce48c5d506295a3eb27c1979"
+        "version": "598cdb671401574ac27aeee257e2f3b0c80610a1"
     },
     "open-with-cmd.yazi": {
         "cargoLock": null,
@@ -232,7 +232,7 @@
     },
     "searchjump.yazi": {
         "cargoLock": null,
-        "date": "2026-01-04",
+        "date": "2026-05-12",
         "extract": null,
         "name": "searchjump.yazi",
         "passthru": null,
@@ -244,12 +244,12 @@
             "name": null,
             "owner": "DreamMaoMao",
             "repo": "searchjump.yazi",
-            "rev": "cab627c1ab0af40aa6ac404c9e9e42d7405f8055",
-            "sha256": "sha256-l0mNqZIS3IAPpcIxN17JOuc09UHYmzRtRR8/fGu3oe8=",
+            "rev": "8a1a785db9526414ac92eb38b4fe5d438b34376f",
+            "sha256": "sha256-Rt1NMP1qksYdfFIywXAG2NJHZFFp9qwqxaxw+tXQtx0=",
             "sparseCheckout": [],
             "type": "github"
         },
-        "version": "cab627c1ab0af40aa6ac404c9e9e42d7405f8055"
+        "version": "8a1a785db9526414ac92eb38b4fe5d438b34376f"
     },
     "what-size.yazi": {
         "cargoLock": null,

@@ -52,6 +52,7 @@ in
     stylix.targets.firefox.enable = false; # for now, prevents warning
     programs.firefox = {
       enable = true;
+      configPath = "${config.xdg.configHome}/mozilla/firefox";
       package = cfg.package;
       policies = cfg.policies;
       profiles = builtins.mapAttrs (name: pcfg: {

@@ -23,12 +23,12 @@ in
       enable = mkEnableOption "enable adding neovim configuration form kraftnvim";
       aliasDefaultToNvim = mkOption {
         description = "Adds default kraftnvim package as shell alias for `nvim`";
-        default = true;
+        default = cfg.defaultPackage != "nvim";
         type = types.bool;
       };
       defaultPackage = mkOption {
         description = "package to set as default (as `nvim` package)";
-        default = "kraftnvim";
+        default = "nvim";
         type = types.str;
       };
       packagesToAdd = mkOption {
@@ -53,6 +53,7 @@ in
     };
     wrappers.kraftnvim = {
       enable = true;
+      binName = lib.mkForce cfg.defaultPackage;
       settings = mkMerge [
         cfg.settings
         {
