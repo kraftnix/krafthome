@@ -63,6 +63,7 @@ args@{
       channels = {
         nixpkgs.config.permittedInsecurePackages = [
           "jitsi-meet-1.0.8792" # element
+          "electron-39.8.10" # logseq
         ];
         nixpkgs.config.allowUnfreePredicate =
           pkg:

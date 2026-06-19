@@ -112,7 +112,7 @@ in
     ]);
 
     # enforce access to yubikey
-    security.polkit.debug = cfg.polkit.enableLogging;
+    # security.polkit.debug = cfg.polkit.enableLogging;
     security.polkit.extraConfig = mkIf cfg.polkit.enable ''
 
       ${optionalString cfg.polkit.enableLogging ''
